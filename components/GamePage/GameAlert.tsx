@@ -42,7 +42,7 @@ export default function GameAlert({ room, isHelper }: { room: Room; isHelper: bo
         }
       case "WAITING_TIP":
         if (isHelper) {
-          return <span>Your turn to give a Tip to the Guesser</span>;
+          return <span>Choose a tip for the selected words</span>;
         } else {
           return (
             <div className="flex items-center">
@@ -52,10 +52,10 @@ export default function GameAlert({ room, isHelper }: { room: Room; isHelper: bo
           );
         }
       case "FINISHED":
-        if (isHelper) {
+        if (room.wrong_guesses.length) {
           return (
             <>
-              <span>{room.guesser} made a mistake :(</span>
+              <span>{isHelper ? room.guesser : "You"} made a mistake :(</span>
               <button onClick={onLeave} className="btn btn-sm btn-primary">
                 Leave Room
               </button>
@@ -64,7 +64,7 @@ export default function GameAlert({ room, isHelper }: { room: Room; isHelper: bo
         } else {
           return (
             <>
-              <span>You made a mistake :(</span>
+              <span>CONGRATULATION!! You WON! :D</span>
               <button onClick={onLeave} className="btn btn-sm btn-primary">
                 Leave Room
               </button>

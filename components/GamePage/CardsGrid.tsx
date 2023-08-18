@@ -62,6 +62,10 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
                 "bg-green-400 text-green-200 pointer-events-none":
                   room.correct_guesses.includes(word),
                 "bg-red-400 text-red-200 pointer-events-none": room.wrong_guesses.includes(word),
+                "animate-pulse":
+                  isHelper &&
+                  room.game_state === "WAITING_TIP" &&
+                  !room.correct_guesses.includes(word),
               }
             )}
           >

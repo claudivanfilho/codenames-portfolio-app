@@ -31,7 +31,6 @@ export default function GameStats({ room, isHelper }: { room: Room; isHelper: bo
         ) : (
           <span className="grid h-8 text-3xl rounded-lg sm:h-20 stat-title place-items-center">
             {room.current_tip}
-            cajadkas
           </span>
         )}
       </div>
@@ -56,7 +55,7 @@ export default function GameStats({ room, isHelper }: { room: Room; isHelper: bo
           </div>
         ) : (
           <span className="grid h-8 text-3xl rounded-lg sm:h-20 stat-title place-items-center">
-            {room.current_tip_number}7
+            {room.current_tip_number}
           </span>
         )}
       </div>
