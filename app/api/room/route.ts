@@ -1,12 +1,13 @@
+import {
+  DEFAULT_CORRECT_WORDS,
+  DEFAULT_ROUNDS_OF_MATCH,
+  DEFAULT_WORDS_NUMBER,
+} from "@/config/contants";
 import { MatchInsertType, Room, RoomInsertType } from "@/models";
 import { RoomPostType } from "@/models/server";
 import { getRandomWords } from "@/utils/gameLogic";
 import { getSupabaseServer } from "@/utils/supabase";
 import { NextResponse } from "next/server";
-
-export const DEFAULT_ROUNDS_OF_MATCH = 5;
-export const DEFAULT_WORDS_NUMBER = 16;
-export const DEFAULT_CORRECT_WORDS = 6;
 
 export async function POST(req: Request) {
   const { helper, roomName } = (await req.json()) as RoomPostType;

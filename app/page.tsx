@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 import { Room } from "@/models";
 import App from "@/components/App";
 
+export const dynamic = "force-dynamic";
+
 export default async function Index() {
   const supabase = createServerComponentClient({ cookies });
 

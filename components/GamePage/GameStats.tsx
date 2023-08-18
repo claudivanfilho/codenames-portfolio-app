@@ -1,4 +1,4 @@
-import { DEFAULT_CORRECT_WORDS } from "@/app/api/room/route";
+import { DEFAULT_CORRECT_WORDS } from "@/config/contants";
 import { Room } from "@/models";
 import { makeTip } from "@/services/api";
 import { useState } from "react";

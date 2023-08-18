@@ -6,7 +6,7 @@ import useRealtimeCursor from "@/hooks/useRealtimeCursor";
 import RealtimeCursor from "./RealtimeCursor";
 import useRealTimeRoom from "@/hooks/useRealTimeRoom";
 import CardsGrid from "./CardsGrid";
-import { DEFAULT_CORRECT_WORDS } from "@/app/api/room/route";
+import { DEFAULT_CORRECT_WORDS } from "@/config/contants";
 
 export default function GamePage() {
   const { roomId, setRoomId } = useRoom();
