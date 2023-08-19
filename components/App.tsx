@@ -17,16 +17,14 @@ const App: React.FC<
   useLayoutEffect(() => {
     if (!user) {
       router.push("/login");
-    }
-
-    if (!room && user.user_metadata.room_id) {
+    } else if (!room && user.user_metadata.room_id) {
       router.push(`/room/${user.user_metadata.room_id}`);
     }
   }, []);
 
   if (!user) return null;
 
-  if (!room && user.user_metadata.room_id) return null;
+  if (!room && user?.user_metadata?.room_id) return null;
 
   if (room) {
     return (

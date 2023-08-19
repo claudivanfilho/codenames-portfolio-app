@@ -17,7 +17,7 @@ export default function GameStats({ room, isHelper }: { room: Room; isHelper: bo
   };
 
   return (
-    <div className="grid w-full gap-4 p-4 sm:p-6 sm:w-1/4">
+    <div className="flex flex-col w-full gap-4 p-4 sm:p-6 sm:w-1/4">
       <div className="flex items-center justify-between w-full gap-4 sm:justify-normal sm:grid">
         <span className="text-sm sm:pb-2 sm:border-b-2 sm:text-2xl stat-title">TIP</span>
         {isInputVisible ? (
@@ -26,7 +26,7 @@ export default function GameStats({ room, isHelper }: { room: Room; isHelper: bo
             value={tip}
             onChange={(evt) => setTip(evt.target.value)}
             placeholder="Your Tip"
-            className="w-full max-w-xs input input-bordered"
+            className="w-2/3 max-w-xs sm:w-full input input-bordered"
           />
         ) : (
           <span className="grid h-8 text-3xl rounded-lg sm:h-20 stat-title place-items-center">
@@ -37,34 +37,36 @@ export default function GameStats({ room, isHelper }: { room: Room; isHelper: bo
       <div className="flex items-center justify-between gap-4 sm:grid sm:justify-normal">
         <span className="pb-2 text-sm sm:text-2xl sm:border-b-2 stat-title">Nº WORDS</span>
         {isInputVisible ? (
-          <div className="grid gap-10">
-            <input
-              type="number"
-              max={DEFAULT_CORRECT_WORDS}
-              min={1}
-              inputMode="numeric"
-              value={tipNumber}
-              onChange={(evt) => setTipNumber(+evt.target.value)}
-              placeholder="Nº of words to the Tip"
-              className="w-full max-w-xs input input-bordered"
-            />
-
-            <button className="btn" onClick={onMakeTip}>
-              Confirm
-            </button>
-          </div>
+          <input
+            type="number"
+            max={DEFAULT_CORRECT_WORDS}
+            min={1}
+            inputMode="numeric"
+            value={tipNumber}
+            onChange={(evt) => setTipNumber(+evt.target.value)}
+            placeholder="Nº of words to the Tip"
+            className="w-2/3 max-w-xs sm:w-full input input-bordered"
+          />
         ) : (
           <span className="grid h-8 text-3xl rounded-lg sm:h-20 stat-title place-items-center">
             {room.current_tip_number}
           </span>
         )}
       </div>
-      <div className="flex items-center justify-between gap-4 sm:grid sm:justify-normal">
-        <span className="pb-2 text-sm sm:text-2xl sm:border-b-2 stat-title">Rounds Left</span>
-        <span className="grid h-8 text-3xl rounded-lg sm:h-20 stat-title place-items-center">
-          {room.rounds_left}
-        </span>
-      </div>
+
+      {isInputVisible && (
+        <button className="btn" onClick={onMakeTip}>
+          Confirm
+        </button>
+      )}
+      {!isInputVisible && (
+        <div className="flex items-center justify-between gap-4 sm:grid sm:justify-normal">
+          <span className="pb-2 text-sm sm:text-2xl sm:border-b-2 stat-title">Rounds Left</span>
+          <span className="grid h-8 text-3xl rounded-lg sm:h-20 stat-title place-items-center">
+            {room.rounds_left}
+          </span>
+        </div>
+      )}
     </div>
   );
 }

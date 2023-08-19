@@ -1,57 +1,24 @@
-import { Match, Room } from "@/models";
-import { MakeGuessPostType, RoomParamsType } from "@/models/server";
-import { getSupabaseServer } from "@/utils/supabaseServer";
+import { cookies } from "next/headers";
+import { RoomParamsType, User } from "@/models/server";
+import makeGuess from "@/routeHandlers/makeGuess";
 import { NextResponse } from "next/server";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import BadRequestError from "@/errors/BadRequestError";
 
 export async function POST(req: Request, reqParams: RoomParamsType) {
+  const supabase = createRouteHandlerClient({ cookies });
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const roomId = reqParams.params.id;
-  const { words } = (await req.json()) as MakeGuessPostType;
-
-  const { data, error } = await getSupabaseServer()
-    .from("matches")
-    .select<string, Match & { rooms: Room }>(`*, rooms(*)`)
-    .eq("room_id", roomId)
-    .single();
-
-  if (error) {
-    return NextResponse.json({ message: error.message }, { status: 400 });
-  }
-
-  const { rooms: room, ...match } = data!;
-
-  if (room.rounds_left === 0) {
-    return NextResponse.json({ message: "You have no more rounds left" }, { status: 400 });
-  }
-
-  const correctWords = [...room.correct_guesses];
-  const wrongWords = [...room.wrong_guesses];
-
-  words.map((word) => {
-    if (match.correct_words?.includes(word)) {
-      correctWords.push(word);
-    } else {
-      wrongWords.push(word);
+  try {
+    const room = await makeGuess(+roomId, user as unknown as User, req);
+    return NextResponse.json(room);
+  } catch (error) {
+    if (error instanceof BadRequestError) {
+      return NextResponse.json({ message: error.message }, { status: 400 });
+    } else if (error instanceof Error) {
+      return NextResponse.json({ message: error.message }, { status: 500 });
     }
-  });
-
-  const isFinished = wrongWords.length || room.rounds_left - 1 === 0;
-
-  const result = await getSupabaseServer()
-    .from("rooms")
-    .update<Partial<Room>>({
-      correct_guesses: correctWords,
-      wrong_guesses: wrongWords,
-      game_state: isFinished ? "FINISHED" : "WAITING_TIP",
-      rounds_left: room.rounds_left - 1,
-    })
-    .eq("id", roomId);
-
-  if (result.error) {
-    return NextResponse.json(
-      { message: result.error.message || result.statusText },
-      { status: result.status }
-    );
   }
-
-  return NextResponse.json(room);
 }

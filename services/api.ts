@@ -1,5 +1,5 @@
 import { Room } from "@/models";
-import { LoginPostType, MakeGuessPostType, MakeTipPostType, RoomPostType } from "@/models/server";
+import { MakeGuessPostType, MakeTipPostType, RoomPostType } from "@/models/server";
 
 const handleFetchRequest = (response: Response) => {
   if (!response.ok) {
@@ -34,11 +34,4 @@ export const makeGuess = (roomId: number, data: MakeGuessPostType) => {
   return fetch(`/api/room/${roomId}/guess`, { method: "POST", body: JSON.stringify(data) }).then(
     handleFetchRequest
   );
-};
-
-export const login = (data: LoginPostType) => {
-  return fetch("/auth/login", {
-    method: "POST",
-    body: JSON.stringify({ userName: data.userName }),
-  }).then(handleFetchRequest);
 };

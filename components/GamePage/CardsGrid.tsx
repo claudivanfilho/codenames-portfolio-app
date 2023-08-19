@@ -5,6 +5,7 @@ import { ExtendedRoom } from "@/models";
 import { makeGuess } from "@/services/api";
 import clsx from "clsx";
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 export default function CardsGrid({ room }: { room: ExtendedRoom }) {
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
@@ -57,9 +58,8 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
           <div
             key={word}
             onClick={() => onSelect(word)}
-            className={clsx(
-              `h-24 relative grid m-3 bg-opacity-50 border-2 rounded-md place-items-center`,
-              {
+            className={twMerge(
+              clsx(`h-24 relative grid m-3 bg-opacity-50 border-2 rounded-md place-items-center`, {
                 "cursor-pointer hover:scale-110 opacity-80 hover:opacity-100": !isHelper,
                 "bg-primary": room.correctWords?.includes(word),
                 "bg-black": !room.correctWords?.includes(word),
@@ -70,11 +70,11 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
                   isHelper &&
                   room.game_state === "WAITING_TIP" &&
                   !room.correct_guesses.includes(word),
-              }
+              })
             )}
           >
             {selectedWords.includes(word) ? renderPin() : null}
-            <div className="flex items-center gap-3">
+            <div className="grid items-center gap-3 place-items-center sm:flex">
               <span>{word}</span>
               {room.correct_guesses.includes(word) && <CheckMarkIcon size={40} />}
               {room.wrong_guesses.includes(word) && <CrossIcon size={40} />}
@@ -85,12 +85,13 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
       {canSelectWord && (
         <div className="p-4 text-center">
           {canShowConfirm ? (
-            <button onClick={onMakeGuess} className="w-full btn btn-primary">
+            <button
+              onClick={onMakeGuess}
+              className="absolute left-0 w-full rounded-none sm:relative bottom-14 sm:bottom-0 btn btn-primary sm:rounded-sm"
+            >
               Confirm
             </button>
-          ) : (
-            <span className="stat-value">Select {guessesLeft} more words</span>
-          )}
+          ) : null}
         </div>
       )}
     </div>

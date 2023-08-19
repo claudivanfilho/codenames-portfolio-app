@@ -34,8 +34,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               </div>
             </nav>
 
-            <div className="flex flex-col items-center justify-center flex-1 w-full px-6 text-foreground bg-gradient-to-b from-base-200 to-base-100">
-              <div className="flex items-center justify-end w-full gap-4 my-3"></div>
+            <div className="flex flex-col items-center justify-center flex-1 w-full px-6 pt-3 overflow-y-auto text-foreground bg-gradient-to-b from-base-200 to-base-100">
               {children}
             </div>
             <footer className="static w-full py-4 bg-base-200">

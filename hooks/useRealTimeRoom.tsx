@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 
-export default function useRealTimeRoom(remoteRoom: Room, userName: string) {
+export default function useRealTimeRoom(remoteRoom: ExtendedRoom, userName: string) {
   const [room, setRoom] = useState<ExtendedRoom>(remoteRoom);
 
   useEffect(() => {
@@ -17,7 +17,11 @@ export default function useRealTimeRoom(remoteRoom: Room, userName: string) {
           table: "rooms",
           filter: `id=eq.${room.id}`,
         },
-        (payload: RealtimePostgresChangesPayload<Room>) => setRoom(payload.new as Room)
+        (payload: RealtimePostgresChangesPayload<Room>) =>
+          setRoom((oldRoom) => ({
+            ...(payload.new as Room),
+            correctWords: oldRoom.correctWords,
+          }))
       )
       .subscribe();
 

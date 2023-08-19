@@ -18,7 +18,8 @@ export default function useRealtimeCursor(room: Room, userName: string, isHelper
       .channel(`cursor-${room.id}`)
       .on("broadcast", { event: "cursor-pos" }, ({ payload }) => {
         if (isHelper) {
-          setCursor(payload);
+          if (payload.x < window.innerWidth - 100 && payload.y < window.innerHeight - 30)
+            setCursor(payload);
         }
       });
 

@@ -15,8 +15,11 @@ export default async function Index() {
   const { data: rooms } = await getSupabaseServer()
     .from("rooms")
     .select<string, Room>()
-    .neq("game_state", "FINISHED")
-    .is("guesser", "NULL");
+    .neq("game_state", "FINISHED");
 
-  return <App rooms={rooms || []} user={user} />;
+  const filteredRooms = rooms?.filter(
+    (room) => !room.guesser || room.helper === user.user_metadata.user_name
+  );
+
+  return <App rooms={filteredRooms || []} user={user} />;
 }
