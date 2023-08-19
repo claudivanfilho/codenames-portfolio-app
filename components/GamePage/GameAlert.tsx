@@ -1,12 +1,11 @@
 import { Room } from "@/models";
 import Loading from "../Loading";
-import useRoom from "@/hooks/useRoom";
 
 export default function GameAlert({ room, isHelper }: { room: Room; isHelper: boolean }) {
-  const { setRoomId } = useRoom();
+  // const { set } = useRoom();
 
   const onLeave = () => {
-    setRoomId(undefined);
+    // setRoomId(undefined);
   };
 
   const renderContent = () => {

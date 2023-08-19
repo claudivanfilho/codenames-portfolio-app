@@ -1,10 +1,11 @@
 import { Match, Room } from "@/models";
-import { MakeGuessPostType } from "@/models/server";
-import { getSupabaseServer } from "@/utils/supabase";
+import { MakeGuessPostType, RoomParamsType } from "@/models/server";
+import { getSupabaseServer } from "@/utils/supabaseServer";
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request) {
-  const { words, roomId } = (await req.json()) as MakeGuessPostType;
+export async function POST(req: Request, reqParams: RoomParamsType) {
+  const roomId = reqParams.params.id;
+  const { words } = (await req.json()) as MakeGuessPostType;
 
   const { data, error } = await getSupabaseServer()
     .from("matches")

@@ -9,23 +9,18 @@ import CardsGrid from "./CardsGrid";
 import { DEFAULT_CORRECT_WORDS } from "@/config/contants";
 
 export default function GamePage() {
-  const { roomId, setRoomId } = useRoom();
-  const { userName } = useUser();
-  const { room } = useRealTimeRoom(roomId!, userName);
-  const isHelper = room?.helper === userName;
-  const { cursor } = useRealtimeCursor(room?.id, userName, isHelper);
-
-  const onLeave = () => {
-    setRoomId(undefined);
-  };
-
-  if (!room) return null;
+  const { room: remoteRoom } = useRoom();
+  const {
+    user: {
+      user_metadata: { user_name: userName },
+    },
+  } = useUser();
+  const { room } = useRealTimeRoom(remoteRoom, userName);
+  const isHelper = remoteRoom.helper === userName;
+  const { cursor } = useRealtimeCursor(remoteRoom, userName, isHelper);
 
   return (
     <div className="items-start w-full h-full">
-      <button onClick={onLeave} className="absolute top-2 sm:top-4 right-6 btn btn-sm btn-outline">
-        Leave Room
-      </button>
       <div className="flex mb-4 stats">
         <div className="hidden sm:grid stat">
           <span className="stat-title">Room</span>

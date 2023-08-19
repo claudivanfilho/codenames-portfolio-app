@@ -2,14 +2,9 @@ import { ExtendedRoom, Room } from "@/models";
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
-import { getRoom } from "@/services/api";
 
-export default function useRealTimeRoom(roomId: number, userName: string) {
-  const [room, setRoom] = useState<ExtendedRoom>();
-
-  useEffect(() => {
-    getRoom(roomId, userName).then((data) => setRoom(data));
-  }, []);
+export default function useRealTimeRoom(remoteRoom: Room, userName: string) {
+  const [room, setRoom] = useState<ExtendedRoom>(remoteRoom);
 
   useEffect(() => {
     const channel = supabase
@@ -20,7 +15,7 @@ export default function useRealTimeRoom(roomId: number, userName: string) {
           event: "UPDATE",
           schema: "public",
           table: "rooms",
-          filter: `id=eq.${roomId}`,
+          filter: `id=eq.${room.id}`,
         },
         (payload: RealtimePostgresChangesPayload<Room>) => setRoom(payload.new as Room)
       )
@@ -29,7 +24,7 @@ export default function useRealTimeRoom(roomId: number, userName: string) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [roomId]);
+  }, [remoteRoom.id]);
 
   return {
     room,

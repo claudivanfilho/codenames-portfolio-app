@@ -1,28 +1,17 @@
-import { getUserName, setUserName as setUserNameOnStorage } from "@/utils/storage";
-import { FC, ReactNode, createContext, useEffect, useState } from "react";
+import { User } from "@/models/server";
+import { FC, createContext, useState } from "react";
 
 type UserContextType = {
-  userName: string;
-  setUserName: (name: string) => void;
+  user: User;
 };
 
 export const UserContext = createContext<UserContextType>({} as UserContextType);
 
-export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [userName, setUserName] = useState("");
+export const UserProvider: FC<React.HtmlHTMLAttributes<Element> & { remoteUser: User }> = ({
+  children,
+  remoteUser,
+}) => {
+  const [user] = useState(remoteUser);
 
-  const _setUserName = (name: string) => {
-    setUserNameOnStorage(name);
-    setUserName(name);
-  };
-
-  useEffect(() => {
-    setUserName(getUserName() || "");
-  }, []);
-
-  return (
-    <UserContext.Provider value={{ userName, setUserName: _setUserName }}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>;
 };

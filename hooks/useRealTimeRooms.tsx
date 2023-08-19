@@ -6,7 +6,11 @@ import useUser from "./useUser";
 
 export default function useRealTimeRooms(initialRooms: Room[]) {
   const [rooms, setRooms] = useState(initialRooms);
-  const { userName } = useUser();
+  const {
+    user: {
+      user_metadata: { user_name: userName },
+    },
+  } = useUser();
 
   useEffect(() => {
     const channel = supabase

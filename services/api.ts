@@ -1,5 +1,5 @@
 import { Room } from "@/models";
-import { EnterPostType, MakeGuessPostType, MakeTipPostType, RoomPostType } from "@/models/server";
+import { LoginPostType, MakeGuessPostType, MakeTipPostType, RoomPostType } from "@/models/server";
 
 const handleFetchRequest = (response: Response) => {
   if (!response.ok) {
@@ -16,29 +16,29 @@ export const createRoom = (data: RoomPostType): Promise<Room> => {
   );
 };
 
-export const getRoom = (
-  roomId: number,
-  userName: string
-): Promise<Room & { correctWords?: string[] }> => {
-  const search = new URLSearchParams();
-  search.append("userName", userName);
-  return fetch(`/api/room/${roomId}?${search}`).then(handleFetchRequest);
+export const getRoom = (roomId: number): Promise<Room & { correctWords?: string[] }> => {
+  return fetch(`/api/room/${roomId}`).then(handleFetchRequest);
 };
 
-export const enterRoom = (data: EnterPostType) => {
-  return fetch("/api/room/enter", { method: "POST", body: JSON.stringify(data) }).then(
+export const enterRoom = (roomId: number) => {
+  return fetch(`/api/room/${roomId}/enter`, { method: "POST" }).then(handleFetchRequest);
+};
+
+export const makeTip = (roomId: number, data: MakeTipPostType) => {
+  return fetch(`/api/room/${roomId}/tip`, { method: "POST", body: JSON.stringify(data) }).then(
     handleFetchRequest
   );
 };
 
-export const makeTip = (data: MakeTipPostType) => {
-  return fetch("/api/room/make_tip", { method: "POST", body: JSON.stringify(data) }).then(
+export const makeGuess = (roomId: number, data: MakeGuessPostType) => {
+  return fetch(`/api/room/${roomId}/guess`, { method: "POST", body: JSON.stringify(data) }).then(
     handleFetchRequest
   );
 };
 
-export const makeGuess = (data: MakeGuessPostType) => {
-  return fetch("/api/room/make_guess", { method: "POST", body: JSON.stringify(data) }).then(
-    handleFetchRequest
-  );
+export const login = (data: LoginPostType) => {
+  return fetch("/auth/login", {
+    method: "POST",
+    body: JSON.stringify({ userName: data.userName }),
+  }).then(handleFetchRequest);
 };

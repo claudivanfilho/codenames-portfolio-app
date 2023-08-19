@@ -8,7 +8,11 @@ import { useState } from "react";
 
 export default function CardsGrid({ room }: { room: ExtendedRoom }) {
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
-  const { userName } = useUser();
+  const {
+    user: {
+      user_metadata: { user_name: userName },
+    },
+  } = useUser();
   const isHelper = userName === room.helper;
   const hasGuessesLeft = selectedWords.length < room.current_tip_number!;
   const canSelectWord = !isHelper && room.game_state === "WAITING_GUESSES";
@@ -34,7 +38,7 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
 
   const onMakeGuess = async () => {
     try {
-      await makeGuess({ roomId: room.id, words: selectedWords });
+      await makeGuess(room.id, { words: selectedWords });
       setSelectedWords([]);
     } catch (error) {
       alert((error as Error).message);

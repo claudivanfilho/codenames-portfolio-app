@@ -1,38 +1,48 @@
 "use client";
 
-import GamePage from "./GamePage/GamePage";
-import { Room } from "@/models";
+import { ExtendedRoom, Room } from "@/models";
 import RoomsPage from "./RoomsPage/RoomsPage";
-import InitialPage from "./InitialPage/InitialPage";
 import { UserProvider } from "@/context/UserContext";
+import { User } from "@/models/server";
+import { useLayoutEffect } from "react";
+import { useRouter } from "next/navigation";
 import { RoomProvider } from "@/context/RoomContext";
-import { useEffect, useState } from "react";
-import useUser from "@/hooks/useUser";
-import useRoom from "@/hooks/useRoom";
+import GamePage from "./GamePage/GamePage";
 
-function App({ rooms }: { rooms: Room[] }) {
-  const { userName } = useUser();
-  const { roomId } = useRoom();
-  const [isServer, setIsServer] = useState(true);
+const App: React.FC<
+  React.HtmlHTMLAttributes<HTMLElement> & { rooms?: Room[]; user: User; room?: ExtendedRoom | null }
+> = ({ rooms, user, room }) => {
+  const router = useRouter();
 
-  /** Caveat: removing this will cause hydration warnning */
-  useEffect(() => {
-    setIsServer(false);
+  useLayoutEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+
+    if (!room && user.user_metadata.room_id) {
+      router.push(`/room/${user.user_metadata.room_id}`);
+    }
   }, []);
 
-  if (isServer) return null;
+  if (!user) return null;
 
-  if (userName && roomId) return <GamePage />;
+  if (!room && user.user_metadata.room_id) return null;
 
-  if (userName) return <RoomsPage rooms={rooms} />;
+  if (room) {
+    return (
+      <UserProvider remoteUser={user}>
+        <RoomProvider remoteRoom={room}>
+          <GamePage />
+        </RoomProvider>
+      </UserProvider>
+    );
+  }
 
-  return <InitialPage />;
-}
+  return (
+    <UserProvider remoteUser={user}>
+      <RoomsPage rooms={rooms!} />
+    </UserProvider>
+  );
+};
 
-export default ({ rooms }: { rooms: Room[] }) => (
-  <UserProvider>
-    <RoomProvider>
-      <App rooms={rooms} />
-    </RoomProvider>
-  </UserProvider>
-);
+export default App;

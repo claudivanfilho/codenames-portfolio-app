@@ -1,16 +1,11 @@
-import useRoom from "@/hooks/useRoom";
-import useUser from "@/hooks/useUser";
 import { Room } from "@/models";
 import { enterRoom } from "@/services/api";
 
 export default function RoomListing({ rooms }: { rooms: Room[] }) {
-  const { userName } = useUser();
-  const { setRoomId } = useRoom();
-
   const onEnter = async (roomId: number) => {
     try {
-      await enterRoom({ guesser: userName, room_id: roomId });
-      setRoomId(roomId);
+      await enterRoom(roomId);
+      window.location.href = `/room/${roomId}`;
     } catch (error) {
       alert((error as Error).message);
     }

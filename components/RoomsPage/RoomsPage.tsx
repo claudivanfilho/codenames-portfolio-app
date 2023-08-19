@@ -4,23 +4,22 @@ import { Room } from "@/models";
 import RoomListing from "./RoomListing";
 import { useState } from "react";
 import useUser from "@/hooks/useUser";
-import useRoom from "@/hooks/useRoom";
 import { createRoom } from "@/services/api";
 import useRealTimeRooms from "@/hooks/useRealTimeRooms";
 
 export default function RoomsPage({ rooms: remoteRooms }: { rooms: Room[] }) {
   const [roomName, setRoomName] = useState("");
-  const { setRoomId } = useRoom();
-  const { userName } = useUser();
-  const { rooms } = useRealTimeRooms(remoteRooms.filter((room) => room.helper !== userName));
+  const { user } = useUser();
+  const { rooms } = useRealTimeRooms(
+    remoteRooms.filter((room) => room.helper !== user.user_metadata.user_name)
+  );
 
   const onCreate = async () => {
     try {
-      const data = await createRoom({
-        helper: userName,
+      const room = await createRoom({
         roomName: roomName,
       });
-      setRoomId(data.id);
+      window.location.href = `/room/${room.id}`;
     } catch (error) {
       alert((error as Error).message);
     }

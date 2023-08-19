@@ -1,30 +1,17 @@
-import { getRoom, setRoom as setRoomOnStorage } from "@/utils/storage";
-import { FC, ReactNode, createContext, useEffect, useState } from "react";
+import { Room } from "@/models";
+import { FC, createContext, useState } from "react";
 
 type RoomContextType = {
-  roomId: number | undefined;
-  setRoomId: (id: number | undefined) => void;
+  room: Room;
 };
 
 export const RoomContext = createContext<RoomContextType>({} as RoomContextType);
 
-export const RoomProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [roomId, setRoomId] = useState<number>();
+export const RoomProvider: FC<React.HtmlHTMLAttributes<Element> & { remoteRoom: Room }> = ({
+  children,
+  remoteRoom,
+}) => {
+  const [room] = useState(remoteRoom);
 
-  const _setRoomId = (id: number | undefined) => {
-    setRoomOnStorage(id);
-    setRoomId(id);
-  };
-
-  useEffect(() => {
-    if (getRoom()) {
-      setRoomId(getRoom()!);
-    }
-  }, []);
-
-  return (
-    <RoomContext.Provider value={{ roomId, setRoomId: _setRoomId }}>
-      {children}
-    </RoomContext.Provider>
-  );
+  return <RoomContext.Provider value={{ room }}>{children}</RoomContext.Provider>;
 };

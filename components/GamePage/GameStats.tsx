@@ -10,7 +10,7 @@ export default function GameStats({ room, isHelper }: { room: Room; isHelper: bo
 
   const onMakeTip = async () => {
     try {
-      await makeTip({ room_id: room.id, tip, tip_number: tipNumber });
+      await makeTip(room.id, { tip, tip_number: tipNumber });
     } catch (error) {
       alert((error as Error).message);
     }
