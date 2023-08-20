@@ -13,9 +13,10 @@ export async function POST(req: Request, reqParams: RoomParamsType) {
     data: { user },
   } = await supabase.auth.getUser();
   const roomId = reqParams.params.id;
+
   try {
-    const room = await makeGuess(+roomId, user as unknown as User, req);
-    return NextResponse.json(room);
+    const { data } = await makeGuess(+roomId, user as unknown as User, req);
+    return NextResponse.json(data);
   } catch (error) {
     if (error instanceof BadRequestError) {
       return NextResponse.json({ message: error.message }, { status: 400 });

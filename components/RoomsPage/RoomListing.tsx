@@ -13,12 +13,12 @@ export default function RoomListing({ rooms }: { rooms: Room[] }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-lg font-bold">Rooms available</h2>
+      <h2 className="text-lg font-bold">Rooms Available</h2>
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
             <tr>
-              <th>Room Name</th>
+              <th className="pl-0">Room Name</th>
               <th>Created By</th>
               <th></th>
             </tr>
@@ -26,10 +26,13 @@ export default function RoomListing({ rooms }: { rooms: Room[] }) {
           <tbody>
             {rooms.map((data) => (
               <tr key={data.name}>
-                <th>{data.name}</th>
+                <th className="pl-0">{data.name}</th>
                 <td>{data.helper}</td>
-                <td>
-                  <button onClick={() => onEnter(data.id)} className="rounded-md btn btn-sm">
+                <td className="pr-0 text-end">
+                  <button
+                    onClick={() => onEnter(data.id)}
+                    className="rounded-md btn btn-sm btn-outline"
+                  >
                     Enter
                   </button>
                 </td>

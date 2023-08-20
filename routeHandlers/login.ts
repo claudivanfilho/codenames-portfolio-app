@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import BadRequestError from "@/errors/BadRequestError";
-import { LoginPostType } from "@/models/server";
+import { LoginPostType, User } from "@/models/server";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 
 const SYMBOLIC_PASSWORD = "12345678";
@@ -14,12 +14,16 @@ async function validate(req: Request): Promise<LoginPostType> {
   return { userName: String(userName) };
 }
 
-export default async function login(req: Request) {
+export default async function login(req: Request): Promise<User | null> {
   const supabase = createRouteHandlerClient({ cookies });
-
   const { userName } = await validate(req);
-  const { error } = await supabase.auth.signUp({
-    email: `${userName.replaceAll(" ", "")}@codenames.com`,
+  const email = `${userName.replaceAll(" ", "")}@codenames.com`;
+
+  const {
+    error: signUpError,
+    data: { user },
+  } = await supabase.auth.signUp({
+    email,
     password: SYMBOLIC_PASSWORD,
     phone: "5583996435387",
     options: {
@@ -29,7 +33,21 @@ export default async function login(req: Request) {
     },
   });
 
-  if (error) throw new Error(error.message);
+  if (signUpError?.message === "User already registered") {
+    const {
+      error: loginError,
+      data: { user: loginUser },
+    } = await supabase.auth.signInWithPassword({
+      email,
+      password: SYMBOLIC_PASSWORD,
+    });
 
-  return { message: "Login successfully" };
+    if (loginError) throw new Error(loginError.message);
+
+    return loginUser as unknown as User | null;
+  } else if (signUpError) {
+    throw new Error(signUpError.message);
+  }
+
+  return user as unknown as User | null;
 }

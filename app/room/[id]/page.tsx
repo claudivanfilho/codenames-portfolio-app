@@ -1,36 +1,20 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { User } from "@/models/server";
-import { Match, Room } from "@/models";
 import App from "@/components/App";
 import ErrorPage from "@/components/ErrorPage";
-import { getSupabaseServer } from "@/utils/supabaseServer";
+import { getUserFromServerComponent } from "@/utils/supabaseServer";
+import { getExtendedRoom } from "@/repositories/RoomRepository";
 
 export const dynamic = "force-dynamic";
 
 export default async function page({ params }: { params: { id: string } }) {
-  const supabase = createServerComponentClient({ cookies });
-  const { data: userData } = await supabase.auth.getUser();
-  const user = userData.user as unknown as User;
+  const user = await getUserFromServerComponent();
+  const userName = user?.user_metadata.user_name || "";
 
-  const { data, error } = await getSupabaseServer()
-    .from("matches")
-    .select<string, Match & { rooms: Room }>(`*, rooms(*)`)
-    .eq("room_id", params.id)
-    .single();
-
-  if (error) return <ErrorPage message={error.message} />;
-
-  const { rooms: room, ...rest } = data;
-  const isHelper = room.helper === user.user_metadata.user_name;
-
-  return (
-    <App
-      room={{
-        ...room,
-        correctWords: isHelper ? rest.correct_words! : [],
-      }}
-      user={user}
-    />
-  );
+  try {
+    const room = await getExtendedRoom(+params.id);
+    const isHelper = userName === room.helper;
+    room.correctWords = isHelper ? room.correctWords : [];
+    return <App room={room} user={user} />;
+  } catch (error) {
+    return <ErrorPage message={(error as Error).message} />;
+  }
 }

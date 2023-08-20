@@ -1,14 +1,10 @@
-import { cookies } from "next/headers";
 import LoginPage from "@/components/LoginPage/LoginPage";
-import { User } from "@/models/server";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { getUserFromServerComponent } from "@/utils/supabaseServer";
 
 export const dynamic = "force-dynamic";
 
 export default async function page() {
-  const supabase = await createServerComponentClient({ cookies });
-  const { data } = await supabase.auth.getUser();
-  const user = data.user as unknown as User;
+  const user = await getUserFromServerComponent();
 
   return <LoginPage user={user} />;
 }

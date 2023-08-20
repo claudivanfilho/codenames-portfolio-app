@@ -54,7 +54,7 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
             onClick={() => onSelect(word)}
             className={twMerge(
               clsx(
-                `bg-center border-double shadow-slate-600 shadow-md bg-cover h-24 relative grid m-3 border-2 border-base-300 rounded-md place-items-center`,
+                `bg-center border-double shadow-slate-600 shadow-md bg-cover h-28 relative grid m-3 border-2 border-base-300 rounded-md place-items-center hover:scale-105`,
                 {
                   "cursor-pointer hover:scale-110 opacity-80 hover:opacity-100": !isHelper,
                   "border-secondary border-8 animate-pulse":
@@ -69,7 +69,7 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
               )
             )}
           >
-            <div className="absolute grid w-full h-full bg-black bg-opacity-40 place-items-center">
+            <div className="absolute grid w-full h-full bg-black bg-opacity-10 place-items-center">
               <div
                 className={`${twMerge(
                   clsx(
@@ -83,7 +83,7 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
                   )
                 )}`}
               >
-                <span className="text-sm sm:text-base">{word}</span>
+                <span className="text-sm break-all sm:text-base">{word}</span>
                 {room.correct_guesses.includes(word) && <CheckMarkIcon size={30} />}
                 {room.wrong_guesses.includes(word) && <CrossIcon size={30} />}
               </div>
@@ -96,7 +96,7 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
           {canShowConfirm ? (
             <button
               onClick={onMakeGuess}
-              className="absolute left-0 w-full rounded-none sm:relative bottom-14 sm:bottom-0 btn btn-primary sm:rounded-sm"
+              className="absolute bottom-0 left-0 w-full rounded-none sm:relative btn btn-primary sm:rounded-sm"
             >
               Confirm
             </button>

@@ -34,10 +34,15 @@ export default function RoomsPage({ rooms: remoteRooms }: { rooms: Room[] }) {
             onChange={(evt) => setRoomName(evt.target.value)}
             type="text"
             placeholder="Room name"
-            className="w-full max-w-xs input input-bordered"
+            className="w-full max-w-xs input input-bordered input-secondary"
           />
         </div>
-        <button onClick={onCreate} type="submit" className="mt-auto mb-6 btn">
+        <button
+          disabled={!roomName}
+          onClick={onCreate}
+          type="submit"
+          className="mt-auto mb-6 btn btn-secondary bt"
+        >
           Create
         </button>
       </div>

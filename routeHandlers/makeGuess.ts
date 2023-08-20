@@ -1,56 +1,36 @@
 import { DEFAULT_CORRECT_WORDS } from "@/config/contants";
 import BadRequestError from "@/errors/BadRequestError";
-import { Match, Room } from "@/models";
 import { MakeGuessPostType, User } from "@/models/server";
-import { getSupabaseServer } from "@/utils/supabaseServer";
+import { getExtendedRoom, updateRoomById } from "@/repositories/RoomRepository";
 
 export default async function makeGuess(roomId: number, user: User, req: Request) {
   const { words } = (await req.json()) as MakeGuessPostType;
+  const room = await getExtendedRoom(roomId);
+  const correctGuesses = [...room.correct_guesses];
+  const wrongGuesses = [...room.wrong_guesses];
 
-  const { data, error } = await getSupabaseServer()
-    .from("matches")
-    .select<string, Match & { rooms: Room }>(`*, rooms(*)`)
-    .eq("room_id", roomId)
-    .single();
-
-  if (error) throw new BadRequestError(error.message);
-
-  if (data.rooms.guesser !== user.user_metadata.user_name)
+  if (room.guesser !== user.user_metadata.user_name)
     throw new BadRequestError("You are not able to make a guess in this room");
-
-  const { rooms: room, ...match } = data!;
 
   if (room.rounds_left === 0) throw new BadRequestError("You have no more rounds left");
 
-  const correctWords = [...room.correct_guesses];
-  const wrongWords = [...room.wrong_guesses];
-
-  words.map((word) => {
-    if (match.correct_words?.includes(word)) {
-      correctWords.push(word);
+  words.forEach((word) => {
+    if (room.correctWords?.includes(word)) {
+      correctGuesses.push(word);
     } else {
-      wrongWords.push(word);
+      wrongGuesses.push(word);
     }
   });
 
   const isFinished =
-    wrongWords.length ||
+    wrongGuesses.length ||
     room.rounds_left - 1 === 0 ||
-    correctWords.length === DEFAULT_CORRECT_WORDS;
+    correctGuesses.length === DEFAULT_CORRECT_WORDS;
 
-  const result = await getSupabaseServer()
-    .from("rooms")
-    .update<Partial<Room>>({
-      correct_guesses: correctWords,
-      wrong_guesses: wrongWords,
-      game_state: isFinished ? "FINISHED" : "WAITING_TIP",
-      rounds_left: room.rounds_left - 1,
-    })
-    .eq("id", roomId)
-    .select<string, Room>()
-    .single();
-
-  if (result.error) throw new Error(result.error.message || result.statusText);
-
-  return result.data;
+  return updateRoomById(roomId, {
+    correct_guesses: correctGuesses,
+    wrong_guesses: wrongGuesses,
+    game_state: isFinished ? "FINISHED" : "WAITING_TIP",
+    rounds_left: room.rounds_left - 1,
+  });
 }

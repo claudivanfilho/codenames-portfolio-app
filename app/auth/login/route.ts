@@ -4,7 +4,7 @@ import login from "@/routeHandlers/login";
 export async function POST(req: Request) {
   const requestUrl = new URL(req.url);
   try {
-    const data = await login(req);
+    await login(req);
     return NextResponse.redirect(`${requestUrl.origin}/`, {
       status: 301,
     });

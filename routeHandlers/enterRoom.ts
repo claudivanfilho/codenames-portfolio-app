@@ -1,35 +1,18 @@
-import { cookies } from "next/headers";
-import { User } from "@/models/server";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { getSupabaseServer } from "@/utils/supabaseServer";
-import { Room, RoomInsertType } from "@/models";
+import { getUserFromServerComponent, updateUser } from "@/utils/supabaseServer";
+import { getRoomById, updateRoomById } from "@/repositories/RoomRepository";
 
 export const enterRoom = async (roomId: number) => {
-  const supabase = createServerComponentClient({ cookies });
-  const { data } = await supabase.auth.getUser();
-  const user = (await data.user) as unknown as User;
+  const user = await getUserFromServerComponent();
+  const userName = user?.user_metadata.user_name || "";
 
-  const { data: oldRoom } = await getSupabaseServer()
-    .from("rooms")
-    .select<string, Room>()
-    .eq("id", roomId)
-    .single();
+  const { data: oldRoom } = await getRoomById(+roomId);
 
-  if (oldRoom?.helper === user.user_metadata.user_name) return oldRoom;
+  await updateUser({ room_id: +roomId });
 
-  const { data: room, error } = await getSupabaseServer()
-    .from("rooms")
-    .update<Partial<RoomInsertType>>({
-      guesser: user.user_metadata.user_name,
-      game_state: "WAITING_TIP",
-    })
-    .eq("id", roomId)
-    .select()
-    .single();
+  if (oldRoom?.helper === userName) return oldRoom;
 
-  if (error) throw new Error(error.message);
-
-  await supabase.auth.updateUser({ data: { room_id: +roomId } });
-
-  return room;
+  return updateRoomById(+roomId, {
+    guesser: userName,
+    game_state: "WAITING_TIP",
+  });
 };

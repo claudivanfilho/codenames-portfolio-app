@@ -10,7 +10,11 @@ import { RoomProvider } from "@/context/RoomContext";
 import GamePage from "./GamePage/GamePage";
 
 const App: React.FC<
-  React.HtmlHTMLAttributes<HTMLElement> & { rooms?: Room[]; user: User; room?: ExtendedRoom | null }
+  React.HtmlHTMLAttributes<HTMLElement> & {
+    rooms?: Room[];
+    user: User | null;
+    room?: ExtendedRoom | null;
+  }
 > = ({ rooms, user, room }) => {
   const router = useRouter();
 

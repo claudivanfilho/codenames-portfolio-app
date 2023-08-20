@@ -6,7 +6,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 
 const LoginPage: React.FC<
   React.HtmlHTMLAttributes<HTMLElement> & {
-    user?: User;
+    user?: User | null;
   }
 > = ({ user }) => {
   const [userName, setUserName] = useState("");

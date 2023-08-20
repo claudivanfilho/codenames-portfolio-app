@@ -39,7 +39,7 @@ export default function GameStats({ room, isHelper }: { room: Room; isHelper: bo
         {isInputVisible ? (
           <input
             type="number"
-            max={DEFAULT_CORRECT_WORDS}
+            max={DEFAULT_CORRECT_WORDS - room.correct_guesses.length}
             min={1}
             inputMode="numeric"
             value={tipNumber}

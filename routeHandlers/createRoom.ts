@@ -1,15 +1,7 @@
-import { cookies } from "next/headers";
-import {
-  DEFAULT_CORRECT_WORDS,
-  DEFAULT_ROUNDS_OF_MATCH,
-  DEFAULT_WORDS_NUMBER,
-} from "@/config/contants";
 import BadRequestError from "@/errors/BadRequestError";
-import { MatchInsertType, Room, RoomInsertType } from "@/models";
-import { RoomPostType, User } from "@/models/server";
-import { getRandomWords } from "@/utils/gameLogic";
-import { getSupabaseServer } from "@/utils/supabaseServer";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { RoomPostType } from "@/models/server";
+import { getUserFromServerComponent, updateUser } from "@/utils/supabaseServer";
+import { createNewRoom } from "@/repositories/RoomRepository";
 
 async function validate(req: Request): Promise<RoomPostType> {
   const { roomName } = (await req.json()) as RoomPostType;
@@ -20,45 +12,16 @@ async function validate(req: Request): Promise<RoomPostType> {
 }
 
 export default async function createRoom(req: Request) {
-  const supabase = createRouteHandlerClient({ cookies });
-  const { data: userData } = await supabase.auth.getUser();
-  const user = userData.user as unknown as User;
+  const user = await getUserFromServerComponent();
+  const userName = user?.user_metadata.user_name || "";
 
   const { roomName } = await validate(req);
+  const { data } = await createNewRoom(roomName, userName);
+  const { error } = await updateUser({ room_id: data!.id });
 
-  const { data, error } = await getSupabaseServer()
-    .from("rooms")
-    .insert<RoomInsertType>({
-      name: roomName,
-      helper: user.user_metadata.user_name,
-      wrong_guesses: [],
-      correct_guesses: [],
-      words: getRandomWords(DEFAULT_WORDS_NUMBER),
-      rounds_left: DEFAULT_ROUNDS_OF_MATCH,
-      game_state: "WAITING_GUESSER",
-    })
-    .select<string, Room>()
-    .single();
+  if (error) throw new Error(error.message);
 
-  if (error) throw new Error(`error-${error.code}`);
-
-  const result = await supabase.auth.updateUser({
-    data: {
-      room_id: data.id,
-    },
-  });
-
-  if (result.error) throw new Error(result.error.message);
-
-  // TODO Create a supabase procedure to grants atomicity to this transaction
-  await getSupabaseServer()
-    .from("matches")
-    .insert<MatchInsertType>({
-      room_id: data.id,
-      correct_words: getRandomWords(DEFAULT_CORRECT_WORDS, data.words),
-    });
-
-  await supabase.auth.updateUser({ data: { room_id: data.id } } as any);
+  await updateUser({ room_id: data!.id });
 
   return data;
 }
