@@ -30,13 +30,6 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
     }
   };
 
-  const renderPin = () => (
-    <span className="absolute flex w-3 h-3 -right-1 -top-1">
-      <span className="absolute inline-flex w-full h-full bg-pink-500 rounded-full opacity-75 animate-ping"></span>
-      <span className="relative inline-flex w-3 h-3 rounded-full bg-secondary"></span>
-    </span>
-  );
-
   const onMakeGuess = async () => {
     try {
       await makeGuess(room.id, { words: selectedWords });
@@ -56,28 +49,43 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
       <div className="grid grid-cols-3 sm:grid-cols-4">
         {room?.words.map((word) => (
           <div
+            style={{ backgroundImage: `url('/images/card-bg.png')` }}
             key={word}
             onClick={() => onSelect(word)}
             className={twMerge(
-              clsx(`h-24 relative grid m-3 bg-opacity-50 border-2 rounded-md place-items-center`, {
-                "cursor-pointer hover:scale-110 opacity-80 hover:opacity-100": !isHelper,
-                "bg-primary": room.correctWords?.includes(word),
-                "bg-black": !room.correctWords?.includes(word),
-                "bg-green-400 text-green-200 pointer-events-none":
-                  room.correct_guesses.includes(word),
-                "bg-red-400 text-red-200 pointer-events-none": room.wrong_guesses.includes(word),
-                "animate-pulse":
-                  isHelper &&
-                  room.game_state === "WAITING_TIP" &&
-                  !room.correct_guesses.includes(word),
-              })
+              clsx(
+                `bg-center border-double shadow-slate-600 shadow-md bg-cover h-24 relative grid m-3 border-2 border-base-300 rounded-md place-items-center`,
+                {
+                  "cursor-pointer hover:scale-110 opacity-80 hover:opacity-100": !isHelper,
+                  "border-success border-8 pointer-events-none":
+                    room.correct_guesses.includes(word),
+                  "border-error border-8 pointer-events-none": room.wrong_guesses.includes(word),
+                  "border-primary border-8": selectedWords.includes(word),
+                  "animate-pulse":
+                    isHelper &&
+                    room.game_state === "WAITING_TIP" &&
+                    room.correctWords?.includes(word),
+                }
+              )
             )}
           >
-            {selectedWords.includes(word) ? renderPin() : null}
-            <div className="grid items-center gap-3 place-items-center sm:flex">
-              <span>{word}</span>
-              {room.correct_guesses.includes(word) && <CheckMarkIcon size={40} />}
-              {room.wrong_guesses.includes(word) && <CrossIcon size={40} />}
+            <div className="absolute grid w-full h-full bg-black bg-opacity-40 place-items-center">
+              <div
+                className={`${twMerge(
+                  clsx(
+                    "p-2 grid items-center justify-around w-full gap-3 place-items-center sm:flex bg-opacity-40 bg-black",
+                    {
+                      "bg-success": room.correct_guesses.includes(word),
+                      "bg-error": room.wrong_guesses.includes(word),
+                      "bg-primary": selectedWords.includes(word),
+                    }
+                  )
+                )}`}
+              >
+                <span className="text-sm sm:text-base">{word}</span>
+                {room.correct_guesses.includes(word) && <CheckMarkIcon size={30} />}
+                {room.wrong_guesses.includes(word) && <CrossIcon size={30} />}
+              </div>
             </div>
           </div>
         ))}

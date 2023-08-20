@@ -18,7 +18,10 @@ export default async function Index() {
     .neq("game_state", "FINISHED");
 
   const filteredRooms = rooms?.filter(
-    (room) => !room.guesser || room.helper === user.user_metadata.user_name
+    (room) =>
+      !room.guesser ||
+      room.helper === user.user_metadata.user_name ||
+      room.guesser === user.user_metadata.user_name
   );
 
   return <App rooms={filteredRooms || []} user={user} />;
