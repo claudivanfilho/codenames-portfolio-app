@@ -24,10 +24,7 @@ export default function GameAlert({ room, isHelper }: { room: Room; isHelper: bo
             <div className="flex items-center">
               <Loading />
               <span className="text-xs text-center sm:text-base">
-                <span className="mx-2 font-mono text-xl countdown">
-                  <span style={{ "--value": 44 } as any}></span>
-                </span>
-                seconds left to select {room.current_tip_number} word(s)
+                Select {room.current_tip_number} words that matches to the Tip
               </span>
             </div>
           );
