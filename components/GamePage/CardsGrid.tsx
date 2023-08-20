@@ -57,14 +57,14 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
                 `bg-center border-double shadow-slate-600 shadow-md bg-cover h-24 relative grid m-3 border-2 border-base-300 rounded-md place-items-center`,
                 {
                   "cursor-pointer hover:scale-110 opacity-80 hover:opacity-100": !isHelper,
+                  "border-secondary border-8 animate-pulse":
+                    isHelper &&
+                    room.game_state === "WAITING_TIP" &&
+                    room.correctWords?.includes(word),
                   "border-success border-8 pointer-events-none":
                     room.correct_guesses.includes(word),
                   "border-error border-8 pointer-events-none": room.wrong_guesses.includes(word),
                   "border-primary border-8": selectedWords.includes(word),
-                  "animate-pulse":
-                    isHelper &&
-                    room.game_state === "WAITING_TIP" &&
-                    room.correctWords?.includes(word),
                 }
               )
             )}
@@ -75,6 +75,7 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
                   clsx(
                     "p-2 grid items-center justify-around w-full gap-3 place-items-center sm:flex bg-opacity-40 bg-black",
                     {
+                      "bg-secondary": room.correctWords?.includes(word),
                       "bg-success": room.correct_guesses.includes(word),
                       "bg-error": room.wrong_guesses.includes(word),
                       "bg-primary": selectedWords.includes(word),

@@ -20,8 +20,8 @@ export default async function Index() {
   const filteredRooms = rooms?.filter(
     (room) =>
       !room.guesser ||
-      room.helper === user.user_metadata.user_name ||
-      room.guesser === user.user_metadata.user_name
+      room.helper === user?.user_metadata?.user_name ||
+      room.guesser === user?.user_metadata?.user_name
   );
 
   return <App rooms={filteredRooms || []} user={user} />;

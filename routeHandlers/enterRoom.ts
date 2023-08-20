@@ -9,8 +9,6 @@ export const enterRoom = async (roomId: number) => {
   const { data } = await supabase.auth.getUser();
   const user = (await data.user) as unknown as User;
 
-  await supabase.auth.updateUser({ user_metadata: { room_id: +roomId } } as any);
-
   const { data: oldRoom } = await getSupabaseServer()
     .from("rooms")
     .select<string, Room>()
@@ -30,6 +28,8 @@ export const enterRoom = async (roomId: number) => {
     .single();
 
   if (error) throw new Error(error.message);
+
+  await supabase.auth.updateUser({ data: { room_id: +roomId } });
 
   return room;
 };

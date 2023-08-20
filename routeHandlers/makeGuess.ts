@@ -1,3 +1,4 @@
+import { DEFAULT_CORRECT_WORDS } from "@/config/contants";
 import BadRequestError from "@/errors/BadRequestError";
 import { Match, Room } from "@/models";
 import { MakeGuessPostType, User } from "@/models/server";
@@ -32,7 +33,10 @@ export default async function makeGuess(roomId: number, user: User, req: Request
     }
   });
 
-  const isFinished = wrongWords.length || room.rounds_left - 1 === 0;
+  const isFinished =
+    wrongWords.length ||
+    room.rounds_left - 1 === 0 ||
+    correctWords.length === DEFAULT_CORRECT_WORDS;
 
   const result = await getSupabaseServer()
     .from("rooms")

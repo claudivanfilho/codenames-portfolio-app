@@ -55,17 +55,9 @@ export default function GameStats({ room, isHelper }: { room: Room; isHelper: bo
       </div>
 
       {isInputVisible && (
-        <button className="btn" onClick={onMakeTip}>
+        <button className="btn btn-secondary" disabled={!tip || !tipNumber} onClick={onMakeTip}>
           Confirm
         </button>
-      )}
-      {!isInputVisible && (
-        <div className="flex items-center justify-between gap-4 sm:grid sm:justify-normal">
-          <span className="pb-2 text-sm sm:text-2xl sm:border-b-2 stat-title">Rounds Left</span>
-          <span className="grid h-8 text-3xl rounded-lg sm:h-20 stat-title place-items-center">
-            {room.rounds_left}
-          </span>
-        </div>
       )}
     </div>
   );

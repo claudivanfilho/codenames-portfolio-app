@@ -27,7 +27,7 @@ const LoginPage: React.FC<
   return (
     <div className="flex flex-col items-center">
       <form
-        className="flex flex-col p-6 border-2 rounded-lg shadow-sm bg-base-100 w-80 shadow-primary"
+        className="flex flex-col p-6 border-8 border-double rounded-lg shadow-md bg-base-100 bg-opacity-60 w-80 shadow-primary"
         action="/auth/login"
         method="post"
       >

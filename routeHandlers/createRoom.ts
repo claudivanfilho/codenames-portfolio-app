@@ -42,19 +42,23 @@ export default async function createRoom(req: Request) {
 
   if (error) throw new Error(`error-${error.code}`);
 
-  await supabase.auth.updateUser({
+  const result = await supabase.auth.updateUser({
     data: {
       room_id: data.id,
     },
   });
 
+  if (result.error) throw new Error(result.error.message);
+
   // TODO Create a supabase procedure to grants atomicity to this transaction
   await getSupabaseServer()
     .from("matches")
     .insert<MatchInsertType>({
-      room_id: data!.id,
+      room_id: data.id,
       correct_words: getRandomWords(DEFAULT_CORRECT_WORDS, data.words),
     });
+
+  await supabase.auth.updateUser({ data: { room_id: data.id } } as any);
 
   return data;
 }
