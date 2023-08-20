@@ -2,10 +2,6 @@ import { Room } from "@/models";
 import Loading from "../Loading";
 
 export default function GameAlert({ room, isHelper }: { room: Room; isHelper: boolean }) {
-  const onLeave = () => {
-    // setRoomId(undefined);
-  };
-
   const renderContent = () => {
     switch (room.game_state) {
       case "WAITING_GUESSER":
@@ -52,18 +48,18 @@ export default function GameAlert({ room, isHelper }: { room: Room; isHelper: bo
           return (
             <>
               <span>{isHelper ? room.guesser : "You"} made a mistake :(</span>
-              <button onClick={onLeave} className="btn btn-sm btn-primary">
-                Leave Room
-              </button>
+              <form action={`/api/room/${room.id}/leave`} method="POST">
+                <button className="btn btn-sm btn-secondary">Leave Room</button>
+              </form>
             </>
           );
         } else {
           return (
             <>
               <span>CONGRATULATION!! You WON! :D</span>
-              <button onClick={onLeave} className="btn btn-sm btn-primary">
-                Leave Room
-              </button>
+              <form action={`/api/room/${room.id}/leave`} method="POST">
+                <button className="btn btn-sm btn-secondary">Leave Room</button>
+              </form>
             </>
           );
         }

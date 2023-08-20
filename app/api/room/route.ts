@@ -2,6 +2,8 @@ import createRoom from "@/routeHandlers/createRoom";
 import BadRequestError from "@/errors/BadRequestError";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   try {
     const data = await createRoom(req);

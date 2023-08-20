@@ -5,6 +5,8 @@ import { NextResponse } from "next/server";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import BadRequestError from "@/errors/BadRequestError";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request, reqParams: RoomParamsType) {
   const supabase = createRouteHandlerClient({ cookies });
   const {

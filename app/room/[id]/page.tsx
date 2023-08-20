@@ -6,6 +6,8 @@ import App from "@/components/App";
 import ErrorPage from "@/components/ErrorPage";
 import { getSupabaseServer } from "@/utils/supabaseServer";
 
+export const dynamic = "force-dynamic";
+
 export default async function page({ params }: { params: { id: string } }) {
   const supabase = createServerComponentClient({ cookies });
   const { data: userData } = await supabase.auth.getUser();

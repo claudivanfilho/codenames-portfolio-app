@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import { enterRoom } from "@/routeHandlers/enterRoom";
 import BadRequestError from "@/errors/BadRequestError";
 
+export const dynamic = "force-dynamic";
+
 export const POST = async (_: Request, reqParams: RoomParamsType) => {
   const roomId = reqParams.params.id;
 

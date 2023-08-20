@@ -3,6 +3,8 @@ import { MakeTipPostType, RoomParamsType } from "@/models/server";
 import { getSupabaseServer } from "@/utils/supabaseServer";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request, reqParams: RoomParamsType) {
   const roomId = reqParams.params.id;
   const { tip, tip_number } = (await req.json()) as MakeTipPostType;
