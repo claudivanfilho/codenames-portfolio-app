@@ -1,8 +1,9 @@
-import { Room } from "@/models";
 import { supabase } from "@/utils/supabase";
 import { useEffect, useState } from "react";
+import useRoom from "./useRoom";
 
-export default function useRealtimeCursor(room: Room, userName: string, isHelper: boolean) {
+export default function useRealtimeCursor() {
+  const { room, isHelper } = useRoom();
   const [cursor, setCursor] = useState<{ x: number; y: number; user: string }>();
 
   useEffect(() => {
@@ -10,7 +11,7 @@ export default function useRealtimeCursor(room: Room, userName: string, isHelper
       channel.send({
         type: "broadcast",
         event: "cursor-pos",
-        payload: { x: event.clientX, y: event.clientY, user: userName },
+        payload: { x: event.clientX, y: event.clientY, user: room.guesser },
       });
     };
 

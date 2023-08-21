@@ -1,55 +1,25 @@
 import useRoom from "@/hooks/useRoom";
-import useUser from "@/hooks/useUser";
 import GameAlert from "./GameAlert";
 import GameStats from "./GameStats";
 import useRealtimeCursor from "@/hooks/useRealtimeCursor";
 import RealtimeCursor from "./RealtimeCursor";
-import useRealTimeRoom from "@/hooks/useRealTimeRoom";
 import CardsGrid from "./CardsGrid";
-import { DEFAULT_CORRECT_WORDS } from "@/config/contants";
+import GamePageHeader from "./GamePageHeader";
 
 export default function GamePage() {
-  const { room: remoteRoom } = useRoom();
-  const {
-    user: {
-      user_metadata: { user_name: userName },
-    },
-  } = useUser();
-  const { room } = useRealTimeRoom(remoteRoom, userName);
-  const isHelper = remoteRoom.helper === userName;
-  const { cursor } = useRealtimeCursor(remoteRoom, userName, isHelper);
+  const { room } = useRoom();
+  const { cursor } = useRealtimeCursor();
 
   return (
     <div className="items-start w-full h-full">
-      <div className="flex mb-4 stats bg-opacity-80">
-        <div className="hidden sm:grid stat">
-          <span className="stat-title">Room</span>
-          <span className="text-lg stat-value">{room.name}</span>
-        </div>
-        <div className="hidden sm:grid stat">
-          <span className="stat-title">{isHelper ? "Guesser" : "Helper"}</span>
-          <span className="text-lg stat-value">{isHelper ? room.guesser : room.helper}</span>
-        </div>
-        <div className="stat">
-          <span className="stat-title">Correct Words</span>
-          <span className="text-lg stat-value">
-            {room.correct_guesses.length}/{DEFAULT_CORRECT_WORDS}
-          </span>
-        </div>
-        <div className="stat">
-          <span className="stat-title">Rounds Left</span>
-          <span className="text-lg stat-value">{room.rounds_left}</span>
-        </div>
-      </div>
+      <GamePageHeader />
       <div className="flex flex-col sm:flex-row">
-        <GameStats room={room} isHelper={isHelper} />
-
+        <GameStats />
         <div className="flex flex-col w-full sm:w-3/4">
-          <GameAlert room={room} isHelper={isHelper} />
-          <CardsGrid room={room} />
+          <GameAlert />
+          <CardsGrid />
         </div>
       </div>
-
       {cursor && room.game_state === "WAITING_GUESSES" ? <RealtimeCursor cursor={cursor} /> : null}
     </div>
   );

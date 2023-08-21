@@ -1,12 +1,13 @@
 import { DEFAULT_CORRECT_WORDS } from "@/config/contants";
-import { Room } from "@/models";
+import useRoom from "@/hooks/useRoom";
 import { makeTip } from "@/services/api";
 import { useState } from "react";
 
-export default function GameStats({ room, isHelper }: { room: Room; isHelper: boolean }) {
-  const isInputVisible = room.game_state === "WAITING_TIP" && isHelper;
+export default function GameStats() {
   const [tip, setTip] = useState("");
   const [tipNumber, setTipNumber] = useState(1);
+  const { room, isHelper } = useRoom();
+  const isInputVisible = room.game_state === "WAITING_TIP" && isHelper;
 
   const onMakeTip = async () => {
     try {

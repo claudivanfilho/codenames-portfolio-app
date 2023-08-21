@@ -1,7 +1,9 @@
-import { Room } from "@/models";
 import Loading from "../Loading";
+import useRoom from "@/hooks/useRoom";
 
-export default function GameAlert({ room, isHelper }: { room: Room; isHelper: boolean }) {
+export default function GameAlert() {
+  const { room, isHelper } = useRoom();
+
   const renderContent = () => {
     switch (room.game_state) {
       case "WAITING_GUESSER":
