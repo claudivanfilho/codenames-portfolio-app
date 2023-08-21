@@ -1,7 +1,7 @@
-import App from "@/components/App";
-import ErrorPage from "@/components/ErrorPage";
-import { getVisibleRooms } from "@/repositories/RoomRepository";
-import { getSessionUser } from "@/repositories/UserRepository";
+import App from "@/app/_components/App";
+import ErrorPage from "@/app/_components/ErrorPage";
+import { getVisibleRooms } from "@/app/_repositories/RoomRepository";
+import { getSessionUser } from "@/app/_repositories/UserRepository";
 
 export const dynamic = "force-dynamic";
 

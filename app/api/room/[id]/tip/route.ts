@@ -1,7 +1,7 @@
-import BadRequestError from "@/errors/BadRequestError";
-import { RoomParamsType } from "@/models/server";
-import { getSessionUser } from "@/repositories/UserRepository";
-import makeTip from "@/routeHandlers/makeTip";
+import BadRequestError from "@/app/api/_errors/BadRequestError";
+import { RoomParamsType } from "@/app/_models/server";
+import { getSessionUser } from "@/app/_repositories/UserRepository";
+import makeTip from "@/app/api/_routeHandlers/makeTip";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";

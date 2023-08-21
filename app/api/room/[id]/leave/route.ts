@@ -1,4 +1,4 @@
-import { leaveSessionRoom } from "@/repositories/UserRepository";
+import { leaveSessionRoom } from "@/app/_repositories/UserRepository";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";

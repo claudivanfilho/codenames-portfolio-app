@@ -1,0 +1,24 @@
+import BadRequestError from "@/app/api/_errors/BadRequestError";
+import { RoomPostType } from "@/app/_models/server";
+import { createNewRoom } from "@/app/_repositories/RoomRepository";
+import { getSessionUser, updateSessionUser } from "@/app/_repositories/UserRepository";
+
+async function validate(req: Request): Promise<RoomPostType> {
+  const { roomName } = (await req.json()) as RoomPostType;
+
+  if (!roomName) throw new BadRequestError("Missing roomName");
+
+  return { roomName };
+}
+
+export default async function createRoom(req: Request) {
+  const user = await getSessionUser();
+  const userName = user.user_metadata.user_name;
+  const { roomName } = await validate(req);
+  const { data } = await createNewRoom(roomName, userName);
+  const { error } = await updateSessionUser({ room_id: data!.id });
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}

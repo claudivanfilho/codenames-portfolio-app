@@ -1,7 +1,7 @@
 import "./globals.css";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import { getSessionUser } from "@/repositories/UserRepository";
+import Footer from "@/app/_components/Footer";
+import Navbar from "@/app/_components/Navbar";
+import { getSessionUser } from "@/app/_repositories/UserRepository";
 
 export const metadata = {
   title: "Codenames",

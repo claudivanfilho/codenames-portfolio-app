@@ -1,5 +1,5 @@
-import createRoom from "@/routeHandlers/createRoom";
-import BadRequestError from "@/errors/BadRequestError";
+import createRoom from "@/app/api/_routeHandlers/createRoom";
+import BadRequestError from "@/app/api/_errors/BadRequestError";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";

@@ -1,4 +1,4 @@
-import LoginPage from "@/components/LoginPage/LoginPage";
+import LoginPage from "@/app/_components/LoginPage/LoginPage";
 
 export const dynamic = "force-dynamic";
 

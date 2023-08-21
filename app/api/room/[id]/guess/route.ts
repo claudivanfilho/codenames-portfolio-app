@@ -1,8 +1,8 @@
-import { RoomParamsType } from "@/models/server";
-import makeGuess from "@/routeHandlers/makeGuess";
+import { RoomParamsType } from "@/app/_models/server";
+import makeGuess from "@/app/api/_routeHandlers/makeGuess";
 import { NextResponse } from "next/server";
-import BadRequestError from "@/errors/BadRequestError";
-import { getSessionUser } from "@/repositories/UserRepository";
+import BadRequestError from "@/app/api/_errors/BadRequestError";
+import { getSessionUser } from "@/app/_repositories/UserRepository";
 
 export const dynamic = "force-dynamic";
 

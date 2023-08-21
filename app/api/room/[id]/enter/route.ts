@@ -1,7 +1,7 @@
-import { RoomParamsType } from "@/models/server";
+import { RoomParamsType } from "@/app/_models/server";
 import { NextResponse } from "next/server";
-import { enterRoom } from "@/routeHandlers/enterRoom";
-import BadRequestError from "@/errors/BadRequestError";
+import { enterRoom } from "@/app/api/_routeHandlers/enterRoom";
+import BadRequestError from "@/app/api/_errors/BadRequestError";
 
 export const dynamic = "force-dynamic";
 
