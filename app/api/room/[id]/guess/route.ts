@@ -1,21 +1,17 @@
-import { cookies } from "next/headers";
-import { RoomParamsType, User } from "@/models/server";
+import { RoomParamsType } from "@/models/server";
 import makeGuess from "@/routeHandlers/makeGuess";
 import { NextResponse } from "next/server";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import BadRequestError from "@/errors/BadRequestError";
+import { getSessionUser } from "@/repositories/UserRepository";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request, reqParams: RoomParamsType) {
-  const supabase = createRouteHandlerClient({ cookies });
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
   const roomId = reqParams.params.id;
+  const user = await getSessionUser();
 
   try {
-    const { data } = await makeGuess(+roomId, user as unknown as User, req);
+    const { data } = await makeGuess(+roomId, user, req);
     return NextResponse.json(data);
   } catch (error) {
     if (error instanceof BadRequestError) {

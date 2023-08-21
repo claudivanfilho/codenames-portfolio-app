@@ -1,7 +1,7 @@
 import "./globals.css";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { getUserFromServerComponent } from "@/utils/supabaseServer";
+import { getSessionUser } from "@/repositories/UserRepository";
 
 export const metadata = {
   title: "Codenames",
@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const user = await getUserFromServerComponent();
+  const user = await getSessionUser();
 
   return (
     <html lang="en">

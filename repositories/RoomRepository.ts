@@ -5,7 +5,7 @@ import {
 } from "@/config/contants";
 import { ExtendedRoom, Match, MatchInsertType, Room, RoomInsertType } from "@/models";
 import { getRandomWords } from "@/utils/game";
-import { getSupabaseServer } from "@/utils/supabaseServer";
+import { getSupabaseServer } from "@/utils/supabase";
 
 export async function getExtendedRoom(roomId: number): Promise<ExtendedRoom> {
   const { data } = await getSupabaseServer()

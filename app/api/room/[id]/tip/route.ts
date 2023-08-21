@@ -1,22 +1,23 @@
-import { MakeTipPostType, RoomParamsType } from "@/models/server";
-import { updateRoomById } from "@/repositories/RoomRepository";
+import BadRequestError from "@/errors/BadRequestError";
+import { RoomParamsType } from "@/models/server";
+import { getSessionUser } from "@/repositories/UserRepository";
+import makeTip from "@/routeHandlers/makeTip";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request, reqParams: RoomParamsType) {
   const roomId = reqParams.params.id;
-  // TODO validate
-  const { tip, tip_number } = (await req.json()) as MakeTipPostType;
+  const user = await getSessionUser();
 
   try {
-    const { data } = await updateRoomById(+roomId, {
-      current_tip: tip,
-      current_tip_number: tip_number,
-      game_state: "WAITING_GUESSES",
-    });
+    const { data } = await makeTip(+roomId, user, req);
     return NextResponse.json(data);
   } catch (error) {
-    return NextResponse.json({ message: (error as Error).message }, { status: 400 });
+    if (error instanceof BadRequestError) {
+      return NextResponse.json({ message: error.message }, { status: 400 });
+    } else if (error instanceof Error) {
+      return NextResponse.json({ message: error.message }, { status: 500 });
+    }
   }
 }

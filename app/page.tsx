@@ -1,13 +1,13 @@
 import App from "@/components/App";
-import { getUserFromServerComponent } from "@/utils/supabaseServer";
 import ErrorPage from "@/components/ErrorPage";
 import { getVisibleRooms } from "@/repositories/RoomRepository";
+import { getSessionUser } from "@/repositories/UserRepository";
 
 export const dynamic = "force-dynamic";
 
 export default async function Index() {
-  const user = await getUserFromServerComponent();
-  const userName = user?.user_metadata?.user_name || "";
+  const user = await getSessionUser();
+  const userName = user.user_metadata.user_name;
 
   try {
     const { data } = await getVisibleRooms(userName);

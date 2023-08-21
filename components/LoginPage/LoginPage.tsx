@@ -1,28 +1,16 @@
 "use client";
 
-import { User } from "@/models/server";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const LoginPage: React.FC<
-  React.HtmlHTMLAttributes<HTMLElement> & {
-    user?: User | null;
-  }
-> = ({ user }) => {
+const LoginPage: React.FC<React.HtmlHTMLAttributes<HTMLElement>> = () => {
   const [userName, setUserName] = useState("");
-  const router = useRouter();
   const params = useSearchParams();
   const error = params.get("error");
-
-  useLayoutEffect(() => {
-    if (user) router.push("/");
-  }, []);
 
   useEffect(() => {
     if (error) alert(error);
   }, []);
-
-  if (user) return null;
 
   return (
     <div className="flex flex-col items-center">

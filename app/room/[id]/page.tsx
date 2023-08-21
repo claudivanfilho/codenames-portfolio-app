@@ -1,13 +1,13 @@
 import App from "@/components/App";
 import ErrorPage from "@/components/ErrorPage";
-import { getUserFromServerComponent } from "@/utils/supabaseServer";
 import { getExtendedRoom } from "@/repositories/RoomRepository";
+import { getSessionUser } from "@/repositories/UserRepository";
 
 export const dynamic = "force-dynamic";
 
 export default async function page({ params }: { params: { id: string } }) {
-  const user = await getUserFromServerComponent();
-  const userName = user?.user_metadata.user_name || "";
+  const user = await getSessionUser();
+  const userName = user.user_metadata.user_name;
 
   try {
     const room = await getExtendedRoom(+params.id);
