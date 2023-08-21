@@ -32,8 +32,6 @@ export async function middleware(req: NextRequest) {
 
   const pathname = req.nextUrl.pathname;
 
-  console.log(pathname, "====");
-
   if (pathname.endsWith("/leave")) return res;
 
   if (pathname.startsWith("/api")) {
@@ -52,8 +50,6 @@ export async function middleware(req: NextRequest) {
   if (!user) return redirect(`/login`, req);
 
   const roomId = user.user_metadata.room_id;
-
-  console.log("roommm", roomId);
 
   if (pathname.match(/room\/[0-9]*$/)) {
     if (!roomId) return redirect(`/`, req);

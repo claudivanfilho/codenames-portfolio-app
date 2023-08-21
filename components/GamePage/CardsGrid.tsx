@@ -46,15 +46,15 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
           (!isHelper && !canSelectWord) || room.game_state === "FINISHED",
       })}
     >
-      <div className="grid grid-cols-3 sm:grid-cols-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4">
         {room?.words.map((word) => (
           <div
-            style={{ backgroundImage: `url('/images/card-bg.png')` }}
+            style={{ backgroundImage: `url('/images/code-bg.png')` }}
             key={word}
             onClick={() => onSelect(word)}
             className={twMerge(
               clsx(
-                `bg-center border-double shadow-slate-600 shadow-md bg-cover h-28 relative grid m-3 border-2 border-base-300 rounded-md place-items-center hover:scale-105`,
+                `bg-center border-double shadow-slate-600 shadow-md bg-cover h-14 sm:h-28 relative grid m-2 sm:m-3 border-2 border-base-300 rounded-md place-items-center hover:scale-105`,
                 {
                   "cursor-pointer hover:scale-110 opacity-80 hover:opacity-100": !isHelper,
                   "border-secondary border-8 animate-pulse":
@@ -69,11 +69,11 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
               )
             )}
           >
-            <div className="absolute grid w-full h-full bg-black bg-opacity-10 place-items-center">
+            <div className="absolute grid w-full h-full bg-black bg-opacity-60 sm:bg-opacity-20 place-items-center">
               <div
                 className={`${twMerge(
                   clsx(
-                    "p-2 grid items-center justify-around w-full gap-3 place-items-center sm:flex bg-opacity-40 bg-black",
+                    "px-2 sm:p-2 items-center justify-around w-full gap-3 place-items-center flex bg-opacity-40 bg-black",
                     {
                       "bg-secondary": room.correctWords?.includes(word),
                       "bg-success": room.correct_guesses.includes(word),
@@ -84,8 +84,8 @@ export default function CardsGrid({ room }: { room: ExtendedRoom }) {
                 )}`}
               >
                 <span className="text-sm break-all sm:text-base">{word}</span>
-                {room.correct_guesses.includes(word) && <CheckMarkIcon size={30} />}
-                {room.wrong_guesses.includes(word) && <CrossIcon size={30} />}
+                {room.correct_guesses.includes(word) && <CheckMarkIcon size={26} />}
+                {room.wrong_guesses.includes(word) && <CrossIcon size={26} />}
               </div>
             </div>
           </div>
