@@ -3,6 +3,7 @@ import { makeGuess } from "@/app/_services/api";
 import clsx from "clsx";
 import React from "react";
 import { twMerge } from "tailwind-merge";
+import { FormattedMessage } from "react-intl";
 
 type ConfirmGuessBtnType = React.FC<
   React.HtmlHTMLAttributes<HTMLButtonElement> & {
@@ -39,7 +40,7 @@ const ConfirmGuessBtn: ConfirmGuessBtnType = ({
         )
       )}
     >
-      Confirm
+      <FormattedMessage id="confirm" />
     </button>
   );
 };

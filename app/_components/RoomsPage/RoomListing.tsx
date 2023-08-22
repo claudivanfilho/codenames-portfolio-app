@@ -1,5 +1,6 @@
 import { Room } from "@/types";
 import { enterRoom } from "@/app/_services/api";
+import { FormattedMessage } from "react-intl";
 
 export default function RoomListing({ rooms }: { rooms: Room[] }) {
   const onEnter = async (roomId: number) => {
@@ -13,13 +14,19 @@ export default function RoomListing({ rooms }: { rooms: Room[] }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-lg font-bold">Rooms Available</h2>
+      <h2 className="text-lg font-bold">
+        <FormattedMessage id="rooms-available" />
+      </h2>
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
             <tr>
-              <th className="pl-0">Room Name</th>
-              <th>Created By</th>
+              <th className="pl-0">
+                <FormattedMessage id="room-name" />
+              </th>
+              <th>
+                <FormattedMessage id="createdby-label" />
+              </th>
               <th></th>
             </tr>
           </thead>
@@ -33,7 +40,7 @@ export default function RoomListing({ rooms }: { rooms: Room[] }) {
                     onClick={() => onEnter(data.id)}
                     className="rounded-md btn btn-sm btn-outline"
                   >
-                    Enter
+                    <FormattedMessage id="enter" />
                   </button>
                 </td>
               </tr>

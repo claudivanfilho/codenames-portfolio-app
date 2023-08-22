@@ -2,12 +2,14 @@ import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse } from "next/server";
 
 import { NextRequest } from "next/server";
+import { DEFAULT_LANG } from "./app/_config/constants";
 
 export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - auth (API routes)
+     * - images
+     * - auth (login|logout routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
@@ -18,6 +20,8 @@ export const config = {
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
+
+  res.cookies.set("lang", req.headers.get("accept-language")?.split(",")[0] || DEFAULT_LANG);
 
   // Create a Supabase client configured to use cookies
   const supabase = createMiddlewareClient({ req, res });

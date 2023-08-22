@@ -1,4 +1,4 @@
-import { DEFAULT_CORRECT_WORDS } from "@/app/_config/contants";
+import { DEFAULT_CORRECT_WORDS } from "@/app/_config/constants";
 import BadRequestError from "@/app/api/_errors/BadRequestError";
 import { Room } from "@/types";
 import { MakeTipPostType, User } from "@/types/server";

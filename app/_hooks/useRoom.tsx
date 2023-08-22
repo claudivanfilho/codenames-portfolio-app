@@ -1,5 +1,4 @@
 import { useContext } from "react";
-
 import { RoomContext } from "../_context/RoomContext";
 
 export default function useRoom() {

@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { FormattedMessage } from "react-intl";
 
 const LoginPage: React.FC<React.HtmlHTMLAttributes<HTMLElement>> = () => {
   const [userName, setUserName] = useState("");
@@ -35,7 +36,9 @@ const LoginPage: React.FC<React.HtmlHTMLAttributes<HTMLElement>> = () => {
             className="input input-primary"
           />
         </div>
-        <button className="mt-2 btn btn-primary">SignIn Anonymously</button>
+        <button className="mt-2 btn btn-primary">
+          <FormattedMessage id="signin-username" />
+        </button>
       </form>
     </div>
   );

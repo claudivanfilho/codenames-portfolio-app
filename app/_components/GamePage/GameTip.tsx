@@ -1,13 +1,15 @@
-import { DEFAULT_CORRECT_WORDS } from "@/app/_config/contants";
+import { DEFAULT_CORRECT_WORDS } from "@/app/_config/constants";
 import useRoom from "@/app/_hooks/useRoom";
 import { makeTip } from "@/app/_services/api";
 import { useState } from "react";
 import GameTipField from "./GameTipField";
+import { useIntl } from "react-intl";
 
 export default function GameStats() {
   const { room, isHelper } = useRoom();
   const [tip, setTip] = useState("");
   const [tipNumber, setTipNumber] = useState(1);
+  const { formatMessage: t } = useIntl();
 
   const isInputVisible = room.game_state === "WAITING_TIP" && isHelper;
 
@@ -24,7 +26,7 @@ export default function GameStats() {
       <GameTipField
         isInputVisible={isInputVisible}
         type="text"
-        label="TIP"
+        label={t({ id: "tip" })}
         value={isInputVisible ? tip : room.current_tip!}
         onChange={(evt) => setTip(evt.target.value)}
       />
@@ -33,13 +35,13 @@ export default function GameStats() {
         max={DEFAULT_CORRECT_WORDS - room.correct_guesses.length}
         min={1}
         type="number"
-        label="Nº WORDS"
+        label={t({ id: "tip-number" })}
         value={isInputVisible ? tipNumber : room.current_tip_number!}
         onChange={(evt) => setTipNumber(+evt.target.value)}
       />
       {isInputVisible && (
         <button className="btn btn-secondary" disabled={!tip || !tipNumber} onClick={onMakeTip}>
-          Confirm
+          {t({ id: "confirm" })}
         </button>
       )}
     </div>

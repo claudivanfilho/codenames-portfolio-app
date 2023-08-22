@@ -1,38 +1,39 @@
 import { GameState } from "@/types";
 import Loading from "../Loading";
 import useRoom from "@/app/_hooks/useRoom";
-import { ReactElement } from "react";
+import { ReactNode } from "react";
+import { useIntl } from "react-intl";
+import LeaveRoomBtn from "../LeaveRoomBtn";
 
 export default function GameAlert() {
   const { room, isHelper } = useRoom();
+  const { formatMessage: t } = useIntl();
 
   const hasLost = room.wrong_guesses.length;
+  const userType = isHelper ? "helper" : "guesser";
+  const gameState = room.game_state.toLowerCase();
+  const endSuffix = hasLost ? "_loss" : "";
+  const messageId = `alert-${userType}-${gameState}${endSuffix}`;
+  const msg = t(
+    { id: messageId },
+    {
+      helper: room.helper,
+      guesser: room.guesser,
+      number: room.current_tip_number,
+    }
+  );
 
-  const finishMessage = hasLost
-    ? `${isHelper ? room.guesser : "You"} made a mistake 😔`
-    : "CONGRATULATION!! You WON! 🎉";
-
-  const helperContent: Record<GameState, [ReactElement, ReactElement?]> = {
-    WAITING_GUESSER: [<Loading />, <span>Waiting for the guesser to enter the room</span>],
-    WAITING_GUESSES: [<Loading />, <span>{room.guesser} is thinking about the guesses 🤔</span>],
-    WAITING_TIP: [<span>Choose a tip for the selected words</span>],
-    FINISHED: [
-      <span>{finishMessage}</span>,
-      <form action={`/api/room/${room.id}/leave`} method="POST">
-        <button className="btn btn-sm btn-secondary">Leave Room</button>
-      </form>,
-    ],
+  const helperContent: Record<GameState, [ReactNode, ReactNode?]> = {
+    WAITING_GUESSER: [<Loading />, msg],
+    WAITING_GUESSES: [<Loading />, msg],
+    WAITING_TIP: [msg],
+    FINISHED: [msg, <LeaveRoomBtn roomId={room.id} className="btn-secondary" />],
   };
 
-  const guesserContent: Record<GameState, [ReactElement, ReactElement?]> = {
+  const guesserContent: Record<GameState, [ReactNode, ReactNode?]> = {
     ...helperContent,
-    WAITING_GUESSES: [
-      <Loading />,
-      <span className="text-xs text-center sm:text-base">
-        Select {room.current_tip_number} words that matches to the Tip
-      </span>,
-    ],
-    WAITING_TIP: [<Loading />, <span>{room.helper} is thinking in a Tip 🤔</span>],
+    WAITING_GUESSES: [<Loading />, msg],
+    WAITING_TIP: [<Loading />, msg],
   };
 
   const content = isHelper ? helperContent[room.game_state] : guesserContent[room.game_state];

@@ -4,7 +4,8 @@ Codenames board game App created with the intention of showcasing a range of sof
 
 ## Roadmap
 
-- [ ] Intl
+- [ ] Cards Animation
+- [x] Intl
 - [ ] Tests Front
 - [ ] Tests Back
 - [ ] Readme.md

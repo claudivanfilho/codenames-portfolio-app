@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FormattedMessage } from "react-intl";
 
 export default function ErrorPage({ message }: { message: string }) {
   const router = useRouter();
@@ -33,14 +34,16 @@ export default function ErrorPage({ message }: { message: string }) {
                 />
               </svg>
 
-              <span>Back</span>
+              <span>
+                <FormattedMessage id="back-btn" />
+              </span>
             </button>
 
             <Link
               href={"/"}
               className="w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-purple-700 shrink-0 sm:w-auto hover:bg-purple-800"
             >
-              Home
+              <FormattedMessage id="home" />
             </Link>
           </div>
         </div>
