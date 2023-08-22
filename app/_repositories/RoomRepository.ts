@@ -49,7 +49,7 @@ export async function updateRoomById(roomId: number, data: Partial<RoomInsertTyp
 }
 
 // TODO Create a supabase procedure to grants atomicity to this transaction
-export async function createNewRoom(roomName: string, userName: string) {
+export async function createNewRoom(roomName: string, userName: string, locale: string) {
   const result = await getSupabaseServer()
     .from("rooms")
     .insert<RoomInsertType>({
@@ -57,7 +57,7 @@ export async function createNewRoom(roomName: string, userName: string) {
       helper: userName,
       wrong_guesses: [],
       correct_guesses: [],
-      words: getRandomWords(DEFAULT_WORDS_NUMBER),
+      words: getRandomWords({ numberOfWords: DEFAULT_WORDS_NUMBER, locale }),
       rounds_left: DEFAULT_ROUNDS_OF_MATCH,
       game_state: "WAITING_GUESSER",
     })
@@ -69,7 +69,10 @@ export async function createNewRoom(roomName: string, userName: string) {
     .from("matches")
     .insert<MatchInsertType>({
       room_id: result.data!.id,
-      correct_words: getRandomWords(DEFAULT_CORRECT_WORDS, result.data!.words),
+      correct_words: getRandomWords({
+        numberOfWords: DEFAULT_CORRECT_WORDS,
+        predefinedList: result.data!.words,
+      }),
     });
   return result;
 }

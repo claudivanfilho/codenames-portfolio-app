@@ -2,8 +2,7 @@ import "./globals.css";
 import Footer from "@/app/_components/Footer";
 import Navbar from "@/app/_components/Navbar";
 import { IntlProviderLocal } from "./_context/IntlContext";
-import { cookies } from "next/headers";
-import { DEFAULT_LANG } from "./_config/constants";
+import { getLocale } from "./_utils/server";
 
 export const metadata = {
   title: "Codenames",
@@ -12,7 +11,7 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const locale = cookies().get("lang")?.value || DEFAULT_LANG;
+  const locale = getLocale();
 
   return (
     <html lang={locale}>

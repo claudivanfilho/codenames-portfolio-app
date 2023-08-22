@@ -15,7 +15,7 @@ export default function GamePageHeader() {
       </div>
       <div className="hidden sm:grid stat">
         <span className="stat-title">
-          <FormattedMessage id={isHelper ? "helper" : "guesser"} />
+          <FormattedMessage id={isHelper ? "guesser" : "helper"} />
         </span>
         <span className="text-lg stat-value">{isHelper ? room.guesser : room.helper}</span>
       </div>
