@@ -10,16 +10,16 @@ type GameTipFieldType = React.FC<
 const GameTipField: GameTipFieldType = ({ isInputVisible, label, value, className, ...props }) => {
   return (
     <div className="flex items-center justify-between w-full gap-4 sm:justify-normal sm:grid">
-      <span className="text-sm sm:pb-2 sm:border-b-2 sm:text-2xl stat-title">{label}</span>
+      <span className="w-2/5 text-md sm:text-xl stat-title">{label}</span>
       {isInputVisible ? (
         <input
           {...props}
           value={value}
           placeholder="Your Tip"
-          className="w-2/3 max-w-xs sm:w-full input input-bordered"
+          className="w-full input input-bordered"
         />
       ) : (
-        <span className="grid h-8 text-3xl rounded-lg sm:h-20 stat-title place-items-center">
+        <span className="w-full p-2 text-xl text-center rounded-lg sm:text-2xl bg-secondary bg-opacity-30 stat-title text-foreground">
           {value}
         </span>
       )}

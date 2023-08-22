@@ -20,11 +20,11 @@ export default function GameStats() {
   };
 
   return (
-    <div className="flex flex-col w-full gap-4 p-4 sm:p-6 sm:w-1/4">
+    <div className="flex flex-col w-full gap-4 p-2 mb-2 sm:gap-6 sm:w-1/4">
       <GameTipField
         isInputVisible={isInputVisible}
         type="text"
-        label="Tip"
+        label="TIP"
         value={isInputVisible ? tip : room.current_tip}
         onChange={(evt) => setTip(evt.target.value)}
       />

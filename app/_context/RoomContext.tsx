@@ -7,6 +7,8 @@ import { FC, createContext, useEffect, useState } from "react";
 type RoomContextType = {
   room: Room;
   isHelper: boolean;
+  selectedWords: string[];
+  setSelectedWords: (words: string[]) => void;
 };
 
 export const RoomContext = createContext<RoomContextType>({} as RoomContextType);
@@ -16,6 +18,7 @@ export const RoomProvider: FC<React.HtmlHTMLAttributes<Element> & { remoteRoom: 
   remoteRoom,
 }) => {
   const [room, setRoom] = useState(remoteRoom);
+  const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const { user } = useUser();
 
   const isHelper = user.user_metadata.user_name === room.helper;
@@ -44,5 +47,9 @@ export const RoomProvider: FC<React.HtmlHTMLAttributes<Element> & { remoteRoom: 
     };
   }, [remoteRoom.id]);
 
-  return <RoomContext.Provider value={{ room, isHelper }}>{children}</RoomContext.Provider>;
+  return (
+    <RoomContext.Provider value={{ room, isHelper, selectedWords, setSelectedWords }}>
+      {children}
+    </RoomContext.Provider>
+  );
 };

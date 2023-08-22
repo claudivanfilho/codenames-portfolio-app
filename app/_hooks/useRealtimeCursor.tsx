@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import useRoom from "./useRoom";
 
 export default function useRealtimeCursor() {
-  const { room, isHelper } = useRoom();
+  const { room, isHelper, selectedWords, setSelectedWords } = useRoom();
   const [cursor, setCursor] = useState<{ x: number; y: number; user: string }>();
 
   useEffect(() => {
@@ -11,7 +11,12 @@ export default function useRealtimeCursor() {
       channel.send({
         type: "broadcast",
         event: "cursor-pos",
-        payload: { x: event.clientX, y: event.clientY, user: room.guesser },
+        payload: {
+          x: event.clientX,
+          y: event.clientY,
+          user: room.guesser,
+          words: selectedWords.join(","),
+        },
       });
     };
 
@@ -19,8 +24,10 @@ export default function useRealtimeCursor() {
       .channel(`cursor-${room.id}`)
       .on("broadcast", { event: "cursor-pos" }, ({ payload }) => {
         if (isHelper) {
-          if (payload.x < window.innerWidth - 100 && payload.y < window.innerHeight - 30)
+          setSelectedWords(payload.words.split(","));
+          if (payload.x < window.innerWidth - 100 && payload.y < window.innerHeight - 30) {
             setCursor(payload);
+          }
         }
       });
 
@@ -34,7 +41,7 @@ export default function useRealtimeCursor() {
       supabase.removeChannel(channel);
       document.removeEventListener("mousemove", cursorListenerCB);
     };
-  }, [room.id]);
+  }, [selectedWords, setSelectedWords]);
 
   return {
     cursor,

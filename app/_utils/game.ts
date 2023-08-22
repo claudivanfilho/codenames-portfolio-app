@@ -1,4 +1,4 @@
-import { GAME_WORDS_PT } from "@/app/_config/constants/words/pt";
+import { GAME_WORDS_PT } from "@/app/_config/words/pt";
 
 export const getRandomWords = (numberOfWords: number, predefinedList?: string[]) => {
   if (predefinedList) {

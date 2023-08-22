@@ -1,12 +1,10 @@
 import clsx from "clsx";
-import { useState } from "react";
 import Card from "./Card";
 import ConfirmGuessBtn from "./ConfirmGuessBtn";
 import useRoom from "@/app/_hooks/useRoom";
 
 export default function CardsGrid() {
-  const [selectedWords, setSelectedWords] = useState<string[]>([]);
-  const { isHelper, room } = useRoom();
+  const { isHelper, room, selectedWords, setSelectedWords } = useRoom();
   const hasGuessesLeft = selectedWords.length < room.current_tip_number!;
   const canSelectWord = !isHelper && room.game_state === "WAITING_GUESSES";
   const canShowConfirm = room.current_tip_number === selectedWords.length;

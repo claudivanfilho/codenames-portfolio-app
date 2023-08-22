@@ -1,10 +1,10 @@
 import useRoom from "@/app/_hooks/useRoom";
 import GameAlert from "./GameAlert";
 import GameStats from "./GameTip";
-import useRealtimeCursor from "@/app/_hooks/useRealtimeCursor";
-import RealtimeCursor from "./RealtimeCursor";
 import CardsGrid from "./CardsGrid";
 import GamePageHeader from "./GamePageHeader";
+import RealtimeCursor from "./RealtimeCursor";
+import useRealtimeCursor from "@/app/_hooks/useRealtimeCursor";
 
 export default function GamePage() {
   const { room } = useRoom();

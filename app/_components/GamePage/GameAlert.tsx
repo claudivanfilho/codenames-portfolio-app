@@ -10,7 +10,7 @@ export default function GameAlert() {
     ? `${isHelper ? room.guesser : "You"} made a mistake 😔`
     : "CONGRATULATION!! You WON! 🎉";
 
-  const helperMessages = {
+  const helperContent = {
     WAITING_GUESSER: [<Loading />, <span>Waiting for the guesser to enter the room</span>],
     WAITING_GUESSES: [<Loading />, <span>{room.guesser} is thinking about the guesses 🤔</span>],
     WAITING_TIP: [<span>Choose a tip for the selected words</span>],
@@ -21,8 +21,9 @@ export default function GameAlert() {
       </form>,
     ],
   };
-  const guesserMessages = {
-    WAITING_GUESSER: helperMessages.WAITING_GUESSER,
+
+  const guesserContent = {
+    ...helperContent,
     WAITING_GUESSES: [
       <Loading />,
       <span className="text-xs text-center sm:text-base">
@@ -30,10 +31,9 @@ export default function GameAlert() {
       </span>,
     ],
     WAITING_TIP: [<Loading />, <span>{room.helper} is thinking in a Tip 🤔</span>],
-    FINISHED: helperMessages.FINISHED,
   };
 
-  const content = isHelper ? helperMessages[room.game_state] : guesserMessages[room.game_state];
+  const content = isHelper ? helperContent[room.game_state] : guesserContent[room.game_state];
 
   return (
     <div className="flex w-full h-13">
