@@ -25,7 +25,7 @@ export default function GameStats() {
         isInputVisible={isInputVisible}
         type="text"
         label="TIP"
-        value={isInputVisible ? tip : room.current_tip}
+        value={isInputVisible ? tip : room.current_tip!}
         onChange={(evt) => setTip(evt.target.value)}
       />
       <GameTipField
@@ -34,7 +34,7 @@ export default function GameStats() {
         min={1}
         type="number"
         label="Nº WORDS"
-        value={isInputVisible ? tipNumber : room.current_tip_number}
+        value={isInputVisible ? tipNumber : room.current_tip_number!}
         onChange={(evt) => setTipNumber(+evt.target.value)}
       />
       {isInputVisible && (

@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "types": "npx supabase gen types typescript --project-id \"$PROJECT_REF\" --schema public > types/supabase.ts"
   },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "latest",

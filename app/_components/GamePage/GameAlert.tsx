@@ -1,5 +1,7 @@
+import { GameState } from "@/types";
 import Loading from "../Loading";
 import useRoom from "@/app/_hooks/useRoom";
+import { ReactElement } from "react";
 
 export default function GameAlert() {
   const { room, isHelper } = useRoom();
@@ -10,7 +12,7 @@ export default function GameAlert() {
     ? `${isHelper ? room.guesser : "You"} made a mistake 😔`
     : "CONGRATULATION!! You WON! 🎉";
 
-  const helperContent = {
+  const helperContent: Record<GameState, [ReactElement, ReactElement?]> = {
     WAITING_GUESSER: [<Loading />, <span>Waiting for the guesser to enter the room</span>],
     WAITING_GUESSES: [<Loading />, <span>{room.guesser} is thinking about the guesses 🤔</span>],
     WAITING_TIP: [<span>Choose a tip for the selected words</span>],
@@ -22,7 +24,7 @@ export default function GameAlert() {
     ],
   };
 
-  const guesserContent = {
+  const guesserContent: Record<GameState, [ReactElement, ReactElement?]> = {
     ...helperContent,
     WAITING_GUESSES: [
       <Loading />,

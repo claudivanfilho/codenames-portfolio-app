@@ -2,6 +2,13 @@
 
 Codenames board game App created with the intention of showcasing a range of software skills
 
+## Roadmap
+
+- [ ] Intl
+- [ ] Tests Front
+- [ ] Tests Back
+- [ ] Readme.md
+
 ## Development
 
 1. Run `yarn install` to install dependencies

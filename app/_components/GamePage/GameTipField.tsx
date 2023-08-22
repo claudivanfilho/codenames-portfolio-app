@@ -20,7 +20,7 @@ const GameTipField: GameTipFieldType = ({ isInputVisible, label, value, classNam
         />
       ) : (
         <span className="w-full p-2 text-xl text-center rounded-lg sm:text-2xl bg-secondary bg-opacity-30 stat-title text-foreground">
-          {value}
+          {value || "-"}
         </span>
       )}
     </div>
