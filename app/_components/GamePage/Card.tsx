@@ -1,6 +1,6 @@
 import CheckMarkIcon from "@/app/_components/icons/CheckMarkIcon";
 import CrossIcon from "@/app/_components/icons/CrossIcon";
-import { ExtendedRoom } from "@/app/_models";
+import { ExtendedRoom } from "@/types";
 import clsx from "clsx";
 import React from "react";
 import { twMerge } from "tailwind-merge";

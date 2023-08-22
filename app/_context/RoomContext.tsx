@@ -1,5 +1,7 @@
+"use client";
+
 import useUser from "@/app/_hooks/useUser";
-import { ExtendedRoom, Room } from "@/app/_models";
+import { ExtendedRoom, Room } from "@/types";
 import { supabase } from "@/app/_utils/supabase";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import { FC, createContext, useEffect, useState } from "react";

@@ -1,4 +1,4 @@
-import { RoomParamsType } from "@/app/_models/server";
+import { RoomParamsType } from "@/types/server";
 import { NextResponse } from "next/server";
 import { enterRoom } from "@/app/api/_routeHandlers/enterRoom";
 import BadRequestError from "@/app/api/_errors/BadRequestError";

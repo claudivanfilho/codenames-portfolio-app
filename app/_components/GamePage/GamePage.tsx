@@ -1,3 +1,5 @@
+"use client";
+
 import useRoom from "@/app/_hooks/useRoom";
 import GameAlert from "./GameAlert";
 import GameStats from "./GameTip";

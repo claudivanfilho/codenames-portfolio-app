@@ -1,7 +1,7 @@
 import { DEFAULT_CORRECT_WORDS } from "@/app/_config/contants";
 import BadRequestError from "@/app/api/_errors/BadRequestError";
-import { Room } from "@/app/_models";
-import { MakeGuessPostType, User } from "@/app/_models/server";
+import { Room } from "@/types";
+import { MakeGuessPostType, User } from "@/types/server";
 import { getExtendedRoom, updateRoomById } from "@/app/_repositories/RoomRepository";
 
 async function validate(room: Room, user: User, req: Request) {

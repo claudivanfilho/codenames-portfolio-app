@@ -1,4 +1,4 @@
-import { Room } from "@/app/_models";
+import { Room } from "@/types";
 import { useEffect, useState } from "react";
 import { supabase } from "@/app/_utils/supabase";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";

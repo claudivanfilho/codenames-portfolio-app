@@ -1,5 +1,5 @@
 import BadRequestError from "@/app/api/_errors/BadRequestError";
-import { RoomPostType } from "@/app/_models/server";
+import { RoomPostType } from "@/types/server";
 import { createNewRoom } from "@/app/_repositories/RoomRepository";
 import { getSessionUser, updateSessionUser } from "@/app/_repositories/UserRepository";
 

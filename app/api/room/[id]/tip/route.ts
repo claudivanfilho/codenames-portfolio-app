@@ -1,5 +1,5 @@
 import BadRequestError from "@/app/api/_errors/BadRequestError";
-import { RoomParamsType } from "@/app/_models/server";
+import { RoomParamsType } from "@/types/server";
 import { getSessionUser } from "@/app/_repositories/UserRepository";
 import makeTip from "@/app/api/_routeHandlers/makeTip";
 import { NextResponse } from "next/server";

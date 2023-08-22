@@ -1,4 +1,6 @@
-import { User } from "@/app/_models/server";
+"use client";
+
+import { User } from "@/types/server";
 import { FC, createContext, useState } from "react";
 
 type UserContextType = {

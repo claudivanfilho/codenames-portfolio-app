@@ -1,6 +1,6 @@
 "use client";
 
-import { Room } from "@/app/_models";
+import { Room } from "@/types";
 import RoomListing from "./RoomListing";
 import { useState } from "react";
 import { createRoom } from "@/app/_services/api";

@@ -3,7 +3,7 @@ import {
   createRouteHandlerClient,
   createServerComponentClient,
 } from "@supabase/auth-helpers-nextjs";
-import { User } from "@/app/_models/server";
+import { User } from "@/types/server";
 
 const SYMBOLIC_PASSWORD = "12345678";
 

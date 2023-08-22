@@ -1,7 +1,6 @@
 import "./globals.css";
 import Footer from "@/app/_components/Footer";
 import Navbar from "@/app/_components/Navbar";
-import { getSessionUser } from "@/app/_repositories/UserRepository";
 
 export const metadata = {
   title: "Codenames",
@@ -10,8 +9,6 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const user = await getSessionUser();
-
   return (
     <html lang="en">
       <body>
@@ -19,7 +16,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           className="flex flex-col items-center w-full h-screen"
           style={{ backgroundImage: `url('/images/main-bg.jpg')` }}
         >
-          <Navbar user={user} />
+          <Navbar />
           <div className="flex items-center justify-center flex-1 w-full px-6 pt-3 overflow-y-auto text-foreground bg-base-200 bg-opacity-95">
             {children}
           </div>

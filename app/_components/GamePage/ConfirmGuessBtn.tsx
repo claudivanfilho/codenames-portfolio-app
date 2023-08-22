@@ -1,4 +1,4 @@
-import { Room } from "@/app/_models";
+import { Room } from "@/types";
 import { makeGuess } from "@/app/_services/api";
 import clsx from "clsx";
 import React from "react";

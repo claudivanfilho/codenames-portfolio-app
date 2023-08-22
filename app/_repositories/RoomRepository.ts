@@ -3,7 +3,7 @@ import {
   DEFAULT_ROUNDS_OF_MATCH,
   DEFAULT_WORDS_NUMBER,
 } from "@/app/_config/contants";
-import { ExtendedRoom, Match, MatchInsertType, Room, RoomInsertType } from "@/app/_models";
+import { ExtendedRoom, Match, MatchInsertType, Room, RoomInsertType } from "@/types";
 import { getRandomWords } from "@/app/_utils/game";
 import { getSupabaseServer } from "@/app/_utils/supabase";
 

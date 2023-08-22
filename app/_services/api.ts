@@ -1,5 +1,5 @@
-import { Room } from "@/app/_models";
-import { MakeGuessPostType, MakeTipPostType, RoomPostType } from "@/app/_models/server";
+import { Room } from "@/types";
+import { MakeGuessPostType, MakeTipPostType, RoomPostType } from "@/types/server";
 
 const handleFetchRequest = (response: Response) => {
   if (!response.ok) {

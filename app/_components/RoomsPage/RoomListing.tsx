@@ -1,4 +1,4 @@
-import { Room } from "@/app/_models";
+import { Room } from "@/types";
 import { enterRoom } from "@/app/_services/api";
 
 export default function RoomListing({ rooms }: { rooms: Room[] }) {
