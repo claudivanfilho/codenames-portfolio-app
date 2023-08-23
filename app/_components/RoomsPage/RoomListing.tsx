@@ -1,6 +1,7 @@
 import { Room } from "@/types";
 import { enterRoom } from "@/app/_services/api";
 import { FormattedMessage } from "react-intl";
+import { motion } from "framer-motion";
 
 export default function RoomListing({ rooms }: { rooms: Room[] }) {
   const onEnter = async (roomId: number) => {
@@ -17,7 +18,7 @@ export default function RoomListing({ rooms }: { rooms: Room[] }) {
       <h2 className="text-lg font-bold">
         <FormattedMessage id="rooms-available" />
       </h2>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto overflow-y-hidden">
         <table className="table">
           <thead>
             <tr>
@@ -31,8 +32,13 @@ export default function RoomListing({ rooms }: { rooms: Room[] }) {
             </tr>
           </thead>
           <tbody>
-            {rooms.map((data) => (
-              <tr key={data.name}>
+            {rooms.map((data, index) => (
+              <motion.tr
+                key={data.name}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * index }}
+              >
                 <th className="pl-0">{data.name}</th>
                 <td>{data.helper}</td>
                 <td className="pr-0 text-end">
@@ -43,7 +49,7 @@ export default function RoomListing({ rooms }: { rooms: Room[] }) {
                     <FormattedMessage id="enter" />
                   </button>
                 </td>
-              </tr>
+              </motion.tr>
             ))}
           </tbody>
         </table>

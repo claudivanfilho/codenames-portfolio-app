@@ -26,7 +26,9 @@ export default function useRealTimeRooms(initialRooms: Room[]) {
         (payload: RealtimePostgresChangesPayload<Room>) => {
           switch (payload.eventType) {
             case "INSERT":
-              setRooms((old) => [...old, payload.new]);
+              if (payload.new.helper !== userName) {
+                setRooms((old) => [...old, payload.new]);
+              }
               break;
             case "UPDATE":
               setRooms((old) =>
@@ -44,7 +46,7 @@ export default function useRealTimeRooms(initialRooms: Room[]) {
     return () => {
       supabase.removeChannel(channel);
     };
-  });
+  }, []);
 
   return {
     rooms,
