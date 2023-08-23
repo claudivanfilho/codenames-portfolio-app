@@ -1,6 +1,7 @@
 import ErrorPage from "@/app/_components/ErrorPage";
 import GamePage from "@/app/_components/GamePage/GamePage";
 import { RoomProvider } from "@/app/_context/RoomContext";
+import { ToastProvider } from "@/app/_context/ToastContext";
 import { UserProvider } from "@/app/_context/UserContext";
 import { getExtendedRoom } from "@/app/_repositories/RoomRepository";
 import { getSessionUser } from "@/app/_repositories/UserRepository";
@@ -26,11 +27,13 @@ export default async function page({ params }: { params: { id: string } }) {
     room.correctWords = isHelper ? room.correctWords : [];
 
     return (
-      <UserProvider remoteUser={user}>
-        <RoomProvider remoteRoom={room}>
-          <GamePage />
-        </RoomProvider>
-      </UserProvider>
+      <ToastProvider>
+        <UserProvider remoteUser={user}>
+          <RoomProvider remoteRoom={room}>
+            <GamePage />
+          </RoomProvider>
+        </UserProvider>
+      </ToastProvider>
     );
   } catch (error) {
     return <ErrorPage message={(error as Error).message} />;

@@ -4,6 +4,8 @@ import { ExtendedRoom } from "@/types";
 import clsx from "clsx";
 import React from "react";
 import { twMerge } from "tailwind-merge";
+import { MotionProps, motion } from "framer-motion";
+import useNotInitialAnimate from "@/app/_hooks/useNotInitialAnimate";
 
 type CardType = React.FC<
   React.HtmlHTMLAttributes<HTMLDivElement> & {
@@ -11,7 +13,7 @@ type CardType = React.FC<
     isHelperMode: boolean;
     isSelected: boolean;
     word: string;
-  }
+  } & MotionProps
 >;
 
 const Card: CardType = ({ word, isSelected, room, isHelperMode, className, ...props }) => {
@@ -19,10 +21,21 @@ const Card: CardType = ({ word, isSelected, room, isHelperMode, className, ...pr
   const isIncorrectGuess = room.wrong_guesses.includes(word);
   const isCorrectWord = room.correctWords?.includes(word);
   const isPulsing = isCorrectWord && room.game_state === "WAITING_TIP";
+  const { animate } = useNotInitialAnimate(
+    {
+      scale: [1.3, 1, 1.1, 1, 1.1, 1],
+      transition: {
+        damping: 100,
+        duration: 2,
+      },
+    },
+    isCorrectGuess
+  );
 
   return (
-    <div
+    <motion.div
       {...props}
+      animate={animate}
       style={{ backgroundImage: `url('/images/code-bg.png')` }}
       className={twMerge(
         clsx(
@@ -31,9 +44,9 @@ const Card: CardType = ({ word, isSelected, room, isHelperMode, className, ...pr
             "cursor-pointer hover:scale-110 opacity-80 hover:opacity-100": !isHelperMode,
             "animate-pulse": isPulsing,
             "border-secondary border-8": isCorrectWord,
+            "border-primary border-8": isSelected,
             "border-success border-8 pointer-events-none": isCorrectGuess,
             "border-error border-8 pointer-events-none": isIncorrectGuess,
-            "border-primary border-8": isSelected,
           },
           className
         )
@@ -58,7 +71,7 @@ const Card: CardType = ({ word, isSelected, room, isHelperMode, className, ...pr
           {isIncorrectGuess && <CrossIcon size={26} className="text-red-200" />}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

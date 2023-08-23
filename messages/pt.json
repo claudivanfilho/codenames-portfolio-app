@@ -17,7 +17,7 @@
   "alert-helper-waiting_tip": "Escolha uma dica para as palavras selecionadas",
   "alert-helper-finished_loss": "{guesser} cometeu um erro 😔",
   "alert-helper-finished": "Parabéns!! Você ganhou!!! 🎉",
-  "alert-guesser-waiting_guesses": "Selecione {number} palavras que combinam com a dica",
+  "alert-guesser-waiting_guesses": "Selecione {number} {number, plural, =1 {palavra que combina} other {palavras que combinam}} com a dica",
   "alert-guesser-waiting_tip": "{helper} está pensando em uma dica 🤔",
   "alert-guesser-finished_loss": "Você cometeu um erro 😔",
   "alert-guesser-finished": "Parabéns!! Você ganhou!!! 🎉",
@@ -27,5 +27,8 @@
   "correct-words": "Palavras Certas",
   "rounds-left": "Turnos Restantes",
   "tip": "Dica",
-  "tip-number": "Nº Palavras"
+  "tip-number": "Nº Palavras",
+  "your-turn": "Sua Vez!",
+  "you-won": "Você Ganhou!!",
+  "you-lost": "Você Perdeu!!"
 }

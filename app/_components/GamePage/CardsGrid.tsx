@@ -2,6 +2,7 @@ import clsx from "clsx";
 import Card from "./Card";
 import ConfirmGuessBtn from "./ConfirmGuessBtn";
 import useRoom from "@/app/_hooks/useRoom";
+import { motion } from "framer-motion";
 
 export default function CardsGrid() {
   const { isHelper, room, selectedWords, setSelectedWords } = useRoom();
@@ -27,15 +28,31 @@ export default function CardsGrid() {
       })}
     >
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {room.words.map((word) => (
-          <Card
-            isHelperMode={isHelper}
-            isSelected={selectedWords.includes(word)}
-            room={room}
-            word={word}
+        {room.words.map((word, index) => (
+          <motion.div
             key={word}
-            onClick={() => onSelect(word)}
-          />
+            initial={{
+              opacity: 0,
+              scale: 0,
+              y: -100,
+              x: -200,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              x: 0,
+            }}
+            transition={{ delay: 0.1 * index, stiffness: 10 }}
+          >
+            <Card
+              isHelperMode={isHelper}
+              isSelected={selectedWords.includes(word)}
+              room={room}
+              word={word}
+              onClick={() => onSelect(word)}
+            />
+          </motion.div>
         ))}
       </div>
       {canSelectWord && canShowConfirm && (

@@ -5,6 +5,7 @@ import { ExtendedRoom, Room } from "@/types";
 import { supabase } from "@/app/_utils/supabase";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import { FC, createContext, useEffect, useState } from "react";
+import useToast from "../_hooks/useToast";
 
 type RoomContextType = {
   room: Room;
@@ -20,8 +21,9 @@ export const RoomProvider: FC<React.HtmlHTMLAttributes<Element> & { remoteRoom: 
   remoteRoom,
 }) => {
   const [room, setRoom] = useState(remoteRoom);
-  const [selectedWords, setSelectedWords] = useState<string[]>([]);
+  const { show } = useToast();
   const { user } = useUser();
+  const [selectedWords, setSelectedWords] = useState<string[]>([]);
 
   const isHelper = user.user_metadata.user_name === room.helper;
 
@@ -36,18 +38,32 @@ export const RoomProvider: FC<React.HtmlHTMLAttributes<Element> & { remoteRoom: 
           table: "rooms",
           filter: `id=eq.${room.id}`,
         },
-        (payload: RealtimePostgresChangesPayload<Room>) =>
+        (payload: RealtimePostgresChangesPayload<Room>) => {
+          const newRoom = payload.new as Room;
+          const hasLost = newRoom.wrong_guesses.length;
           setRoom((oldRoom) => ({
-            ...(payload.new as Room),
+            ...newRoom,
             correctWords: oldRoom.correctWords,
-          }))
+          }));
+          if (newRoom.game_state === "FINISHED") {
+            show(hasLost ? "LOSS" : "WIN");
+          }
+          if (newRoom.game_state !== room.game_state) {
+            if (isHelper && newRoom.game_state === "WAITING_TIP") {
+              show("TURN");
+            }
+            if (!isHelper && newRoom.game_state === "WAITING_GUESSES") {
+              show("TURN");
+            }
+          }
+        }
       )
       .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [remoteRoom.id]);
+  }, [room.game_state]);
 
   return (
     <RoomContext.Provider value={{ room, isHelper, selectedWords, setSelectedWords }}>
