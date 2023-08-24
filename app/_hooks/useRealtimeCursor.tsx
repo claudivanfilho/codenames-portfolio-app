@@ -14,7 +14,7 @@ export default function useRealtimeCursor() {
         payload: {
           x: event.clientX,
           y: event.clientY,
-          user: room.guesser,
+          user: room.guesser_name,
           words: selectedWords.join(","),
         },
       });
