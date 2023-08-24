@@ -29,25 +29,25 @@ export default async function makeGuess(roomId: number, user: User, req: Request
   const room = await getExtendedRoom(roomId);
   const { words } = await validate(room, user, req);
 
-  const correctGuesses = [...room.correct_guesses];
-  const wrongGuesses = [...room.wrong_guesses];
+  const correctGuesses = new Set(...room.correct_guesses);
+  const wrongGuesses = new Set(...room.wrong_guesses);
 
   words.forEach((word) => {
     if (room.correctWords?.includes(word)) {
-      correctGuesses.push(word);
+      correctGuesses.add(word);
     } else {
-      wrongGuesses.push(word);
+      wrongGuesses.add(word);
     }
   });
 
   const isFinished =
-    wrongGuesses.length ||
+    wrongGuesses.size ||
     room.rounds_left - 1 === 0 ||
-    correctGuesses.length === DEFAULT_CORRECT_WORDS;
+    correctGuesses.size === DEFAULT_CORRECT_WORDS;
 
   return updateRoomById(roomId, {
-    correct_guesses: correctGuesses,
-    wrong_guesses: wrongGuesses,
+    correct_guesses: Array.from(correctGuesses),
+    wrong_guesses: Array.from(wrongGuesses),
     game_state: isFinished ? "FINISHED" : "WAITING_TIP",
     rounds_left: room.rounds_left - 1,
   });

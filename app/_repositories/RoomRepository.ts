@@ -25,7 +25,8 @@ export async function getVisibleRooms(userId: string) {
   return getSupabaseServer()
     .from("rooms")
     .select<string, Room>("*")
-    .or(`game_state.eq.WAITING_GUESSER,helper_id.eq.${userId},guesser_id.eq.${userId}`)
+    .neq("game_state", "FINISHED")
+    .or(`helper_id.eq.${userId},guesser_id.eq.${userId}`)
     .throwOnError();
 }
 
