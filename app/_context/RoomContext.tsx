@@ -25,7 +25,7 @@ export const RoomProvider: FC<React.HtmlHTMLAttributes<Element> & { remoteRoom: 
   const { user } = useUser();
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
 
-  const isHelper = user.user_metadata.user_name === room.helper;
+  const isHelper = user.id === room.helper_id;
 
   useEffect(() => {
     const channel = supabase

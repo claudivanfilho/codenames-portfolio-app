@@ -20,7 +20,7 @@ async function validate(req: Request, room: Room, user: User) {
     throw new Error("You cannot make a tip now");
   }
 
-  if (room.helper !== user.user_metadata.user_name) {
+  if (room.helper_id !== user.id) {
     throw new Error("You cannot make a tip to this room");
   }
 

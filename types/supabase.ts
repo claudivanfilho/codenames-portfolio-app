@@ -44,8 +44,10 @@ export interface Database {
           current_tip: string | null
           current_tip_number: number | null
           game_state: string
-          guesser: string | null
-          helper: string
+          guesser_id: string | null
+          guesser_name: string | null
+          helper_id: string
+          helper_name: string
           id: number
           name: string
           rounds_left: number
@@ -58,8 +60,10 @@ export interface Database {
           current_tip?: string | null
           current_tip_number?: number | null
           game_state?: string
-          guesser?: string | null
-          helper: string
+          guesser_id?: string | null
+          guesser_name?: string | null
+          helper_id: string
+          helper_name: string
           id?: number
           name: string
           rounds_left: number
@@ -72,15 +76,30 @@ export interface Database {
           current_tip?: string | null
           current_tip_number?: number | null
           game_state?: string
-          guesser?: string | null
-          helper?: string
+          guesser_id?: string | null
+          guesser_name?: string | null
+          helper_id?: string
+          helper_name?: string
           id?: number
           name?: string
           rounds_left?: number
           words?: string[]
           wrong_guesses?: string[]
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "rooms_guesser_id_fkey"
+            columns: ["guesser_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rooms_helper_id_fkey"
+            columns: ["helper_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {

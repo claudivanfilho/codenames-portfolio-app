@@ -17,8 +17,8 @@ export default function GameAlert() {
   const msg = t(
     { id: messageId },
     {
-      helper: room.helper,
-      guesser: room.guesser,
+      helper: room.helper_name,
+      guesser: room.guesser_name,
       number: room.current_tip_number,
     }
   );

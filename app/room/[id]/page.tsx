@@ -19,11 +19,10 @@ export const generateMetadata = ({ params: { id } }: { params: { id: string } })
 
 export default async function page({ params }: { params: { id: string } }) {
   const user = await getSessionUser();
-  const userName = user.user_metadata.user_name;
 
   try {
     const room = await getExtendedRoom(+params.id);
-    const isHelper = userName === room.helper;
+    const isHelper = user.id === room.helper_id;
     room.correctWords = isHelper ? room.correctWords : [];
 
     return (

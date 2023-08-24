@@ -17,7 +17,9 @@ export default function GamePageHeader() {
         <span className="stat-title">
           <FormattedMessage id={isHelper ? "guesser" : "helper"} />
         </span>
-        <span className="text-lg stat-value">{isHelper ? room.guesser : room.helper}</span>
+        <span className="text-lg stat-value">
+          {isHelper ? room.guesser_name : room.helper_name}
+        </span>
       </div>
       <div className="stat">
         <span className="stat-title">

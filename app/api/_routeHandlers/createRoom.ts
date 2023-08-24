@@ -15,9 +15,8 @@ async function validate(req: Request): Promise<RoomPostType> {
 export default async function createRoom(req: Request) {
   const locale = getLocale();
   const user = await getSessionUser();
-  const userName = user.user_metadata.user_name;
   const { roomName } = await validate(req);
-  const { data } = await createNewRoom(roomName, userName, locale);
+  const { data } = await createNewRoom(roomName, user, locale);
   const { error } = await updateSessionUser({ room_id: data!.id });
 
   if (error) throw new Error(error.message);

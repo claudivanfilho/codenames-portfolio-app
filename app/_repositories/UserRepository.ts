@@ -9,8 +9,10 @@ const SYMBOLIC_PASSWORD = "12345678";
 
 export const getSessionUser = async () => {
   const supabase = await createServerComponentClient({ cookies });
-  const { data } = await supabase.auth.getUser();
-  return data.user as unknown as User;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user as unknown as User;
 };
 
 export const updateSessionUser = async ({

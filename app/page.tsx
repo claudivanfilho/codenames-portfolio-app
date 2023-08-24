@@ -17,13 +17,13 @@ export const generateMetadata = (): Metadata => {
 
 export default async function Index() {
   const user = await getSessionUser();
-  const userName = user.user_metadata.user_name;
 
   try {
-    const { data } = await getVisibleRooms(userName);
+    const { data: rooms } = await getVisibleRooms(user.id);
+
     return (
       <UserProvider remoteUser={user}>
-        <RoomsPage rooms={data!} />
+        <RoomsPage rooms={rooms!} />
       </UserProvider>
     );
   } catch (error) {

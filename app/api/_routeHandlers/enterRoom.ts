@@ -3,16 +3,16 @@ import { getSessionUser, updateSessionUser } from "@/app/_repositories/UserRepos
 
 export const enterRoom = async (roomId: number) => {
   const user = await getSessionUser();
-  const userName = user.user_metadata.user_name;
 
   const { data: oldRoom } = await getRoomById(+roomId);
 
   await updateSessionUser({ room_id: +roomId });
 
-  if (oldRoom!.helper === userName) return oldRoom;
+  if (oldRoom!.helper_id === user.id) return oldRoom;
 
   return updateRoomById(+roomId, {
-    guesser: userName,
-    game_state: "WAITING_TIP",
+    guesser_id: user.id,
+    guesser_name: user.user_metadata.user_name,
+    game_state: oldRoom!.game_state === "WAITING_GUESSER" ? "WAITING_TIP" : oldRoom!.game_state,
   });
 };

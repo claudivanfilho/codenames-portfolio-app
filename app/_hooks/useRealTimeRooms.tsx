@@ -7,9 +7,7 @@ import useUser from "./useUser";
 export default function useRealTimeRooms(initialRooms: Room[]) {
   const [rooms, setRooms] = useState(initialRooms);
   const {
-    user: {
-      user_metadata: { user_name: userName },
-    },
+    user: { id: userId },
   } = useUser();
 
   useEffect(() => {
@@ -21,12 +19,13 @@ export default function useRealTimeRooms(initialRooms: Room[]) {
           event: "*",
           schema: "public",
           table: "rooms",
-          filter: `helper=neq.${userName} AND game_state=neq.FINISHED AND guesser=is.NULL`,
+          filter: `game_state=eq.WAITING_GUESSER OR guesser_id=is.NULL OR helper_id=eq${userId}`,
         },
         (payload: RealtimePostgresChangesPayload<Room>) => {
+          console.log("payload", payload);
           switch (payload.eventType) {
             case "INSERT":
-              if (payload.new.helper !== userName) {
+              if (payload.new.helper_id !== userId) {
                 setRooms((old) => [...old, payload.new]);
               }
               break;

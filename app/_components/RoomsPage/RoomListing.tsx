@@ -18,7 +18,7 @@ export default function RoomListing({ rooms }: { rooms: Room[] }) {
       <h2 className="text-lg font-bold">
         <FormattedMessage id="rooms-available" />
       </h2>
-      <div className="overflow-x-auto overflow-y-hidden">
+      <div className="overflow-x-hidden overflow-y-hidden">
         <table className="table">
           <thead>
             <tr>
@@ -40,7 +40,7 @@ export default function RoomListing({ rooms }: { rooms: Room[] }) {
                 transition={{ delay: 0.1 * index }}
               >
                 <th className="pl-0">{data.name}</th>
-                <td>{data.helper}</td>
+                <td>{data.helper_name}</td>
                 <td className="pr-0 text-end">
                   <button
                     onClick={() => onEnter(data.id)}

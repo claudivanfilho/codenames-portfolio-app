@@ -6,6 +6,7 @@ import {
 import { ExtendedRoom, Match, MatchInsertType, Room, RoomInsertType } from "@/types";
 import { getRandomWords } from "@/app/_utils/game";
 import { getSupabaseServer } from "@/app/_utils/supabase";
+import { User } from "@/types/server";
 
 export async function getExtendedRoom(roomId: number): Promise<ExtendedRoom> {
   const { data } = await getSupabaseServer()
@@ -20,12 +21,11 @@ export async function getExtendedRoom(roomId: number): Promise<ExtendedRoom> {
   return { ...room, correctWords: rest.correct_words! };
 }
 
-export async function getVisibleRooms(userName: string) {
+export async function getVisibleRooms(userId: string) {
   return getSupabaseServer()
     .from("rooms")
-    .select<string, Room>()
-    .neq("game_state", "FINISHED")
-    .or(`guesser.is.NULL,helper.eq.${userName},guesser.eq.${userName}`)
+    .select<string, Room>("*")
+    .or(`game_state.eq.WAITING_GUESSER,helper_id.eq.${userId},guesser_id.eq.${userId}`)
     .throwOnError();
 }
 
@@ -49,12 +49,13 @@ export async function updateRoomById(roomId: number, data: Partial<RoomInsertTyp
 }
 
 // TODO Create a supabase procedure to grants atomicity to this transaction
-export async function createNewRoom(roomName: string, userName: string, locale: string) {
+export async function createNewRoom(roomName: string, user: User, locale: string) {
   const result = await getSupabaseServer()
     .from("rooms")
     .insert<RoomInsertType>({
       name: roomName,
-      helper: userName,
+      helper_id: user.id,
+      helper_name: user.user_metadata.user_name,
       wrong_guesses: [],
       correct_guesses: [],
       words: getRandomWords({ numberOfWords: DEFAULT_WORDS_NUMBER, locale }),
@@ -65,7 +66,7 @@ export async function createNewRoom(roomName: string, userName: string, locale: 
     .single()
     .throwOnError();
 
-  await getSupabaseServer()
+  await await getSupabaseServer()
     .from("matches")
     .insert<MatchInsertType>({
       room_id: result.data!.id,
