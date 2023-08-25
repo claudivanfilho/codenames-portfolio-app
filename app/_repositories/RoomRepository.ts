@@ -3,12 +3,14 @@ import {
   DEFAULT_ROUNDS_OF_MATCH,
   DEFAULT_WORDS_NUMBER,
 } from "@/app/_config/constants";
-import { ExtendedRoom, Match, MatchInsertType, Room, RoomInsertType } from "@/types";
+import { ExtendedRoom, Match, Room, RoomInsertType } from "@/types";
 import { getRandomWords } from "@/app/_utils/game";
 import { getSupabaseServer } from "@/app/_utils/supabase";
 import { User } from "@/types/server";
+import pgPromise from "pg-promise";
 
 export async function getExtendedRoom(roomId: number): Promise<ExtendedRoom> {
+  pgPromise({});
   const { data } = await getSupabaseServer()
     .from("matches")
     .select<string, Match & { rooms: Room }>(`*, rooms(*)`)
@@ -26,7 +28,7 @@ export async function getVisibleRooms(userId: string) {
     .from("rooms")
     .select<string, Room>("*")
     .neq("game_state", "FINISHED")
-    .or(`helper_id.eq.${userId},guesser_id.eq.${userId}`)
+    .or(`helper_id.eq.${userId},guesser_id.eq.${userId},guesser_id.is.NULL`)
     .throwOnError();
 }
 
@@ -49,32 +51,43 @@ export async function updateRoomById(roomId: number, data: Partial<RoomInsertTyp
     .throwOnError();
 }
 
-// TODO Create a supabase procedure to grants atomicity to this transaction
+/** It's necessary to use pg-promise to grant atomicity to the transaction since supabase doesn't provide a way. */
 export async function createNewRoom(roomName: string, user: User, locale: string) {
-  const result = await getSupabaseServer()
-    .from("rooms")
-    .insert<RoomInsertType>({
-      name: roomName,
-      helper_id: user.id,
-      helper_name: user.user_metadata.user_name,
-      wrong_guesses: [],
-      correct_guesses: [],
-      words: getRandomWords({ numberOfWords: DEFAULT_WORDS_NUMBER, locale }),
-      rounds_left: DEFAULT_ROUNDS_OF_MATCH,
-      game_state: "WAITING_GUESSER",
-    })
-    .select<string, Room>()
-    .single()
-    .throwOnError();
+  const db = pgPromise()({
+    host: process.env.DATABASE_HOST,
+    port: +process.env.DATABASE_PORT!,
+    database: process.env.DATABASE_NAME,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASS,
+  });
+  return db.tx<Room>(async (tx) => {
+    const roomCreated = await tx.one(
+      `INSERT INTO rooms(name, helper_id, helper_name, wrong_guesses, correct_guesses, words, rounds_left, game_state)
+      VALUES($1, $2, $3, $4, $5, $6, $7, $8)
+      RETURNING *`,
+      [
+        roomName,
+        user.id,
+        user.user_metadata.user_name,
+        [],
+        [],
+        getRandomWords({ numberOfWords: DEFAULT_WORDS_NUMBER, locale }),
+        DEFAULT_ROUNDS_OF_MATCH,
+        "WAITING_GUESSER",
+      ]
+    );
 
-  await await getSupabaseServer()
-    .from("matches")
-    .insert<MatchInsertType>({
-      room_id: result.data!.id,
-      correct_words: getRandomWords({
-        numberOfWords: DEFAULT_CORRECT_WORDS,
-        predefinedList: result.data!.words,
-      }),
-    });
-  return result;
+    await tx.none(
+      `INSERT INTO matches(room_id, correct_words)
+       VALUES($1, $2)`,
+      [
+        roomCreated.id,
+        getRandomWords({
+          numberOfWords: DEFAULT_CORRECT_WORDS,
+          predefinedList: roomCreated.words,
+        }),
+      ]
+    );
+    return roomCreated;
+  });
 }

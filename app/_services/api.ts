@@ -16,10 +16,6 @@ export const createRoom = (data: RoomPostType): Promise<Room> => {
   );
 };
 
-export const getRoom = (roomId: number): Promise<Room & { correctWords?: string[] }> => {
-  return fetch(`/api/room/${roomId}`).then(handleFetchRequest);
-};
-
 export const enterRoom = (roomId: number) => {
   return fetch(`/api/room/${roomId}/enter`, { method: "POST" }).then(handleFetchRequest);
 };

@@ -1,15 +1,14 @@
 "use client";
 
-import { Room } from "@/types";
 import RoomListing from "./RoomListing";
 import { useState } from "react";
 import { createRoom } from "@/app/_services/api";
-import useRealTimeRooms from "@/app/_hooks/useRealTimeRooms";
 import { FormattedMessage } from "react-intl";
+import useRooms from "@/app/_hooks/useRooms";
 
-export default function RoomsPage({ rooms: remoteRooms }: { rooms: Room[] }) {
+export default function RoomsPage() {
   const [roomName, setRoomName] = useState("");
-  const { rooms } = useRealTimeRooms(remoteRooms);
+  const { rooms } = useRooms();
 
   const onCreate = async () => {
     try {

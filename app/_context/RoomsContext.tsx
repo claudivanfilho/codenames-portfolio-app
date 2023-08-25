@@ -1,11 +1,22 @@
+"use client";
+
+import useUser from "@/app/_hooks/useUser";
 import { Room } from "@/types";
-import { useEffect, useState } from "react";
 import { supabase } from "@/app/_utils/supabase";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
-import useUser from "./useUser";
+import { FC, createContext, useEffect, useState } from "react";
 
-export default function useRealTimeRooms(initialRooms: Room[]) {
-  const [rooms, setRooms] = useState(initialRooms);
+type RoomsContextType = {
+  rooms: Room[];
+};
+
+export const RoomsContext = createContext<RoomsContextType>({} as RoomsContextType);
+
+export const RoomsProvider: FC<React.HtmlHTMLAttributes<Element> & { remoteRooms: Room[] }> = ({
+  children,
+  remoteRooms,
+}) => {
+  const [rooms, setRooms] = useState(remoteRooms);
   const {
     user: { id: userId },
   } = useUser();
@@ -19,10 +30,9 @@ export default function useRealTimeRooms(initialRooms: Room[]) {
           event: "*",
           schema: "public",
           table: "rooms",
-          filter: `game_state=eq.WAITING_GUESSER OR guesser_id=is.NULL OR helper_id=eq${userId}`,
+          filter: "game_state=neq.FINISHED",
         },
         (payload: RealtimePostgresChangesPayload<Room>) => {
-          console.log("payload", payload);
           switch (payload.eventType) {
             case "INSERT":
               if (payload.new.helper_id !== userId) {
@@ -47,7 +57,5 @@ export default function useRealTimeRooms(initialRooms: Room[]) {
     };
   }, []);
 
-  return {
-    rooms,
-  };
-}
+  return <RoomsContext.Provider value={{ rooms }}>{children}</RoomsContext.Provider>;
+};

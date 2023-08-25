@@ -16,10 +16,10 @@ export default async function createRoom(req: Request) {
   const locale = getLocale();
   const user = await getSessionUser();
   const { roomName } = await validate(req);
-  const { data } = await createNewRoom(roomName, user, locale);
-  const { error } = await updateSessionUser({ room_id: data!.id });
+  const room = await createNewRoom(roomName, user, locale);
+  const { error } = await updateSessionUser({ room_id: room!.id });
 
   if (error) throw new Error(error.message);
 
-  return data;
+  return room;
 }

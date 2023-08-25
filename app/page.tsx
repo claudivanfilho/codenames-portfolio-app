@@ -4,6 +4,7 @@ import { getSessionUser } from "@/app/_repositories/UserRepository";
 import RoomsPage from "./_components/RoomsPage/RoomsPage";
 import { UserProvider } from "./_context/UserContext";
 import { Metadata } from "next";
+import { RoomsProvider } from "./_context/RoomsContext";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +24,9 @@ export default async function Index() {
 
     return (
       <UserProvider remoteUser={user}>
-        <RoomsPage rooms={rooms!} />
+        <RoomsProvider remoteRooms={rooms!}>
+          <RoomsPage />
+        </RoomsProvider>
       </UserProvider>
     );
   } catch (error) {
