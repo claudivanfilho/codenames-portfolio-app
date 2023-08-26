@@ -20,8 +20,7 @@ export default async function Index() {
   const user = await getSessionUser();
 
   try {
-    const { data: rooms } = await getVisibleRooms(user.id);
-
+    const rooms = await getVisibleRooms(user.id);
     return (
       <UserProvider remoteUser={user}>
         <RoomsProvider remoteRooms={rooms!}>

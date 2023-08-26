@@ -5,18 +5,22 @@ import { useState } from "react";
 import { createRoom } from "@/app/_services/api";
 import { FormattedMessage } from "react-intl";
 import useRooms from "@/app/_hooks/useRooms";
+import Loading from "../Loading";
 
 export default function RoomsPage() {
   const [roomName, setRoomName] = useState("");
+  const [loading, setLoading] = useState(false);
   const { rooms } = useRooms();
 
   const onCreate = async () => {
     try {
+      setLoading(true);
       const room = await createRoom({
         roomName: roomName,
       });
       window.location.href = `/room/${room.id}`;
     } catch (error) {
+      setLoading(false);
       alert((error as Error).message);
     }
   };
@@ -37,17 +41,18 @@ export default function RoomsPage() {
           />
         </div>
         <button
-          disabled={!roomName}
+          disabled={!roomName || loading}
           onClick={onCreate}
           type="submit"
-          className="mt-auto mb-6 btn btn-secondary bt"
+          className="mt-auto mb-6 btn btn-secondary bt min-w-[120px]"
         >
+          {loading && <Loading />}
           <FormattedMessage id="create" />
         </button>
       </div>
       <div className="mb-6 border-t border-gray-700"></div>
       {rooms.length ? (
-        <RoomListing rooms={rooms} />
+        <RoomListing />
       ) : (
         <div className="text-center">{<FormattedMessage id="no-rooms-info" />}</div>
       )}

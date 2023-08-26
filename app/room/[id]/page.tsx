@@ -3,7 +3,7 @@ import GamePage from "@/app/_components/GamePage/GamePage";
 import { RoomProvider } from "@/app/_context/RoomContext";
 import { ToastProvider } from "@/app/_context/ToastContext";
 import { UserProvider } from "@/app/_context/UserContext";
-import { getExtendedRoom } from "@/app/_repositories/RoomRepository";
+import { getRoomById } from "@/app/_repositories/RoomRepository";
 import { getSessionUser } from "@/app/_repositories/UserRepository";
 import { Metadata } from "next";
 
@@ -21,9 +21,9 @@ export default async function page({ params }: { params: { id: string } }) {
   const user = await getSessionUser();
 
   try {
-    const room = await getExtendedRoom(+params.id);
+    const room = await getRoomById(+params.id);
     const isHelper = user.id === room.helper_id;
-    room.correctWords = isHelper ? room.correctWords : [];
+    room.correct_words = isHelper ? room.correct_words : [];
 
     return (
       <ToastProvider>

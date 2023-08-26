@@ -1,4 +1,4 @@
-import { RoomParamsType } from "@/types/server";
+import { RoomParamsType } from "@/types";
 import makeGuess from "@/app/api/_routeHandlers/makeGuess";
 import { NextResponse } from "next/server";
 import BadRequestError from "@/app/api/_errors/BadRequestError";
@@ -11,7 +11,7 @@ export async function POST(req: Request, reqParams: RoomParamsType) {
   const user = await getSessionUser();
 
   try {
-    const { data } = await makeGuess(+roomId, user, req);
+    const data = await makeGuess(+roomId, user, req);
     return NextResponse.json(data);
   } catch (error) {
     if (error instanceof BadRequestError) {

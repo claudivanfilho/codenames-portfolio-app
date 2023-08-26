@@ -16,9 +16,9 @@ export const getRandomWords = ({
 
   if (locale === "pt") {
     return shuffleArray(GAME_WORDS_PT).slice(0, numberOfWords);
-  } else {
-    return shuffleArray(GAME_WORDS_EN).slice(0, numberOfWords);
   }
+
+  return shuffleArray(GAME_WORDS_EN).slice(0, numberOfWords);
 };
 
 function shuffleArray(array: string[]) {

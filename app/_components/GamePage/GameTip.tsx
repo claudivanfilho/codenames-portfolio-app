@@ -4,9 +4,11 @@ import { makeTip } from "@/app/_services/api";
 import { useState } from "react";
 import GameTipField from "./GameTipField";
 import { useIntl } from "react-intl";
+import Loading from "../Loading";
 
 export default function GameStats() {
   const { room, isHelper } = useRoom();
+  const [loading, setLoading] = useState(false);
   const [tip, setTip] = useState("");
   const [tipNumber, setTipNumber] = useState(1);
   const { formatMessage: t } = useIntl();
@@ -15,7 +17,9 @@ export default function GameStats() {
 
   const onMakeTip = async () => {
     try {
-      await makeTip(room.id, { tip, tip_number: tipNumber });
+      setLoading(true);
+      await makeTip(room.id, { tip, tip_number: tipNumber }).finally(() => setLoading(false));
+      setTipNumber(1);
     } catch (error) {
       alert((error as Error).message);
     }
@@ -40,7 +44,12 @@ export default function GameStats() {
         onChange={(evt) => setTipNumber(+evt.target.value)}
       />
       {isInputVisible && (
-        <button className="btn btn-secondary" disabled={!tip || !tipNumber} onClick={onMakeTip}>
+        <button
+          className="btn btn-secondary"
+          disabled={!tip || !tipNumber || loading}
+          onClick={onMakeTip}
+        >
+          {loading && <Loading />}
           {t({ id: "confirm" })}
         </button>
       )}

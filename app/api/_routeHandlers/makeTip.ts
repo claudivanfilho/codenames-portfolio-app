@@ -1,7 +1,7 @@
 import { DEFAULT_CORRECT_WORDS } from "@/app/_config/constants";
 import BadRequestError from "@/app/api/_errors/BadRequestError";
 import { Room } from "@/types";
-import { MakeTipPostType, User } from "@/types/server";
+import { MakeTipPostType, User } from "@/types";
 import { getRoomById, updateRoomById } from "@/app/_repositories/RoomRepository";
 
 async function validate(req: Request, room: Room, user: User) {
@@ -24,7 +24,7 @@ async function validate(req: Request, room: Room, user: User) {
     throw new Error("You cannot make a tip to this room");
   }
 
-  if (room.id !== user.user_metadata.room_id) {
+  if (room.id != user.user_metadata.room_id) {
     throw new Error("You must enter the room to make a tip");
   }
 
@@ -32,9 +32,8 @@ async function validate(req: Request, room: Room, user: User) {
 }
 
 export default async function makeTip(roomId: number, user: User, req: Request) {
-  const { data: room } = await getRoomById(roomId);
-  const { tip, tip_number } = await validate(req, room!, user);
-
+  const room = await getRoomById(roomId);
+  const { tip, tip_number } = await validate(req, room, user);
   return updateRoomById(+roomId, {
     current_tip: tip,
     current_tip_number: tip_number,

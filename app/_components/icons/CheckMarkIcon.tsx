@@ -11,7 +11,7 @@ export default function CheckMarkIcon({ className, size = 20 }: CheckMarkIconPro
     <motion.svg
       animate={{
         rotate: 360,
-        scale: [5, 1],
+        scale: [3, 1],
         transition: { type: "spring", stiffness: 150, damping: 15 },
       }}
       className={className}

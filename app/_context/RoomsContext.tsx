@@ -7,15 +7,14 @@ import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import { FC, createContext, useEffect, useState } from "react";
 
 type RoomsContextType = {
-  rooms: Room[];
+  rooms: Omit<Room, "correct_words">[];
 };
 
 export const RoomsContext = createContext<RoomsContextType>({} as RoomsContextType);
 
-export const RoomsProvider: FC<React.HtmlHTMLAttributes<Element> & { remoteRooms: Room[] }> = ({
-  children,
-  remoteRooms,
-}) => {
+export const RoomsProvider: FC<
+  React.HtmlHTMLAttributes<Element> & { remoteRooms: Omit<Room, "correct_words">[] }
+> = ({ children, remoteRooms }) => {
   const [rooms, setRooms] = useState(remoteRooms);
   const {
     user: { id: userId },

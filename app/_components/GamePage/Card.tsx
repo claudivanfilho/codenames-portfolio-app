@@ -1,15 +1,15 @@
 import CheckMarkIcon from "@/app/_components/icons/CheckMarkIcon";
 import CrossIcon from "@/app/_components/icons/CrossIcon";
-import { ExtendedRoom } from "@/types";
 import clsx from "clsx";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 import { MotionProps, motion } from "framer-motion";
 import useNotInitialAnimate from "@/app/_hooks/useNotInitialAnimate";
+import { Room } from "@/types";
 
 type CardType = React.FC<
   React.HtmlHTMLAttributes<HTMLDivElement> & {
-    room: ExtendedRoom;
+    room: Room;
     isHelperMode: boolean;
     isSelected: boolean;
     word: string;
@@ -19,7 +19,7 @@ type CardType = React.FC<
 const Card: CardType = ({ word, isSelected, room, isHelperMode, className, ...props }) => {
   const isCorrectGuess = room.correct_guesses.includes(word);
   const isIncorrectGuess = room.wrong_guesses.includes(word);
-  const isCorrectWord = room.correctWords?.includes(word);
+  const isCorrectWord = room.correct_words?.includes(word);
   const isPulsing = isCorrectWord && room.game_state === "WAITING_TIP";
   const { animate } = useNotInitialAnimate(
     {
@@ -44,7 +44,7 @@ const Card: CardType = ({ word, isSelected, room, isHelperMode, className, ...pr
             "cursor-pointer hover:scale-110 opacity-80 hover:opacity-100": !isHelperMode,
             "animate-pulse": isPulsing,
             "border-secondary border-8": isCorrectWord,
-            "border-primary border-8": isSelected,
+            "border-primary border-8": isSelected && !isCorrectGuess,
             "border-success border-8 pointer-events-none": isCorrectGuess,
             "border-error border-8 pointer-events-none": isIncorrectGuess,
           },

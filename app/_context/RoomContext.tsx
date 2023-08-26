@@ -1,7 +1,7 @@
 "use client";
 
 import useUser from "@/app/_hooks/useUser";
-import { ExtendedRoom, Room } from "@/types";
+import { Room } from "@/types";
 import { supabase } from "@/app/_utils/supabase";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
 import { FC, createContext, useEffect, useState } from "react";
@@ -16,7 +16,7 @@ type RoomContextType = {
 
 export const RoomContext = createContext<RoomContextType>({} as RoomContextType);
 
-export const RoomProvider: FC<React.HtmlHTMLAttributes<Element> & { remoteRoom: ExtendedRoom }> = ({
+export const RoomProvider: FC<React.HtmlHTMLAttributes<Element> & { remoteRoom: Room }> = ({
   children,
   remoteRoom,
 }) => {
@@ -43,7 +43,7 @@ export const RoomProvider: FC<React.HtmlHTMLAttributes<Element> & { remoteRoom: 
           const hasLost = newRoom.wrong_guesses.length;
           setRoom((oldRoom) => ({
             ...newRoom,
-            correctWords: oldRoom.correctWords,
+            correct_words: oldRoom.correct_words,
           }));
           if (newRoom.game_state === "FINISHED") {
             show(hasLost ? "LOSS" : "WIN");

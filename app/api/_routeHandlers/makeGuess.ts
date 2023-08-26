@@ -1,8 +1,8 @@
 import { DEFAULT_CORRECT_WORDS } from "@/app/_config/constants";
 import BadRequestError from "@/app/api/_errors/BadRequestError";
 import { Room } from "@/types";
-import { MakeGuessPostType, User } from "@/types/server";
-import { getExtendedRoom, updateRoomById } from "@/app/_repositories/RoomRepository";
+import { MakeGuessPostType, User } from "@/types";
+import { getRoomById, updateRoomById } from "@/app/_repositories/RoomRepository";
 
 async function validate(room: Room, user: User, req: Request) {
   const { words } = (await req.json()) as MakeGuessPostType;
@@ -19,21 +19,21 @@ async function validate(room: Room, user: User, req: Request) {
   }
 
   if (room.id !== user.user_metadata.room_id) {
-    throw new Error("You must enter the room to make a tip");
+    throw new Error("You must enter the room to make a guess");
   }
 
   return { words };
 }
 
 export default async function makeGuess(roomId: number, user: User, req: Request) {
-  const room = await getExtendedRoom(roomId);
+  const room = await getRoomById(roomId);
   const { words } = await validate(room, user, req);
 
-  const correctGuesses = new Set(...room.correct_guesses);
-  const wrongGuesses = new Set(...room.wrong_guesses);
+  const correctGuesses = new Set(room.correct_guesses);
+  const wrongGuesses = new Set(room.wrong_guesses);
 
   words.forEach((word) => {
-    if (room.correctWords?.includes(word)) {
+    if (room.correct_words?.includes(word)) {
       correctGuesses.add(word);
     } else {
       wrongGuesses.add(word);

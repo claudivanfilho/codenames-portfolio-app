@@ -1,5 +1,5 @@
 import BadRequestError from "@/app/api/_errors/BadRequestError";
-import { RoomParamsType } from "@/types/server";
+import { RoomParamsType } from "@/types";
 import { getSessionUser } from "@/app/_repositories/UserRepository";
 import makeTip from "@/app/api/_routeHandlers/makeTip";
 import { NextResponse } from "next/server";
@@ -11,7 +11,7 @@ export async function POST(req: Request, reqParams: RoomParamsType) {
   const user = await getSessionUser();
 
   try {
-    const { data } = await makeTip(+roomId, user, req);
+    const data = await makeTip(+roomId, user, req);
     return NextResponse.json(data);
   } catch (error) {
     if (error instanceof BadRequestError) {

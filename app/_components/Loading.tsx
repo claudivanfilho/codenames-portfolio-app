@@ -1,11 +1,19 @@
-const Loading = ({ size = 24 }: { size?: number }) => {
+import { twMerge } from "tailwind-merge";
+
+const Loading: React.FC<React.SVGProps<SVGSVGElement>> = ({
+  className,
+  height,
+  width,
+  ...rest
+}) => {
   return (
     <svg
-      className={`animate-spin -ml-1 mr-3 text-secondary`}
+      className={twMerge("animate-spin -ml-1 mr-3", className)}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
-      width={size}
-      height={size}
+      height={height || 24}
+      width={width || 24}
+      {...rest}
       viewBox={`0 0 24 24`}
     >
       <circle

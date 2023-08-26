@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 import BadRequestError from "@/app/api/_errors/BadRequestError";
-import { LoginPostType } from "@/types/server";
+import { LoginPostType } from "@/types";
 import { loginUser } from "@/app/_repositories/UserRepository";
 
 async function validate(req: Request): Promise<LoginPostType> {
-  const formData = await req.formData();
-  const userName = formData.get("userName");
+  const { userName } = (await req.json()) as LoginPostType;
 
   if (!userName) throw new BadRequestError("Missing userName");
 

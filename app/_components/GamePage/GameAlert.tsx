@@ -24,16 +24,16 @@ export default function GameAlert() {
   );
 
   const helperContent: Record<GameState, [ReactNode, ReactNode?]> = {
-    WAITING_GUESSER: [<Loading />, msg],
-    WAITING_GUESSES: [<Loading />, msg],
+    WAITING_GUESSER: [<Loading className="text-secondary" />, msg],
+    WAITING_GUESSES: [<Loading className="text-secondary" />, msg],
     WAITING_TIP: [msg],
     FINISHED: [msg, <LeaveRoomBtn roomId={room.id} className="btn-secondary" />],
   };
 
   const guesserContent: Record<GameState, [ReactNode, ReactNode?]> = {
     ...helperContent,
-    WAITING_GUESSES: [<Loading />, msg],
-    WAITING_TIP: [<Loading />, msg],
+    WAITING_GUESSES: [<Loading className="text-secondary" />, msg],
+    WAITING_TIP: [<Loading className="text-secondary" />, msg],
   };
 
   const content = isHelper ? helperContent[room.game_state] : guesserContent[room.game_state];

@@ -1,9 +1,10 @@
 import { Room } from "@/types";
 import { makeGuess } from "@/app/_services/api";
 import clsx from "clsx";
-import React from "react";
+import React, { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { FormattedMessage } from "react-intl";
+import Loading from "../Loading";
 
 type ConfirmGuessBtnType = React.FC<
   React.HtmlHTMLAttributes<HTMLButtonElement> & {
@@ -20,9 +21,11 @@ const ConfirmGuessBtn: ConfirmGuessBtnType = ({
   setSelectedWords,
   ...props
 }) => {
+  const [loading, setLoading] = useState(false);
   const onMakeGuess = async () => {
     try {
-      await makeGuess(room.id, { words });
+      setLoading(true);
+      await makeGuess(room.id, { words }).finally(() => setLoading(false));
       setSelectedWords([]);
     } catch (error) {
       alert((error as Error).message);
@@ -32,6 +35,7 @@ const ConfirmGuessBtn: ConfirmGuessBtnType = ({
   return (
     <button
       {...props}
+      disabled={loading}
       onClick={onMakeGuess}
       className={twMerge(
         clsx(
@@ -40,6 +44,7 @@ const ConfirmGuessBtn: ConfirmGuessBtnType = ({
         )
       )}
     >
+      {loading && <Loading />}
       <FormattedMessage id="confirm" />
     </button>
   );
