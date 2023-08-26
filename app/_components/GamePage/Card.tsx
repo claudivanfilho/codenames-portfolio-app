@@ -39,7 +39,7 @@ const Card: CardType = ({ word, isSelected, room, isHelperMode, className, ...pr
       style={{ backgroundImage: `url('/images/code-bg.png')` }}
       className={twMerge(
         clsx(
-          `bg-center sm:border-double shadow-slate-600 shadow-md bg-cover h-14 sm:h-28 relative grid m-2 sm:m-3 border-2 border-base-300 rounded-md place-items-center hover:scale-105`,
+          `bg-center sm:border-double shadow-slate-600 shadow-md bg-cover h-14 sm:h-28 relative grid m-2 sm:m-3 border-2 border-base-300 rounded-md place-items-center`,
           {
             "cursor-pointer hover:scale-110 opacity-80 hover:opacity-100": !isHelperMode,
             "animate-pulse": isPulsing,

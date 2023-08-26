@@ -6,6 +6,7 @@ Codenames board game App created with the intention of showcasing a range of sof
 
 - [x] Cards Animation
 - [x] Intl
+- [ ] Authentication with Clerk
 - [ ] Tests Front
 - [ ] Tests Back
 - [ ] Readme.md

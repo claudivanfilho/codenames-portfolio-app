@@ -1,28 +1,12 @@
 "use client";
 
 import { login } from "@/app/_services/api";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FormattedMessage } from "react-intl";
-import Loading from "../Loading";
+import LoadingButton from "../LoadingButton";
 
 const LoginPage: React.FC<React.HtmlHTMLAttributes<HTMLElement>> = () => {
   const [userName, setUserName] = useState("");
-  const [loading, setLoading] = useState(false);
-  const params = useSearchParams();
-  const error = params.get("error");
-
-  useEffect(() => {
-    if (error) alert(error);
-  }, []);
-
-  const onLogin = async () => {
-    setLoading(true);
-    await login(userName).catch((error) => {
-      setLoading(false);
-      alert(error.message);
-    });
-  };
 
   return (
     <div className="flex flex-col items-center">
@@ -43,10 +27,9 @@ const LoginPage: React.FC<React.HtmlHTMLAttributes<HTMLElement>> = () => {
             className="input input-primary"
           />
         </div>
-        <button disabled={loading} type="button" onClick={onLogin} className="mt-2 btn btn-primary">
-          {loading && <Loading />}
+        <LoadingButton onClick={() => login(userName)} className="mt-2 btn btn-primary" hideOnCatch>
           <FormattedMessage id="signin-username" />
-        </button>
+        </LoadingButton>
       </div>
     </div>
   );

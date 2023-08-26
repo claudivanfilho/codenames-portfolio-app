@@ -1,22 +1,10 @@
-import { useState } from "react";
 import { logout } from "../_services/api";
-import Loading from "./Loading";
+import LoadingButton from "./LoadingButton";
 
 export default function LogoutButton() {
-  const [loading, setLoading] = useState(false);
-
-  const onLogout = async () => {
-    setLoading(true);
-    await logout().catch((error) => {
-      setLoading(false);
-      alert(error.message);
-    });
-  };
-
   return (
-    <button disabled={loading} onClick={onLogout} className="btn btn-sm btn-outline">
-      {loading && <Loading />}
+    <LoadingButton hideOnCatch onClick={() => logout()} className="btn btn-sm btn-outline">
       Logout
-    </button>
+    </LoadingButton>
   );
 }

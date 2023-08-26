@@ -20,8 +20,10 @@ export async function POST(req: Request) {
       status: 301,
     });
   } catch (error) {
-    return NextResponse.redirect(`${requestUrl.origin}/login?error=${(error as Error).message}`, {
-      status: 301,
-    });
+    if (error instanceof BadRequestError) {
+      return NextResponse.json({ message: error.message }, { status: 400 });
+    } else if (error instanceof Error) {
+      return NextResponse.json({ message: error.message }, { status: 500 });
+    }
   }
 }
