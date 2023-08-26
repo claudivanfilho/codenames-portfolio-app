@@ -7,7 +7,10 @@ export default function LogoutButton() {
 
   const onLogout = async () => {
     setLoading(true);
-    await logout().finally(() => setLoading(false));
+    await logout().catch((error) => {
+      setLoading(false);
+      alert(error.message);
+    });
   };
 
   return (

@@ -26,7 +26,7 @@ const LoginPage: React.FC<React.HtmlHTMLAttributes<HTMLElement>> = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <form className="flex flex-col p-6 border-8 border-double rounded-lg shadow-md bg-base-100 bg-opacity-60 w-80 shadow-primary">
+      <div className="flex flex-col p-6 border-8 border-double rounded-lg shadow-md bg-base-100 bg-opacity-60 w-80 shadow-primary">
         <h1 className="px-1 mx-auto text-2xl card-title">Login</h1>
         <div className="divider"></div>
         <div className="grid mb-4">
@@ -47,7 +47,7 @@ const LoginPage: React.FC<React.HtmlHTMLAttributes<HTMLElement>> = () => {
           {loading && <Loading />}
           <FormattedMessage id="signin-username" />
         </button>
-      </form>
+      </div>
     </div>
   );
 };
