@@ -9,7 +9,7 @@ async function validate(room: Room, user: User, req: Request) {
 
   if (!words.length) throw new BadRequestError("No guess provided");
 
-  if (room.guesser_id !== user.id)
+  if (!room.players?.find((player) => player.role === "GUESSER" && player.user_id === user.id))
     throw new BadRequestError("You are not able to make a guess to this room");
 
   if (room.rounds_left === 0) throw new Error("You have no more rounds left");

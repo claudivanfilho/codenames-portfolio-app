@@ -22,7 +22,7 @@ export default async function page({ params }: { params: { id: string } }) {
 
   try {
     const room = await getRoomById(+params.id);
-    const isHelper = user.id === room.helper_id;
+    const isHelper = user.id === room.created_by;
     room.correct_words = isHelper ? room.correct_words : [];
 
     return (

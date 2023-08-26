@@ -3,28 +3,23 @@ import {
   DEFAULT_ROUNDS_OF_MATCH,
   DEFAULT_WORDS_NUMBER,
 } from "@/app/_config/constants";
-import { RoomUpdate } from "@/types";
+import { GameState, RoomUpdate } from "@/types";
 import { getRandomWords } from "@/app/_utils/game";
 import { User } from "@/types";
 import { db } from "../_utils/database";
+import { jsonArrayFrom } from "kysely/helpers/postgres";
+
 export async function getVisibleRooms(userId: string) {
   return db
     .selectFrom("rooms")
     .selectAll()
     .where("game_state", "!=", "FINISHED")
-    .where((eb) =>
-      eb.or([
-        eb("helper_id", "=", userId),
-        eb("guesser_id", "=", userId),
-        eb("guesser_id", "is", null),
-      ])
-    )
     .execute()
     .then((res) => res.map((room) => ({ ...room, id: +room.id })));
 }
 
 export async function getRoomById(roomId: number) {
-  const res = await db
+  return db
     .selectFrom("rooms")
     .innerJoinLateral(
       (eb) =>
@@ -36,10 +31,14 @@ export async function getRoomById(roomId: number) {
       (join) => join.onTrue()
     )
     .selectAll()
-    .where("id", "=", roomId)
+    .select((eb) => [
+      jsonArrayFrom(
+        eb.selectFrom("players").selectAll().whereRef("players.room_id", "=", "rooms.id")
+      ).as("players"),
+    ])
+    .where("rooms.id", "=", roomId)
     .executeTakeFirstOrThrow()
     .then((res) => ({ ...res, id: +res.id }));
-  return res;
 }
 
 export async function updateRoomById(roomId: number, data: RoomUpdate) {
@@ -52,6 +51,30 @@ export async function updateRoomById(roomId: number, data: RoomUpdate) {
     .then((res) => ({ ...res, id: +res.id }));
 }
 
+export async function updateStateAndCreatePlayer(gameState: GameState, user: User, roomId: number) {
+  return db.transaction().execute(async (trx) => {
+    const roomUpdated = await trx
+      .updateTable("rooms")
+      .where("id", "=", roomId)
+      .set({
+        game_state: gameState,
+      })
+      .returningAll()
+      .executeTakeFirstOrThrow()
+      .then((res) => ({ ...res, id: +res.id }));
+    await trx
+      .insertInto("players")
+      .values({
+        role: "GUESSER",
+        user_id: user.id,
+        room_id: roomId,
+        username: user.user_metadata.user_name,
+      })
+      .execute();
+    return roomUpdated;
+  });
+}
+
 /**
  * It's necessary to use Knex to ensure atomicity for the transaction,
  * as Supabase does not provide a built-in mechanism for achieving it.
@@ -62,17 +85,26 @@ export async function createNewRoom(roomName: string, user: User, locale: string
       .insertInto("rooms")
       .values({
         name: roomName,
-        helper_id: user.id,
-        helper_name: user.user_metadata.user_name,
         wrong_guesses: [],
         correct_guesses: [],
         words: getRandomWords({ numberOfWords: DEFAULT_WORDS_NUMBER, locale }),
         rounds_left: DEFAULT_ROUNDS_OF_MATCH,
         game_state: "WAITING_GUESSER",
+        created_by: user.id,
+        created_by_name: user.user_metadata.user_name,
       })
       .returningAll()
       .executeTakeFirstOrThrow()
       .then((res) => ({ ...res, id: +res.id }));
+    await trx
+      .insertInto("players")
+      .values({
+        role: "HELPER",
+        user_id: user.id,
+        room_id: room.id,
+        username: user.user_metadata.user_name,
+      })
+      .execute();
     await trx
       .insertInto("matches")
       .values({

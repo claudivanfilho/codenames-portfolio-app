@@ -2,7 +2,7 @@ import LogoIcon from "@/app/_components/icons/LogoIcon";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
-const Logo: React.FC<React.HtmlHTMLAttributes<HTMLDivElement> & { size: number }> = ({
+const Logo: React.FC<React.HTMLAttributes<HTMLDivElement> & { size: number }> = ({
   size,
   ...props
 }) => {

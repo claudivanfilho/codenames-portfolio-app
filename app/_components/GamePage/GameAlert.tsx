@@ -6,7 +6,7 @@ import { useIntl } from "react-intl";
 import LeaveRoomBtn from "../LeaveRoomBtn";
 
 export default function GameAlert() {
-  const { room, isHelper } = useRoom();
+  const { room, isHelper, guesserName, helperName } = useRoom();
   const { formatMessage: t } = useIntl();
 
   const hasLost = room.wrong_guesses.length;
@@ -17,8 +17,8 @@ export default function GameAlert() {
   const msg = t(
     { id: messageId },
     {
-      helper: room.helper_name,
-      guesser: room.guesser_name,
+      helper: helperName,
+      guesser: guesserName,
       number: room.current_tip_number,
     }
   );

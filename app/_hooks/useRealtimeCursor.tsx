@@ -1,8 +1,10 @@
 import { supabase } from "@/app/_utils/supabase";
 import { useEffect, useState } from "react";
 import useRoom from "./useRoom";
+import useUser from "./useUser";
 
 export default function useRealtimeCursor() {
+  const { user } = useUser();
   const { room, isHelper, selectedWords, setSelectedWords } = useRoom();
   const [cursor, setCursor] = useState<{ x: number; y: number; user: string }>();
 
@@ -14,7 +16,7 @@ export default function useRealtimeCursor() {
         payload: {
           x: event.clientX,
           y: event.clientY,
-          user: room.guesser_name,
+          user: user.user_metadata.user_name,
           words: selectedWords.join(","),
         },
       });

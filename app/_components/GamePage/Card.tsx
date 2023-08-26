@@ -8,7 +8,7 @@ import useNotInitialAnimate from "@/app/_hooks/useNotInitialAnimate";
 import { Room } from "@/types";
 
 type CardType = React.FC<
-  React.HtmlHTMLAttributes<HTMLDivElement> & {
+  React.HTMLAttributes<HTMLDivElement> & {
     room: Room;
     isHelperMode: boolean;
     isSelected: boolean;

@@ -4,7 +4,7 @@ const Loading: React.FC<React.SVGProps<SVGSVGElement>> = ({
   className,
   height,
   width,
-  ...rest
+  ...props
 }) => {
   return (
     <svg
@@ -13,7 +13,7 @@ const Loading: React.FC<React.SVGProps<SVGSVGElement>> = ({
       fill="none"
       height={height || 24}
       width={width || 24}
-      {...rest}
+      {...props}
       viewBox={`0 0 24 24`}
     >
       <circle

@@ -33,7 +33,7 @@ export default function RoomListing() {
                 transition={{ delay: 0.1 * index }}
               >
                 <th className="pl-0">{data.name}</th>
-                <td>{data.helper_name}</td>
+                <td>{data.created_by_name}</td>
                 <td className="pr-0 text-end">
                   <EnterBtn roomId={data.id} />
                 </td>

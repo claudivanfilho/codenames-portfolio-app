@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import LoadingButton from "../LoadingButton";
 
-const LoginPage: React.FC<React.HtmlHTMLAttributes<HTMLElement>> = () => {
+const LoginPage = () => {
   const [userName, setUserName] = useState("");
 
   return (

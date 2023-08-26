@@ -37,17 +37,54 @@ export interface Database {
           }
         ]
       }
+      players: {
+        Row: {
+          created_at: string
+          id: number
+          role: string
+          room_id: number | null
+          user_id: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          role: string
+          room_id?: number | null
+          user_id: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          role?: string
+          room_id?: number | null
+          user_id?: string
+          username?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "players_room_id_fkey"
+            columns: ["room_id"]
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "players_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       rooms: {
         Row: {
           correct_guesses: string[]
           created_at: string
+          created_by: string
           current_tip: string | null
           current_tip_number: number | null
           game_state: string
-          guesser_id: string | null
-          guesser_name: string | null
-          helper_id: string
-          helper_name: string
           id: number
           name: string
           rounds_left: number
@@ -57,13 +94,10 @@ export interface Database {
         Insert: {
           correct_guesses: string[]
           created_at?: string
+          created_by: string
           current_tip?: string | null
           current_tip_number?: number | null
           game_state?: string
-          guesser_id?: string | null
-          guesser_name?: string | null
-          helper_id: string
-          helper_name: string
           id?: number
           name: string
           rounds_left: number
@@ -73,13 +107,10 @@ export interface Database {
         Update: {
           correct_guesses?: string[]
           created_at?: string
+          created_by?: string
           current_tip?: string | null
           current_tip_number?: number | null
           game_state?: string
-          guesser_id?: string | null
-          guesser_name?: string | null
-          helper_id?: string
-          helper_name?: string
           id?: number
           name?: string
           rounds_left?: number
@@ -88,14 +119,8 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "rooms_guesser_id_fkey"
-            columns: ["guesser_id"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "rooms_helper_id_fkey"
-            columns: ["helper_id"]
+            foreignKeyName: "rooms_created_by_fkey"
+            columns: ["created_by"]
             referencedRelation: "users"
             referencedColumns: ["id"]
           }

@@ -3,7 +3,7 @@ import useRoom from "@/app/_hooks/useRoom";
 import { FormattedMessage } from "react-intl";
 
 export default function GamePageHeader() {
-  const { room, isHelper } = useRoom();
+  const { room, isHelper, helperName, guesserName } = useRoom();
 
   return (
     <div className="flex mb-4 stats bg-opacity-80">
@@ -17,9 +17,7 @@ export default function GamePageHeader() {
         <span className="stat-title">
           <FormattedMessage id={isHelper ? "guesser" : "helper"} />
         </span>
-        <span className="text-lg stat-value">
-          {isHelper ? room.guesser_name : room.helper_name}
-        </span>
+        <span className="text-lg stat-value">{isHelper ? guesserName : helperName}</span>
       </div>
       <div className="stat">
         <span className="stat-title">

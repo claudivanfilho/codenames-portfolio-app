@@ -34,7 +34,7 @@ export const RoomsProvider: FC<
         (payload: RealtimePostgresChangesPayload<Room>) => {
           switch (payload.eventType) {
             case "INSERT":
-              if (payload.new.helper_id !== userId) {
+              if (payload.new.created_by !== userId) {
                 setRooms((old) => [...old, payload.new]);
               }
               break;

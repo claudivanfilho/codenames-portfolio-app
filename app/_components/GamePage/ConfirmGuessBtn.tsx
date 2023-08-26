@@ -30,6 +30,7 @@ const ConfirmGuessBtn: ConfirmGuessBtnType = ({
     <LoadingButton
       {...props}
       onClick={onMakeGuess}
+      hideOnCatch
       className={twMerge(
         clsx(
           "absolute bottom-0 left-0 w-full rounded-none sm:relative btn btn-primary sm:rounded-sm",
