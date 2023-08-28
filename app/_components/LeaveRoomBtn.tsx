@@ -4,6 +4,7 @@ import { FormattedMessage } from "react-intl";
 import { twMerge } from "tailwind-merge";
 import { leaveRoom } from "../_services/api";
 import LoadingButton from "./LoadingButton";
+import { useRouter } from "next/navigation";
 
 type LeaveRoomBtnType = React.FC<
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -12,9 +13,13 @@ type LeaveRoomBtnType = React.FC<
 >;
 
 const LeaveRoomBtn: LeaveRoomBtnType = ({ roomId, className, ...props }) => {
+  const router = useRouter();
   return (
     <LoadingButton
-      onClick={() => leaveRoom(roomId)}
+      onClick={async () => {
+        await leaveRoom(roomId);
+        window.location.href = "/";
+      }}
       className={twMerge(clsx("flex mr-2 btn btn-sm", className))}
       hideOnCatch
       {...props}

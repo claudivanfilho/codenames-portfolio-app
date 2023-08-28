@@ -2,7 +2,7 @@ import { RoomParamsType } from "@/types";
 import makeGuess from "@/app/api/_routeHandlers/makeGuess";
 import { NextResponse } from "next/server";
 import BadRequestError from "@/app/api/_errors/BadRequestError";
-import { getSessionUser } from "@/app/_repositories/UserRepository";
+import { getSessionUser } from "@/app/_utils/session";
 
 export const dynamic = "force-dynamic";
 

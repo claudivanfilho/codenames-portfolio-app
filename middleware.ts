@@ -1,8 +1,8 @@
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse } from "next/server";
 
 import { NextRequest } from "next/server";
 import { DEFAULT_LANG } from "./app/_config/constants";
+import { getSessionUserForMiddleware } from "./app/_utils/session";
 
 export const config = {
   matcher: [
@@ -20,21 +20,12 @@ export const config = {
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
-
   res.cookies.set("lang", req.headers.get("accept-language")?.split(",")[0] || DEFAULT_LANG);
-
-  // Create a Supabase client configured to use cookies
-  const supabase = createMiddlewareClient({ req, res });
-
-  // Refresh session if expired - required for Server Components
-  // https://supabase.com/docs/guides/auth/auth-helpers/nextjs#managing-session-with-middleware
-  await supabase.auth.getSession();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+  const user = await getSessionUserForMiddleware(req, res);
+  const roomId = user?.user_metadata.room_id;
   const pathname = req.nextUrl.pathname;
+
+  console.log(pathname);
 
   if (pathname.endsWith("/leave")) return res;
 
@@ -52,8 +43,6 @@ export async function middleware(req: NextRequest) {
   if (pathname.startsWith("/login")) return user ? redirect("/", req) : res;
 
   if (!user) return redirect(`/login`, req);
-
-  const roomId = user.user_metadata.room_id;
 
   if (pathname.match(/room\/[0-9]*$/)) {
     if (!roomId) return redirect(`/`, req);

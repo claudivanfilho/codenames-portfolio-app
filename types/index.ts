@@ -5,8 +5,9 @@ export type User = {
   id: string;
   email: string;
   user_metadata: {
-    room_id?: number | null;
     user_name: string;
+    /** dynamically created attr that stores the value of the room_id cookie */
+    room_id?: number | null;
   };
 };
 

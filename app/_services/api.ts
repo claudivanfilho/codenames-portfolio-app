@@ -6,8 +6,6 @@ const handleFetchRequest = (response: Response) => {
     return response.json().then((errorData) => {
       throw new Error(errorData.message);
     });
-  } else if (response.redirected) {
-    return (window.location.href = response.url);
   }
   return response.json();
 };

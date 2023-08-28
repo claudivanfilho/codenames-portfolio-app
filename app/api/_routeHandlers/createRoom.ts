@@ -1,7 +1,7 @@
 import BadRequestError from "@/app/api/_errors/BadRequestError";
 import { RoomPostType } from "@/types";
 import { createNewRoom } from "@/app/_repositories/RoomRepository";
-import { getSessionUser, updateSessionUser } from "@/app/_repositories/UserRepository";
+import { getSessionUser, setSessionRoom } from "@/app/_utils/session";
 import { getLocale } from "@/app/_utils/server";
 
 async function validate(req: Request): Promise<RoomPostType> {
@@ -17,9 +17,7 @@ export default async function createRoom(req: Request) {
   const user = await getSessionUser();
   const { roomName } = await validate(req);
   const room = await createNewRoom(roomName, user, locale);
-  const { error } = await updateSessionUser({ room_id: room!.id });
-
-  if (error) throw new Error(error.message);
+  setSessionRoom(+room.id);
 
   return room;
 }

@@ -4,7 +4,7 @@ import { RoomProvider } from "@/app/_context/RoomContext";
 import { ToastProvider } from "@/app/_context/ToastContext";
 import { UserProvider } from "@/app/_context/UserContext";
 import { getRoomById } from "@/app/_repositories/RoomRepository";
-import { getSessionUser } from "@/app/_repositories/UserRepository";
+import { getSessionUser } from "@/app/_utils/session";
 import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";

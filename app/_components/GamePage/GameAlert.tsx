@@ -22,18 +22,20 @@ export default function GameAlert() {
       number: room.current_tip_number,
     }
   );
+  const LoadingComp = <Loading className="text-secondary" />;
+  const LeaveBtnComp = <LeaveRoomBtn roomId={room.id} className="btn-secondary" />;
 
   const helperContent: Record<GameState, [ReactNode, ReactNode?]> = {
-    WAITING_GUESSER: [<Loading className="text-secondary" />, msg],
-    WAITING_GUESSES: [<Loading className="text-secondary" />, msg],
+    WAITING_GUESSER: [LoadingComp, msg],
+    WAITING_GUESSES: [LoadingComp, msg],
     WAITING_TIP: [msg],
-    FINISHED: [msg, <LeaveRoomBtn roomId={room.id} className="btn-secondary" />],
+    FINISHED: [msg, LeaveBtnComp],
   };
 
   const guesserContent: Record<GameState, [ReactNode, ReactNode?]> = {
     ...helperContent,
-    WAITING_GUESSES: [<Loading className="text-secondary" />, msg],
-    WAITING_TIP: [<Loading className="text-secondary" />, msg],
+    WAITING_GUESSES: [LoadingComp, msg],
+    WAITING_TIP: [LoadingComp, msg],
   };
 
   const content = isHelper ? helperContent[room.game_state] : guesserContent[room.game_state];

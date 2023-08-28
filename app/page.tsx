@@ -1,10 +1,10 @@
 import ErrorPage from "@/app/_components/ErrorPage";
 import { getVisibleRooms } from "@/app/_repositories/RoomRepository";
-import { getSessionUser } from "@/app/_repositories/UserRepository";
 import RoomsPage from "./_components/RoomsPage/RoomsPage";
 import { UserProvider } from "./_context/UserContext";
 import { Metadata } from "next";
 import { RoomsProvider } from "./_context/RoomsContext";
+import { getSessionUser } from "./_utils/session";
 
 export const dynamic = "force-dynamic";
 

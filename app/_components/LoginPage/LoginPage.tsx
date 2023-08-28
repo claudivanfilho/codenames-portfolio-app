@@ -7,6 +7,10 @@ import LoadingButton from "../LoadingButton";
 
 const LoginPage = () => {
   const [userName, setUserName] = useState("");
+  const onLogin = async () => {
+    await login(userName);
+    window.location.href = "/";
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -27,7 +31,7 @@ const LoginPage = () => {
             className="input input-primary"
           />
         </div>
-        <LoadingButton onClick={() => login(userName)} className="mt-2 btn btn-primary" hideOnCatch>
+        <LoadingButton onClick={onLogin} className="mt-2 btn btn-primary" hideOnCatch>
           <FormattedMessage id="signin-username" />
         </LoadingButton>
       </div>

@@ -1,6 +1,6 @@
 import BadRequestError from "@/app/api/_errors/BadRequestError";
 import { RoomParamsType } from "@/types";
-import { getSessionUser } from "@/app/_repositories/UserRepository";
+import { getSessionUser } from "@/app/_utils/session";
 import makeTip from "@/app/api/_routeHandlers/makeTip";
 import { NextResponse } from "next/server";
 

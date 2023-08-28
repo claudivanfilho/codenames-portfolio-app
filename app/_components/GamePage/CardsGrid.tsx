@@ -8,7 +8,6 @@ export default function CardsGrid() {
   const { isHelper, room, selectedWords, setSelectedWords } = useRoom();
   const hasGuessesLeft = selectedWords.length < room.current_tip_number!;
   const canSelectWord = !isHelper && room.game_state === "WAITING_GUESSES";
-  const canShowConfirm = room.current_tip_number === selectedWords.length;
   const isCursorBlocked = (!isHelper && !canSelectWord) || room.game_state === "FINISHED";
 
   const onSelect = (word: string) => {
@@ -34,8 +33,8 @@ export default function CardsGrid() {
             initial={{
               opacity: 0,
               scale: 0,
-              y: -100,
-              x: -200,
+              y: -50,
+              x: -100,
             }}
             animate={{
               opacity: 1,
@@ -55,16 +54,7 @@ export default function CardsGrid() {
           </motion.div>
         ))}
       </div>
-      {canSelectWord && canShowConfirm && (
-        <section className="p-3">
-          <ConfirmGuessBtn
-            className="mt-2"
-            room={room}
-            setSelectedWords={setSelectedWords}
-            words={selectedWords}
-          />
-        </section>
-      )}
+      <ConfirmGuessBtn className="mt-2" />
     </div>
   );
 }
