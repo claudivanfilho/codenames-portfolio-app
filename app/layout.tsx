@@ -3,6 +3,7 @@ import Footer from "@/app/_components/Footer";
 import Navbar from "@/app/_components/Navbar";
 import { IntlProviderLocal } from "./_context/IntlContext";
 import { getLocale } from "./_utils/server";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata = {
   title: "Codenames",
@@ -28,6 +29,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Footer />
           </IntlProviderLocal>
         </div>
+        <Analytics />
       </body>
     </html>
   );
