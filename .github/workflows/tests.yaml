@@ -1,0 +1,14 @@
+name: "database-tests"
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 1.11.4
+      - run: supabase start
+      - run: npm run e2e:headless

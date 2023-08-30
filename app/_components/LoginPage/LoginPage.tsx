@@ -23,6 +23,7 @@ const LoginPage = () => {
           </label>
           <input
             type="text"
+            required
             value={userName}
             onChange={(evt) => setUserName(evt.target.value)}
             id="username"
