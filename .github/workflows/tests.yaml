@@ -4,12 +4,19 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
       - uses: supabase/setup-cli@v1
         with:
           version: 1.18.0
       - run: yarn install
-      - run: supabase db start --debug
+      - run: npx supabase start
       - run: npm run e2e:headless
+      env:
+        NEXT_PUBLIC_SUPABASE_URL: ${{ NEXT_PUBLIC_SUPABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        DATABASE_HOST: ${{ DATABASE_HOST }}
+        DATABASE_PORT: ${{ DATABASE_PORT }}
+        DATABASE_NAME: ${{ DATABASE_NAME }}
+        DATABASE_PASS: ${{ DATABASE_PASS }}
