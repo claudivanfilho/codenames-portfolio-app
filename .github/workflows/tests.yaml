@@ -11,5 +11,5 @@ jobs:
         with:
           version: 1.18.0
       - run: yarn install
-      - run: supabase start --debug
+      - run: supabase db start --debug
       - run: npm run e2e:headless
