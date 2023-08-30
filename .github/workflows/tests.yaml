@@ -10,5 +10,5 @@ jobs:
       - uses: supabase/setup-cli@v1
         with:
           version: 1.18.0
-      - run: supabase start
+      - run: supabase start --debug
       - run: npm run e2e:headless
