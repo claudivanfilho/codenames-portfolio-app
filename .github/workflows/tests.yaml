@@ -5,12 +5,13 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-
+    env:
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
     steps:
       - uses: actions/checkout@v3
       - uses: supabase/setup-cli@v1
         with:
           version: 1.18.0
       - run: yarn install
-      - run: npx supabase start
+      - run: npx supabase db push
       - run: npm run e2e:headless
