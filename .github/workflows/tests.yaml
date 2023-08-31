@@ -13,5 +13,5 @@ jobs:
         with:
           version: 1.18.0
       - run: yarn install
-      - run: npx supabase db push
+      - run: npx supabase db push --db-url=postgresql://postgres:postgres@localhost:54322/postgres
       - run: npm run e2e:headless
