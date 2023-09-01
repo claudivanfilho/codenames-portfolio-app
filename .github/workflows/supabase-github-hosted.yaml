@@ -5,20 +5,14 @@ jobs:
   prepare-supabase:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: supabase/setup-cli@v1
-      - run: supabase start
-      - run: sh generate_env.sh
-  install-deps:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: yarn install --frozen-lockfile
-  run-tests:
-    runs-on: ubuntu-latest
-    needs:
-      - install-deps
-      - prepare-supabase
-    steps:
-      - uses: actions/checkout@v3
-      - run: npm run e2e:headless
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Start Supabase
+        uses: supabase/setup-cli@v1
+        run: supabase start
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      - name: Run Tests
+        run: |
+          sh generate_env.sh
+          npm run e2e:headless
