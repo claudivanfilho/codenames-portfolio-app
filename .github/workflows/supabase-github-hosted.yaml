@@ -1,0 +1,27 @@
+name: "Supabase Github Hosted Action"
+on:
+  pull_request:
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+  prepare-supabase:
+    runs-on: ubuntu-latest
+    needs: checkout
+    steps:
+      - uses: supabase/setup-cli@v1
+      - run: supabase start
+      - run: sh generate_env.sh
+  install-deps:
+    runs-on: ubuntu-latest
+    needs: checkout
+    steps:
+      - run: yarn install --frozen-lockfile
+  run-tests:
+    runs-on: ubuntu-latest
+    needs:
+      - install-deps
+      - prepare-supabase
+    steps:
+      - run: npm run e2e:headless
