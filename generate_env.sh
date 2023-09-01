@@ -12,7 +12,7 @@ db_name=$(echo "$output" | grep "DB URL:" | awk -F/ '{print $4}')
 db_user=$(echo "$output" | grep "DB URL:" | awk -F[:/] '{print $5}')
 db_pass=$(echo "$output" | grep "DB URL:" | awk -F[:@] '{print $4}')
 
-# Generate the .env.local file
+# Generate the .env.test file
 cat <<EOF > .env.test
 NEXT_PUBLIC_SUPABASE_URL=$supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=$anon_key
@@ -23,4 +23,4 @@ DATABASE_USER=$db_user
 DATABASE_PASS=$db_pass
 EOF
 
-echo ".env.local file generated."
+echo ".env.test file generated."
