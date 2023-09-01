@@ -12,7 +12,6 @@ async function validate(req: Request): Promise<LoginPostType> {
 }
 
 export async function POST(req: Request) {
-  const requestUrl = new URL(req.url);
   try {
     const { userName } = await validate(req);
     await login(userName);

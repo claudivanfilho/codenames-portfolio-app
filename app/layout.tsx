@@ -4,6 +4,7 @@ import Navbar from "@/app/_components/Navbar";
 import { IntlProviderLocal } from "./_context/IntlContext";
 import { getLocale } from "./_utils/server";
 import { Analytics } from "@vercel/analytics/react";
+import { ErrorProvider } from "./_context/ErrorContext";
 
 export const metadata = {
   title: "Codenames",
@@ -22,11 +23,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           style={{ backgroundImage: `url('/images/main-bg.jpg')` }}
         >
           <IntlProviderLocal remoteLocale={locale}>
-            <Navbar />
-            <div className="flex items-center justify-center flex-1 w-full px-6 pt-3 overflow-y-auto text-foreground bg-base-200 bg-opacity-95">
-              {children}
-            </div>
-            <Footer />
+            <ErrorProvider>
+              <Navbar />
+              <div className="flex items-center justify-center flex-1 w-full px-6 pt-3 overflow-y-auto text-foreground bg-base-200 bg-opacity-95">
+                {children}
+              </div>
+              <Footer />
+            </ErrorProvider>
           </IntlProviderLocal>
         </div>
         <Analytics />
