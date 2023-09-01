@@ -20,4 +20,5 @@ jobs:
       - install-deps
       - prepare-supabase
     steps:
+      - uses: actions/checkout@v3
       - run: npm run e2e:headless
