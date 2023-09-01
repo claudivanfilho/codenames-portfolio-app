@@ -7,5 +7,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: supabase/setup-cli@v1
-      - run: suspabase init
-      - run: suspabase db start
+      - run: supabase init
+      - run: supabase db start
