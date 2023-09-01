@@ -7,8 +7,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: supabase/setup-cli@v1
-      - run: supabase db start
+      - run: supabase start
       - run: docker ps
+      - run: supabase status
       - run: yarn install --frozen-lockfile
       - run: sh generate_env.sh
       - run: npm run e2e:headless
