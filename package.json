@@ -8,7 +8,9 @@
     "types": "npx supabase gen types typescript --project-id \"$PROJECT_REF\" --schema public > types/supabase.ts",
     "reset": "supabase db reset",
     "e2e": "NODE_ENV=test start-server-and-test dev http://localhost:3000 \"cypress open --e2e\"",
-    "e2e:headless": "NODE_ENV=test start-server-and-test dev http://localhost:3000 \"cypress run --e2e\""
+    "e2e:headless:auth": "NODE_ENV=test start-server-and-test dev http://localhost:3000 \"cypress run --spec cypress/e2e/authentication.cy.ts\"",
+    "e2e:headless:gamming": "NODE_ENV=test start-server-and-test dev http://localhost:3000 \"cypress run --spec cypress/e2e/gamming.cy.ts\"",
+    "e2e:headless:redirects": "NODE_ENV=test start-server-and-test dev http://localhost:3000 \"cypress run --spec cypress/e2e/redirects.cy.ts\""
   },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "latest",

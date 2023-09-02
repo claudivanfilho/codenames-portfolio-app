@@ -1,7 +1,4 @@
 describe("Use Cases Of Redirects", () => {
-  before(() => {
-    return cy.exec("npx supabase db reset");
-  });
   it("When the user is logged should not be able to access the login page", () => {
     cy.visitRoute("/login");
     cy.login("usertest2");

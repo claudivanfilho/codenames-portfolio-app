@@ -2,7 +2,7 @@ name: "Supabase Github Hosted Action"
 on:
   pull_request:
 jobs:
-  run-cypress-tests:
+  run-cypress-auth-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -12,4 +12,26 @@ jobs:
           supabase start
           sh generate_env.sh
       - run: yarn install --frozen-lockfile
-      - run: npm run e2e:headless
+      - run: npm run e2e:headless:auth
+  run-cypress-gamming-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: supabase/setup-cli@v1
+      - name: Start Supabase and .env.test file
+        run: |
+          supabase start
+          sh generate_env.sh
+      - run: yarn install --frozen-lockfile
+      - run: npm run e2e:headless:gamming
+  run-cypress-redirects-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: supabase/setup-cli@v1
+      - name: Start Supabase and .env.test file
+        run: |
+          supabase start
+          sh generate_env.sh
+      - run: yarn install --frozen-lockfile
+      - run: npm run e2e:headless:redirects
