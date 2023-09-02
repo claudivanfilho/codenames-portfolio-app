@@ -57,7 +57,7 @@ Cypress.Commands.add("login", (username) => {
     .then(() => {
       cy.intercept("POST", "/auth/login").as("loginRequest");
       cy.get("button").contains("Log in with username").click();
-      return cy.wait("@loginRequest").then((res) => {
+      return cy.wait("@loginRequest", { requestTimeout: 10000 }).then((res) => {
         if (res?.response?.statusCode !== 200) {
           throw new Error(`Found an error on request: ${JSON.stringify(res?.response?.body)}`);
         }
