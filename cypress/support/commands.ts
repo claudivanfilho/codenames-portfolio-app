@@ -51,24 +51,33 @@ Cypress.Commands.add("visitRoute", (route) => {
 });
 
 Cypress.Commands.add("login", (username) => {
-  cy.get("#username").type(username);
-  cy.intercept("POST", "/auth/login").as("loginRequest");
-  cy.get("button").contains("Log in with username").click();
-  return cy.wait("@loginRequest").then((res) => {
-    if (res?.response?.statusCode !== 200) {
-      throw new Error(`Found an error on request: ${JSON.stringify(res?.response?.body)}`);
-    }
-  });
+  return cy
+    .get("#username")
+    .type(username)
+    .then(() => {
+      cy.intercept("POST", "/auth/login").as("loginRequest");
+      cy.get("button").contains("Log in with username").click();
+      return cy.wait("@loginRequest").then((res) => {
+        if (res?.response?.statusCode !== 200) {
+          throw new Error(`Found an error on request: ${JSON.stringify(res?.response?.body)}`);
+        }
+      });
+    });
 });
 
 Cypress.Commands.add("logout", () => {
   cy.intercept("POST", "/auth/logout").as("logoutRequest");
-  cy.get("button").contains("Logout").click();
-  return cy.wait("@logoutRequest").then((res) => {
-    if (res?.response?.statusCode !== 200) {
-      throw new Error(`Found an error on request: ${JSON.stringify(res?.response?.body)}`);
-    }
-  });
+  return cy
+    .get("button")
+    .contains("Logout")
+    .click()
+    .then(() => {
+      return cy.wait("@logoutRequest").then((res) => {
+        if (res?.response?.statusCode !== 200) {
+          throw new Error(`Found an error on request: ${JSON.stringify(res?.response?.body)}`);
+        }
+      });
+    });
 });
 
 Cypress.Commands.add("expectPathname", (pathname) => {
@@ -76,37 +85,81 @@ Cypress.Commands.add("expectPathname", (pathname) => {
 });
 
 Cypress.Commands.add("createRoom", (roomName) => {
-  cy.get("#room").type(roomName);
   cy.intercept("POST", "/api/room").as("roomCreate");
-  cy.get("button").contains("Create").click();
-  return cy.wait("@roomCreate").then((res) => {
-    if (res?.response?.statusCode !== 200) {
-      throw new Error(`Found an error on request: ${JSON.stringify(res?.response?.body)}`);
-    }
-    return res?.response?.body;
-  });
+  return cy
+    .get("#room")
+    .type(roomName)
+    .then(() => {
+      return cy
+        .get("button")
+        .contains("Create")
+        .click()
+        .then(() => {
+          return cy.wait("@roomCreate").then((res) => {
+            if (res?.response?.statusCode !== 200) {
+              throw new Error(`Found an error on request: ${JSON.stringify(res?.response?.body)}`);
+            }
+            return res?.response?.body;
+          });
+        });
+    });
 });
 
 Cypress.Commands.add("enterRoom", (roomId) => {
   cy.intercept("POST", `/api/room/${roomId}/enter`).as("roomEnter");
-  cy.get(`[data-testid=row-${roomId}] button`).contains("Enter").click();
-  return cy.wait("@roomEnter").then((res) => {
-    if (res?.response?.statusCode !== 200) {
-      throw new Error(`Found an error on request: ${JSON.stringify(res?.response?.body)}`);
-    }
-  });
+  return cy
+    .get(`[data-testid=row-${roomId}] button`)
+    .contains("Enter")
+    .click()
+    .then(() => {
+      return cy.wait("@roomEnter").then((res) => {
+        if (res?.response?.statusCode !== 200) {
+          throw new Error(`Found an error on request: ${JSON.stringify(res?.response?.body)}`);
+        }
+      });
+    });
+});
+
+Cypress.Commands.add("leaveRoom", (roomId) => {
+  cy.intercept("POST", `/api/room/${roomId}/leave`).as("roomLeave");
+  return cy
+    .get("button")
+    .contains("Leave the Room")
+    .click()
+    .then(() => {
+      return cy.wait("@roomLeave").then((res) => {
+        if (res?.response?.statusCode !== 200) {
+          throw new Error(`Found an error on request: ${JSON.stringify(res?.response?.body)}`);
+        }
+      });
+    });
 });
 
 Cypress.Commands.add("makeTip", (roomId, tip, tipNumber) => {
   cy.intercept("POST", `/api/room/${roomId}/tip`).as("roomTip");
-  cy.get("input[name=Clue]").type(tip);
-  cy.get(`[data-testid=input-number-${tipNumber}]`).click();
-  cy.get("button").contains("Confirm").click();
-  return cy.wait("@roomTip").then((res) => {
-    if (res?.response?.statusCode !== 200) {
-      throw new Error(`Found an error on request: ${JSON.stringify(res?.response?.body)}`);
-    }
-  });
+  return cy
+    .get("input[name=Clue]")
+    .type(tip)
+    .then(() => {
+      return cy
+        .get(`[data-testid=input-number-${tipNumber}]`)
+        .click()
+        .then(() => {
+          return cy
+            .get("button")
+            .contains("Confirm")
+            .click()
+            .then(() => {
+              return cy.wait("@roomTip").then((res) => {
+                if (res?.response?.statusCode !== 200) {
+                  throw new Error(
+                    `Found an error on request: ${JSON.stringify(res?.response?.body)}`
+                  );
+                }
+              });
+            });
+        });
+    });
 });
 
 Cypress.Commands.add("makeGuess", (roomId: number, words: string[]) => {
@@ -114,10 +167,15 @@ Cypress.Commands.add("makeGuess", (roomId: number, words: string[]) => {
   words.forEach((word) => {
     cy.get(`[data-testid=card-${word}]`).click();
   });
-  cy.get("button").contains("Confirm").click();
-  return cy.wait("@roomGuess").then((res) => {
-    if (res?.response?.statusCode !== 200) {
-      throw new Error(`Found an error on request: ${JSON.stringify(res?.response?.body)}`);
-    }
-  });
+  return cy
+    .get("button")
+    .contains("Confirm")
+    .click()
+    .then(() => {
+      return cy.wait("@roomGuess").then((res) => {
+        if (res?.response?.statusCode !== 200) {
+          throw new Error(`Found an error on request: ${JSON.stringify(res?.response?.body)}`);
+        }
+      });
+    });
 });
