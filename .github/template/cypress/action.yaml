@@ -9,7 +9,6 @@ runs:
   using: "composite"
   # Defining the action steps(Just one step to be simple)
   steps:
-    - uses: actions/checkout@v3
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
