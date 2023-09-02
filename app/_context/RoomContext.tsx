@@ -9,6 +9,7 @@ import useToast from "../_hooks/useToast";
 
 type RoomContextType = {
   room: Room;
+  setRoom: (newRoom: Room) => void;
   isHelper: boolean;
   helperName: string;
   guesserName?: string;
@@ -114,7 +115,7 @@ export const RoomProvider: FC<React.HtmlHTMLAttributes<Element> & { remoteRoom: 
 
   return (
     <RoomContext.Provider
-      value={{ room, isHelper, selectedWords, helperName, guesserName, setSelectedWords }}
+      value={{ room, setRoom, isHelper, selectedWords, helperName, guesserName, setSelectedWords }}
     >
       {children}
     </RoomContext.Provider>

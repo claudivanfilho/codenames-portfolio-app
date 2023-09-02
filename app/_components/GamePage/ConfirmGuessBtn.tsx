@@ -9,12 +9,13 @@ import useRoom from "@/app/_hooks/useRoom";
 type ConfirmGuessBtnType = React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>>;
 
 const ConfirmGuessBtn: ConfirmGuessBtnType = ({ className, ...props }) => {
-  const { setSelectedWords, selectedWords, isHelper, room } = useRoom();
+  const { setSelectedWords, selectedWords, isHelper, room, setRoom } = useRoom();
   const canSelectWord = !isHelper && room.game_state === "WAITING_GUESSES";
   const canShowConfirm = room.current_tip_number === selectedWords.length && canSelectWord;
 
   const onMakeGuess = async () => {
-    await makeGuess(room.id, { words: selectedWords });
+    const newRoom = await makeGuess(room.id, { words: selectedWords });
+    setRoom(newRoom);
     setSelectedWords([]);
   };
 

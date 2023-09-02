@@ -1,15 +1,13 @@
-name: "Supabase Github Self Action"
-on:
-  pull_request:
+# name: "Supabase Github Self Action"
+# on:
+#   pull_request:
 
-jobs:
-  build:
-    runs-on: self-hosted
-    env:
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-    steps:
-      - uses: actions/checkout@v3
-      - run: yarn install --frozen-lockfile
-      - run: npx supabase db reset
-      - run: sh generate_env.sh
-      - run: npm run e2e:headless
+# jobs:
+#   build:
+#     runs-on: self-hosted
+#     steps:
+#       - uses: actions/checkout@v3
+#       - run: yarn install --frozen-lockfile
+#       - run: npx supabase db reset
+#       - run: sh generate_env.sh
+#       - run: npm run e2e:headless

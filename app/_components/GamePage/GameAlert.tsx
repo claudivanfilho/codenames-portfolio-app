@@ -43,7 +43,7 @@ export default function GameAlert() {
   return (
     <div className="flex w-full h-13">
       <div className="flex justify-center p-2 mx-3 text-sm font-bold border-2 rounded-sm alert border-secondary">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4" data-testid="game-alert">
           {content.at(0)}
           {content.at(1)}
         </div>

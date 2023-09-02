@@ -49,6 +49,7 @@ export default function CardsGrid() {
               isSelected={selectedWords.includes(word)}
               room={room}
               word={word}
+              data-testid={`card-${word}`}
               onClick={() => onSelect(word)}
             />
           </motion.div>
