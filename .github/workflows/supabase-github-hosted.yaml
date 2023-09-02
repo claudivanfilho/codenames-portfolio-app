@@ -8,13 +8,13 @@ jobs:
       - uses: "./.github/template/cypress"
         with:
           command: e2e:headless:auth
-  run-cypress-auth-tests:
+  run-cypress-gamming-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: "./.github/template/cypress"
         with:
           command: e2e:headless:gamming
-  run-cypress-auth-tests:
+  run-cypress-redirects-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: "./.github/template/cypress"
