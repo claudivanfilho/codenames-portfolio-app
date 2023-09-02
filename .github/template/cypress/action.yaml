@@ -12,6 +12,7 @@ runs:
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      shell: bash
     - uses: supabase/setup-cli@v1
     - uses: actions/setup-node@v3.1.1
       with:
@@ -20,6 +21,7 @@ runs:
       id: node
       run: |
         echo "version=$(node -v)" >> $GITHUB_OUTPUT
+      shell: bash
     - name: Get node_modules cache
       uses: actions/cache@v3
       id: node_modules
@@ -33,6 +35,10 @@ runs:
       run: |
         supabase start
         sh generate_env.sh
+      shell: bash
     - run: yarn install --frozen-lockfile
+      shell: bash
     - run: npx cypress install
+      shell: bash
     - run: npm run ${{ inputs.command }}
+      shell: bash
