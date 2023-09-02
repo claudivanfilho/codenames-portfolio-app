@@ -8,15 +8,11 @@ import useError from "@/app/_hooks/useError";
 
 const LoginPage = () => {
   const [userName, setUserName] = useState("");
-  const { error, setError } = useError();
+  const { error } = useError();
   const onLogin = async () => {
-    await login(userName)
-      .then(() => {
-        window.location.href = "/";
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
+    await login(userName).then(() => {
+      window.location.href = "/";
+    });
   };
 
   return (
@@ -57,7 +53,12 @@ const LoginPage = () => {
             className="input input-primary"
           />
         </div>
-        <LoadingButton onClick={onLogin} className="mt-2 btn btn-primary">
+        <LoadingButton
+          onClick={onLogin}
+          className="mt-2 btn btn-primary"
+          hideOnCatch
+          useGlobalErrorHandler
+        >
           <FormattedMessage id="signin-username" />
         </LoadingButton>
       </div>

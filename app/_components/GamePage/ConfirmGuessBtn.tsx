@@ -15,7 +15,7 @@ const ConfirmGuessBtn: ConfirmGuessBtnType = ({ className, ...props }) => {
 
   const onMakeGuess = async () => {
     const newRoom = await makeGuess(room.id, { words: selectedWords });
-    setRoom(newRoom);
+    setRoom((old) => ({ ...newRoom, players: old.players }));
     setSelectedWords([]);
   };
 

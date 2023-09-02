@@ -34,7 +34,7 @@ declare global {
       login(username: string): Chainable<Interception>;
       logout(): Chainable<Interception>;
       expectPathname(path: string): Chainable<string>;
-      createRoom(name: string): Chainable<{ id: number; correct_words: string[] }>;
+      createRoom(name: string): Chainable<{ id: number; correct_words: string[]; words: string[] }>;
       enterRoom(id: number): Chainable<Interception>;
       leaveRoom(id: number): Chainable<Interception>;
       makeTip(id: number, tip: string, tipNumber: number): Chainable<Interception>;

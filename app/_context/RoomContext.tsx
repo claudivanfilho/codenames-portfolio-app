@@ -4,12 +4,12 @@ import useUser from "@/app/_hooks/useUser";
 import { Player, Room } from "@/types";
 import { supabase } from "@/app/_utils/supabase";
 import { RealtimePostgresChangesPayload } from "@supabase/supabase-js";
-import { FC, createContext, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, createContext, useEffect, useState } from "react";
 import useToast from "../_hooks/useToast";
 
 type RoomContextType = {
   room: Room;
-  setRoom: (newRoom: Room) => void;
+  setRoom: Dispatch<SetStateAction<Room>>;
   isHelper: boolean;
   helperName: string;
   guesserName?: string;
