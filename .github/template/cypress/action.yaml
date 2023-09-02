@@ -6,7 +6,7 @@ inputs:
     required: true
 
 runs:
-  using: "shell"
+  using: "composite"
   # Defining the action steps(Just one step to be simple)
   steps:
     - name: Get yarn cache directory path
