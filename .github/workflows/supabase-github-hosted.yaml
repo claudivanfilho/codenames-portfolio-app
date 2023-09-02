@@ -7,6 +7,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: supabase/setup-cli@v1
+      - name: Cache Docker images
+        uses: actions/cache@v2
+        with:
+          path: /var/lib/docker
+          key: docker-${{ runner.os }}-${{ hashFiles('**/*config.toml') }}
+          restore-keys: |
+            docker-${{ runner.os }}-
       - name: Start Supabase and .env.test file
         run: |
           supabase start
@@ -18,6 +25,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: supabase/setup-cli@v1
+      - name: Cache Docker images
+        uses: actions/cache@v2
+        with:
+          path: /var/lib/docker
+          key: docker-${{ runner.os }}-${{ hashFiles('**/*config.toml') }}
+          restore-keys: |
+            docker-${{ runner.os }}-
       - name: Start Supabase and .env.test file
         run: |
           supabase start
@@ -29,6 +43,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: supabase/setup-cli@v1
+      - name: Cache Docker images
+        uses: actions/cache@v2
+        with:
+          path: /var/lib/docker
+          key: docker-${{ runner.os }}-${{ hashFiles('**/*config.toml') }}
+          restore-keys: |
+            docker-${{ runner.os }}-
       - name: Start Supabase and .env.test file
         run: |
           supabase start
