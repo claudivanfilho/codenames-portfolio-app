@@ -72,7 +72,7 @@ Cypress.Commands.add("logout", () => {
     .contains("Logout")
     .click()
     .then(() => {
-      return cy.wait("@logoutRequest").then((res) => {
+      return cy.wait("@logoutRequest", { requestTimeout: 10000 }).then((res) => {
         if (res?.response?.statusCode !== 200) {
           throw new Error(`Found an error on request: ${JSON.stringify(res?.response?.body)}`);
         }

@@ -1,4 +1,7 @@
 describe("Use Cases Of The Gamming", () => {
+  before(() => {
+    return cy.exec("npx supabase db reset");
+  });
   it("when guessing all the correct words should win the game", () => {
     cy.visitRoute("/login");
     cy.login("userhelper");
