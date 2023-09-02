@@ -8,7 +8,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
       - uses: supabase/setup-cli@v1
       - uses: actions/setup-node@v3.1.1
         with:
@@ -16,7 +16,7 @@ jobs:
       - name: Get node version
         id: node
         run: |
-          echo "::set-output name=version::$(node -v)"
+          echo "version=$(node -v)" >> $GITHUB_OUTPUT
       - name: Get node_modules cache
         uses: actions/cache@v3.0.2
         id: node_modules
@@ -25,6 +25,7 @@ jobs:
             **/node_modules
           # Adding node version as cache key
           key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}-${{ steps.node.outputs.version }}
+      - uses: supabase/setup-cli@v1
       - name: Start Supabase and .env.test file
         run: |
           supabase start
@@ -35,6 +36,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
       - uses: supabase/setup-cli@v1
       - uses: actions/setup-node@v3.1.1
         with:
@@ -42,7 +46,7 @@ jobs:
       - name: Get node version
         id: node
         run: |
-          echo "::set-output name=version::$(node -v)"
+          echo "version=$(node -v)" >> $GITHUB_OUTPUT
       - name: Get node_modules cache
         uses: actions/cache@v3.0.2
         id: node_modules
@@ -51,6 +55,7 @@ jobs:
             **/node_modules
           # Adding node version as cache key
           key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}-${{ steps.node.outputs.version }}
+      - uses: supabase/setup-cli@v1
       - name: Start Supabase and .env.test file
         run: |
           supabase start
@@ -61,6 +66,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
       - uses: supabase/setup-cli@v1
       - uses: actions/setup-node@v3.1.1
         with:
@@ -68,7 +76,7 @@ jobs:
       - name: Get node version
         id: node
         run: |
-          echo "::set-output name=version::$(node -v)"
+          echo "version=$(node -v)" >> $GITHUB_OUTPUT
       - name: Get node_modules cache
         uses: actions/cache@v3.0.2
         id: node_modules
@@ -77,6 +85,7 @@ jobs:
             **/node_modules
           # Adding node version as cache key
           key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}-${{ steps.node.outputs.version }}
+      - uses: supabase/setup-cli@v1
       - name: Start Supabase and .env.test file
         run: |
           supabase start
