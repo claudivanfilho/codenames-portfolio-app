@@ -21,7 +21,6 @@ runs:
     - uses: actions/setup-node@v3
       with:
         node-version: ${{ steps.setup-node.node_version }}
-      shell: bash
     - name: Get node_modules cache
       uses: actions/cache@v3
       id: node_modules
