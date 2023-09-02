@@ -6,26 +6,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
       - uses: supabase/setup-cli@v1
-      - name: Cache Docker images
-        uses: actions/cache@v3
-        with:
-          path: /var/lib/docker
-          key: docker-${{ runner.os }}-${{ hashFiles('**/*config.toml') }}
-          restore-keys: |
-            docker-${{ runner.os }}-
       - name: Cache node modules
         id: cache-npm
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
-          path: ~/.npm
+          path: $ {{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
-            ${{ runner.os }}-nner.os }}-
+            ${{ runner.os }}-
+      - if: ${{ steps.cache-yarn.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: yarn list
       - name: Start Supabase and .env.test file
         run: |
           supabase start
@@ -37,25 +37,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: supabase/setup-cli@v1
-      - name: Cache Docker images
-        uses: actions/cache@v3
-        with:
-          path: /var/lib/docker
-          key: docker-${{ runner.os }}-${{ hashFiles('**/*config.toml') }}
-          restore-keys: |
-            docker-${{ runner.os }}-
       - name: Cache node modules
         id: cache-npm
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
-          path: ~/.npm
+          path: $ {{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
-            ${{ runner.os }}-nner.os }}-
+            ${{ runner.os }}-
+      - if: ${{ steps.cache-yarn.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: yarn list
       - name: Start Supabase and .env.test file
         run: |
           supabase start
@@ -67,25 +64,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: supabase/setup-cli@v1
-      - name: Cache Docker images
-        uses: actions/cache@v3
-        with:
-          path: /var/lib/docker
-          key: docker-${{ runner.os }}-${{ hashFiles('**/*config.toml') }}
-          restore-keys: |
-            docker-${{ runner.os }}-
       - name: Cache node modules
         id: cache-npm
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
-          path: ~/.npm
+          path: $ {{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
-            ${{ runner.os }}-nner.os }}-
+            ${{ runner.os }}-
+      - if: ${{ steps.cache-yarn.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: yarn list
       - name: Start Supabase and .env.test file
         run: |
           supabase start
