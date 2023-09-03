@@ -14,17 +14,21 @@ runs:
       run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
       shell: bash
     - uses: supabase/setup-cli@v1
-    - name: Set up Node.js
+    - name: Set up engines_node_version
       id: setup-node
       run: |
         # Read the package.json file and extract the node version
         NODE_VERSION=$(node -e "console.log(require('./package.json').engines.node)")
         echo "Node.js version specified in package.json: $NODE_VERSION"
-        echo "node_version=$NODE_VERSION" >> $GITHUB_OUTPUT
+        echo "engines_node_version=$NODE_VERSION" >> $GITHUB_OUTPUT
       shell: bash
     - uses: actions/setup-node@v3
       with:
-        node-version: ${{ steps.setup-node.node_version }}
+        node-version: ${{ steps.setup-node.engines_node_version }}
+    - name: Save node version installed to version
+      id: node
+      run: |
+        echo "version=$(node -v)" >> $GITHUB_OUTPUT
     - name: Get node_modules cache
       uses: actions/cache@v3
       id: node_modules
@@ -32,7 +36,7 @@ runs:
         path: |
           **/node_modules
         # Adding node version as cache key
-        key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}-${{ steps.setup-node.node_version }}
+        key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}-${{ steps.node.version }}
     - uses: supabase/setup-cli@v1
     - name: Start Supabase and .env.test file
       run: |
