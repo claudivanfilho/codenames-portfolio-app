@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Run Cypress Tests With Local Supabase Environment
+      - name: Run Cypress Tests With Local Supabase Env
         uses: "./.github/template/cypress"
         with:
           command: "e2e:headless:auth"
