@@ -7,7 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: "./.github/template/cypress"
+      - name: Run Cypress Tests With Local Supabase Environment
+        uses: "./.github/template/cypress"
         with:
           command: "e2e:headless:auth"
   run-cypress-gamming-tests:
@@ -15,7 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: "./.github/template/cypress"
+      - name: Run Cypress Tests With Local Supabase Environment
+        uses: "./.github/template/cypress"
         with:
           command: "e2e:headless:gamming"
   run-cypress-redirects-tests:
@@ -23,6 +25,7 @@ jobs:
     name: "Run Cypress Redirects Tests"
     steps:
       - uses: actions/checkout@v3
-      - uses: "./.github/template/cypress"
+      - name: Run Cypress Tests With Local Supabase Environment
+        uses: "./.github/template/cypress"
         with:
           command: "e2e:headless:redirects"
