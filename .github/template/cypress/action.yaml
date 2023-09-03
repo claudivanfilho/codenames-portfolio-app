@@ -9,32 +9,17 @@ runs:
   using: "composite"
   # Defining the action steps(Just one step to be simple)
   steps:
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-      shell: bash
     - uses: supabase/setup-cli@v1
-    - name: Set up engines_node_version
-      id: setup-node
-      run: |
-        # Read the package.json file and extract the node version
-        NODE_VERSION=$(node -e "console.log(require('./package.json').engines.node)")
-        echo "Node.js version specified in package.json: $NODE_VERSION"
-        echo "engines_node_version=$NODE_VERSION" >> $GITHUB_OUTPUT
-      shell: bash
     - uses: actions/setup-node@v3
       with:
-        node-version: ${{ steps.setup-node.engines_node_version }}
+        node-version-file: ".nvmrc"
         cache: "yarn"
-    - uses: supabase/setup-cli@v1
     - name: Start Supabase and .env.test file
       run: |
         supabase start
         sh generate_env.sh
       shell: bash
     - run: yarn install --frozen-lockfile
-      shell: bash
-    - run: npx cypress install
       shell: bash
     - run: npm run ${{ inputs.command }}
       shell: bash
