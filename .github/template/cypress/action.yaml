@@ -37,7 +37,7 @@ runs:
         path: |
           **/node_modules
         # Adding node version as cache key
-        key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}-node-${{ runner.node }}
+        key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}-${{ echo "$(node -v)" }}
     - uses: supabase/setup-cli@v1
     - name: Start Supabase and .env.test file
       run: |
