@@ -14,9 +14,6 @@ runs:
       with:
         node-version-file: ".nvmrc"
         cache: "yarn"
-    - uses: satackey/action-docker-layer-caching@v0.0.11
-      # Ignore the failure of a step and avoid terminating the job.
-      continue-on-error: true
     - name: Start Supabase and .env.test file
       run: |
         supabase start
