@@ -16,7 +16,11 @@ runs:
     - uses: supabase/setup-cli@v1
     - name: Set up Node.js
       id: setup-node
-      run: echo "node_version=$(node -pe "require('./package.json').engines.node")" >> $GITHUB_OUTPUT
+      run: |
+        # Read the package.json file and extract the node version
+        NODE_VERSION=$(node -e "console.log(require('./package.json').engines.node)")
+        echo "Node.js version specified in package.json: $NODE_VERSION"
+        echo "node_version=$NODE_VERSION" >> $GITHUB_OUTPUT
       shell: bash
     - uses: actions/setup-node@v3
       with:
