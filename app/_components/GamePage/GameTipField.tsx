@@ -21,6 +21,7 @@ const GameTipField: GameTipFieldType = ({ isInputVisible, label, value, classNam
                 className={clsx(`kbd cursor-pointer hover:scale-150 border hover:border-primary`, {
                   "border-primary": isSelected,
                 })}
+                data-testid={`input-number-${index + 1}`}
                 onClick={() => (props as any).onChange({ target: { value: index + 1 } })}
               >
                 {index + 1}
@@ -30,7 +31,7 @@ const GameTipField: GameTipFieldType = ({ isInputVisible, label, value, classNam
         </div>
       );
     }
-    return <input {...props} value={value} className="w-full input input-bordered" />;
+    return <input {...props} value={value} name={label} className="w-full input input-bordered" />;
   };
 
   return (
@@ -39,7 +40,7 @@ const GameTipField: GameTipFieldType = ({ isInputVisible, label, value, classNam
       {isInputVisible ? (
         renderInput()
       ) : (
-        <kbd className="w-full p-2 text-xl text-center rounded-lg kbd sm:text-2xl ">
+        <kbd className="w-full p-2 text-xl text-center rounded-lg kbd sm:text-2xl">
           {value || "-"}
         </kbd>
       )}

@@ -105,16 +105,17 @@ export async function createNewRoom(roomName: string, user: User, locale: string
         username: user.user_metadata.user_name,
       })
       .execute();
+    const correctWords = getRandomWords({
+      numberOfWords: DEFAULT_CORRECT_WORDS,
+      predefinedList: room.words,
+    });
     await trx
       .insertInto("matches")
       .values({
         room_id: room!.id,
-        correct_words: getRandomWords({
-          numberOfWords: DEFAULT_CORRECT_WORDS,
-          predefinedList: room.words,
-        }),
+        correct_words: correctWords,
       })
       .execute();
-    return room;
+    return { ...room, correct_words: correctWords };
   });
 }

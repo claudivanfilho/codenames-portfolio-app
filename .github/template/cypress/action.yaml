@@ -1,0 +1,25 @@
+name: Cypress Test Template
+
+# Were we can define the inputs that our action will accept
+inputs:
+  command:
+    required: true
+
+runs:
+  using: "composite"
+  # Defining the action steps(Just one step to be simple)
+  steps:
+    - uses: supabase/setup-cli@v1
+    - uses: actions/setup-node@v3
+      with:
+        node-version-file: ".nvmrc"
+        cache: "yarn"
+    - name: Start Supabase and .env.test file
+      run: |
+        supabase start
+        sh generate_env.sh
+      shell: bash
+    - run: yarn install --frozen-lockfile
+      shell: bash
+    - run: npm run ${{ inputs.command }}
+      shell: bash

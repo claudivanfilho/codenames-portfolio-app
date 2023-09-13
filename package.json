@@ -5,7 +5,12 @@
     "build": "next build",
     "start": "next start",
     "test": "jest",
-    "types": "npx supabase gen types typescript --project-id \"$PROJECT_REF\" --schema public > types/supabase.ts"
+    "types": "npx supabase gen types typescript --project-id \"$PROJECT_REF\" --schema public > types/supabase.ts",
+    "reset": "supabase db reset",
+    "e2e": "NODE_ENV=test start-server-and-test dev http://localhost:3000 \"cypress open --e2e\"",
+    "e2e:headless:auth": "NODE_ENV=test start-server-and-test dev http://localhost:3000 \"cypress run --spec cypress/e2e/authentication.cy.ts\"",
+    "e2e:headless:gamming": "NODE_ENV=test start-server-and-test dev http://localhost:3000 \"cypress run --spec cypress/e2e/gamming.cy.ts\"",
+    "e2e:headless:redirects": "NODE_ENV=test start-server-and-test dev http://localhost:3000 \"cypress run --spec cypress/e2e/redirects.cy.ts\""
   },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "latest",
@@ -35,10 +40,13 @@
     "@types/pg": "^8.10.2",
     "@types/react": "^18.2.12",
     "@types/react-dom": "ˆ18.2.5",
+    "cypress": "^13.0.0",
     "encoding": "^0.1.13",
     "jest": "^29.6.4",
     "jest-environment-jsdom": "^29.6.4",
     "msw": "^1.2.4",
+    "start-server-and-test": "^2.0.0",
+    "supabase": "^1.88.0",
     "whatwg-fetch": "^3.6.17"
   },
   "engines": {

@@ -21,6 +21,7 @@ export const RoomsProvider: FC<
   } = useUser();
 
   useEffect(() => {
+    console.log("initiated");
     const channel = supabase
       .channel("realtime rooms")
       .on(
@@ -32,6 +33,7 @@ export const RoomsProvider: FC<
           filter: "game_state=neq.FINISHED",
         },
         (payload: RealtimePostgresChangesPayload<Room>) => {
+          console.log("new", payload);
           switch (payload.eventType) {
             case "INSERT":
               if (payload.new.created_by !== userId) {
@@ -52,6 +54,7 @@ export const RoomsProvider: FC<
       .subscribe();
 
     return () => {
+      console.log("removed");
       supabase.removeChannel(channel);
     };
   }, []);

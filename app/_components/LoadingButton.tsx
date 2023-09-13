@@ -2,12 +2,14 @@ import clsx from "clsx";
 import React, { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import Loading from "./Loading";
+import useError from "../_hooks/useError";
 
 type LoadingButtonPropsType = React.FC<
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
     /** the default action hide the loading spinner on finally */
     hideOnCatch?: boolean;
     hideContent?: boolean;
+    useGlobalErrorHandler?: boolean;
   }
 >;
 
@@ -17,10 +19,12 @@ const LoadingButton: LoadingButtonPropsType = ({
   onClick,
   hideOnCatch,
   hideContent,
+  useGlobalErrorHandler,
   disabled,
   ...props
 }) => {
   const [loading, setLoading] = useState(false);
+  const { setError } = useError();
 
   const onClickWithLoading = async (_: React.MouseEvent<HTMLButtonElement>) => {
     setLoading(true);
@@ -28,7 +32,7 @@ const LoadingButton: LoadingButtonPropsType = ({
     if (hideOnCatch) {
       await onClickCB().catch((error) => {
         setLoading(false);
-        alert(error.message);
+        useGlobalErrorHandler ? setError(error.message) : alert(error.message);
       });
     } else {
       await onClickCB().finally(() => setLoading(false));

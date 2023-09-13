@@ -1,0 +1,31 @@
+name: "Supabase Github Hosted Action"
+on:
+  pull_request:
+jobs:
+  run-cypress-auth-tests:
+    name: "Run Cypress Auth Tests"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Cypress Tests With Local Supabase Environment
+        uses: "./.github/template/cypress"
+        with:
+          command: "e2e:headless:auth"
+  run-cypress-gamming-tests:
+    name: "Run Cypress Gamming Tests"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Cypress Tests With Local Supabase Environment
+        uses: "./.github/template/cypress"
+        with:
+          command: "e2e:headless:gamming"
+  run-cypress-redirects-tests:
+    runs-on: ubuntu-latest
+    name: "Run Cypress Redirects Tests"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Cypress Tests With Local Supabase Environment
+        uses: "./.github/template/cypress"
+        with:
+          command: "e2e:headless:redirects"

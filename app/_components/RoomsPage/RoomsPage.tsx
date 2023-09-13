@@ -19,7 +19,7 @@ export default function RoomsPage() {
   };
 
   return (
-    <div>
+    <div className="grid text-center">
       <div className="flex gap-5">
         <div className="flex flex-col gap-2 sm:items-center sm:flex-row">
           <label htmlFor="room" className="mr-6 text-lg font-bold leading-6 whitespace-nowrap">
@@ -43,11 +43,7 @@ export default function RoomsPage() {
         </LoadingButton>
       </div>
       <div className="my-6 border-t border-gray-700"></div>
-      {rooms.length ? (
-        <RoomListing />
-      ) : (
-        <div className="text-center">{<FormattedMessage id="no-rooms-info" />}</div>
-      )}
+      {rooms.length ? <RoomListing /> : <FormattedMessage id="no-rooms-info" />}
     </div>
   );
 }

@@ -27,9 +27,9 @@ export const makeTip = (roomId: number, data: MakeTipPostType) => {
 };
 
 export const makeGuess = (roomId: number, data: MakeGuessPostType) => {
-  return fetch(`/api/room/${roomId}/guess`, { method: "POST", body: JSON.stringify(data) }).then(
-    handleFetchRequest
-  );
+  return fetch(`/api/room/${roomId}/guess`, { method: "POST", body: JSON.stringify(data) })
+    .then(handleFetchRequest)
+    .then((res) => res as Room);
 };
 
 export const leaveRoom = (roomId: number) => {
